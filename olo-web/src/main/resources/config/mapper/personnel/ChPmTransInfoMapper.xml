@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmTransInfoMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmTransInfoMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmTransInfoModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="name" column="NAME" jdbcType="VARCHAR"/>
+		<result property="cardNo" column="CARD_NO" jdbcType="VARCHAR"/>
+		<result property="departBefore" column="DEPART_BEFORE" jdbcType="INTEGER"/>
+		<result property="departBeforeCn" column="DEPART_BEFORE_CN" jdbcType="VARCHAR"/>
+		<result property="positBefore" column="POSIT_BEFORE" jdbcType="INTEGER"/>
+		<result property="positBeforeCn" column="POSIT_BEFORE_CN" jdbcType="VARCHAR"/>
+		<result property="departAfter" column="DEPART_AFTER" jdbcType="INTEGER"/>
+		<result property="departAfterCn" column="DEPART_AFTER_CN" jdbcType="VARCHAR"/>
+		<result property="positAfter" column="POSIT_AFTER" jdbcType="INTEGER"/>
+		<result property="positAfterCn" column="POSIT_AFTER_CN" jdbcType="VARCHAR"/>
+		<result property="transDocno" column="TRANS_DOCNO" jdbcType="VARCHAR"/>
+		<result property="transTime" column="TRANS_TIME" jdbcType="TIMESTAMP"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmTransInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_trans_info record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_trans_info record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 NAME, 
+				 CARD_NO, 
+				 DEPART_BEFORE, 
+				 DEPART_BEFORE_CN, 
+				 POSIT_BEFORE, 
+				 POSIT_BEFORE_CN, 
+				 DEPART_AFTER, 
+				 DEPART_AFTER_CN, 
+				 POSIT_AFTER, 
+				 POSIT_AFTER_CN, 
+				 TRANS_DOCNO, 
+				 TRANS_TIME, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.name != null and entity.name != ''">
+					<![CDATA[ and record.NAME  = #{entity.name} ]]>
+				</if>
+				<if test = "entity.cardNo != null and entity.cardNo != ''">
+					<![CDATA[ and record.CARD_NO  = #{entity.cardNo} ]]>
+				</if>
+				<if test = "entity.departBefore != null">
+					<![CDATA[ and record.DEPART_BEFORE  = #{entity.departBefore} ]]>
+				</if>
+				<if test = "entity.departBeforeCn != null and entity.departBeforeCn != ''">
+					<![CDATA[ and record.DEPART_BEFORE_CN  = #{entity.departBeforeCn} ]]>
+				</if>
+				<if test = "entity.positBefore != null">
+					<![CDATA[ and record.POSIT_BEFORE  = #{entity.positBefore} ]]>
+				</if>
+				<if test = "entity.positBeforeCn != null and entity.positBeforeCn != ''">
+					<![CDATA[ and record.POSIT_BEFORE_CN  = #{entity.positBeforeCn} ]]>
+				</if>
+				<if test = "entity.departAfter != null">
+					<![CDATA[ and record.DEPART_AFTER  = #{entity.departAfter} ]]>
+				</if>
+				<if test = "entity.departAfterCn != null and entity.departAfterCn != ''">
+					<![CDATA[ and record.DEPART_AFTER_CN  = #{entity.departAfterCn} ]]>
+				</if>
+				<if test = "entity.positAfter != null">
+					<![CDATA[ and record.POSIT_AFTER  = #{entity.positAfter} ]]>
+				</if>
+				<if test = "entity.positAfterCn != null and entity.positAfterCn != ''">
+					<![CDATA[ and record.POSIT_AFTER_CN  = #{entity.positAfterCn} ]]>
+				</if>
+				<if test = "entity.transDocno != null and entity.transDocno != ''">
+					<![CDATA[ and record.TRANS_DOCNO  = #{entity.transDocno} ]]>
+				</if>
+				<if test = "entity.transTime != null">
+					<![CDATA[ and record.TRANS_TIME  = #{entity.transTime} ]]>
+				</if>
+				<if test = "entity.tranStart != null">
+					<![CDATA[ and record.TRANS_TIME  >= #{entity.tranStart} ]]>
+				</if>
+				<if test = "entity.tranSend != null">
+					<![CDATA[ and record.TRANS_TIME  <= #{entity.tranSend} ]]>
+				</if>
+				
+				
+				
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmTransInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_trans_info record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmTransInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_trans_info record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="name != null">NAME,</if>
+			<if test="cardNo != null">CARD_NO,</if>
+			<if test="departBefore != null">DEPART_BEFORE,</if>
+			<if test="departBeforeCn != null">DEPART_BEFORE_CN,</if>
+			<if test="positBefore != null">POSIT_BEFORE,</if>
+			<if test="positBeforeCn != null">POSIT_BEFORE_CN,</if>
+			<if test="departAfter != null">DEPART_AFTER,</if>
+			<if test="departAfterCn != null">DEPART_AFTER_CN,</if>
+			<if test="positAfter != null">POSIT_AFTER,</if>
+			<if test="positAfterCn != null">POSIT_AFTER_CN,</if>
+			<if test="transDocno != null">TRANS_DOCNO,</if>
+			<if test="transTime != null">TRANS_TIME,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="name != null">#{name,jdbcType=VARCHAR},</if>
+			<if test="cardNo != null">#{cardNo,jdbcType=VARCHAR},</if>
+			<if test="departBefore != null">#{departBefore,jdbcType=INTEGER},</if>
+			<if test="departBeforeCn != null">#{departBeforeCn,jdbcType=VARCHAR},</if>
+			<if test="positBefore != null">#{positBefore,jdbcType=INTEGER},</if>
+			<if test="positBeforeCn != null">#{positBeforeCn,jdbcType=VARCHAR},</if>
+			<if test="departAfter != null">#{departAfter,jdbcType=INTEGER},</if>
+			<if test="departAfterCn != null">#{departAfterCn,jdbcType=VARCHAR},</if>
+			<if test="positAfter != null">#{positAfter,jdbcType=INTEGER},</if>
+			<if test="positAfterCn != null">#{positAfterCn,jdbcType=VARCHAR},</if>
+			<if test="transDocno != null">#{transDocno,jdbcType=VARCHAR},</if>
+			<if test="transTime != null">#{transTime,jdbcType=TIMESTAMP},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmTransInfoModel">
+		INSERT INTO ch_pm_trans_info(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_pm_trans_info
+        (
+        	 NAME, 
+			 CARD_NO, 
+			 DEPART_BEFORE, 
+			 DEPART_BEFORE_CN, 
+			 POSIT_BEFORE, 
+			 POSIT_BEFORE_CN, 
+			 DEPART_AFTER, 
+			 DEPART_AFTER_CN, 
+			 POSIT_AFTER, 
+			 POSIT_AFTER_CN, 
+			 TRANS_DOCNO, 
+			 TRANS_TIME, 
+			 STATUS, 
+			 REMARK, 
+			 CREATE_TIME, 
+			 UPDATE_TIME 
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            #{item.name,jdbcType=VARCHAR},
+			#{item.cardNo,jdbcType=VARCHAR},
+			#{item.departBefore,jdbcType=INTEGER},
+			#{item.departBeforeCn,jdbcType=VARCHAR},
+			#{item.positBefore,jdbcType=INTEGER},
+			#{item.positBeforeCn,jdbcType=VARCHAR},
+			#{item.departAfter,jdbcType=INTEGER},
+			#{item.departAfterCn,jdbcType=VARCHAR},
+			#{item.positAfter,jdbcType=INTEGER},
+			#{item.positAfterCn,jdbcType=VARCHAR},
+			#{item.transDocno,jdbcType=VARCHAR},
+			#{item.transTime,jdbcType=TIMESTAMP},
+			#{item.status,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmTransInfoModel">
+		UPDATE ch_pm_trans_info record 
+		<set>
+			<if test = "id != null ">
+				record.ID = #{id,jdbcType=BIGINT},
+			</if>
+			<if test = "name != null ">
+				record.NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test = "cardNo != null ">
+				record.CARD_NO = #{cardNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "departBefore != null ">
+				record.DEPART_BEFORE = #{departBefore,jdbcType=INTEGER},
+			</if>
+			<if test = "departBeforeCn != null ">
+				record.DEPART_BEFORE_CN = #{departBeforeCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "positBefore != null ">
+				record.POSIT_BEFORE = #{positBefore,jdbcType=INTEGER},
+			</if>
+			<if test = "positBeforeCn != null ">
+				record.POSIT_BEFORE_CN = #{positBeforeCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "departAfter != null ">
+				record.DEPART_AFTER = #{departAfter,jdbcType=INTEGER},
+			</if>
+			<if test = "departAfterCn != null ">
+				record.DEPART_AFTER_CN = #{departAfterCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "positAfter != null ">
+				record.POSIT_AFTER = #{positAfter,jdbcType=INTEGER},
+			</if>
+			<if test = "positAfterCn != null ">
+				record.POSIT_AFTER_CN = #{positAfterCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "transDocno != null ">
+				record.TRANS_DOCNO = #{transDocno,jdbcType=VARCHAR},
+			</if>
+			<if test = "transTime != null ">
+				record.TRANS_TIME = #{transTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+				record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_trans_info 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_trans_info 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_trans_info  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_trans_info  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+</mapper>

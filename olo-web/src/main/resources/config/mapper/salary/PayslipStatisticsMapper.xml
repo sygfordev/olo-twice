@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.salary.mapper.PayslipStatisticsMapper">
+	<!-- 返回值映射map -->
+	
+	<!-- 检索条件 -->
+	<sql id="whereFilter">
+		<if test="model!=null">
+			<if test = "model.startMonth != null and model.startMonth !=''">
+				<![CDATA[ and NET_TARGET_YEARMONTH >= #{model.startMonth} ]]>
+			</if>
+			<if test = "model.endMonth != null and model.endMonth !=''">
+				<![CDATA[ and NET_TARGET_YEARMONTH <= #{model.endMonth} ]]>
+			</if>
+			<if test = "model.name != null and model.name != ''">
+				<![CDATA[ and NAME  = #{model.name} ]]>
+			</if>
+			<if test = "model.cardNo != null and model.cardNo != ''">
+				<![CDATA[ and CARD_NO  = #{model.cardNo} ]]>
+			</if>
+			<if test = "model.wkModalityCn != null and model.wkModalityCn != ''">
+				<![CDATA[ and WK_MODALITY_CN  = #{model.wkModalityCn} ]]>
+			</if>
+			<if test = "model.departClassCn != null and model.departClassCn != ''">
+				<![CDATA[ and DEPART_CLASS_CN  = #{model.departClassCn} ]]>
+			</if>
+		</if>
+	</sql>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultType="java.util.Map">
+		<!-- SET @EE='';
+		select @EE :=CONCAT(@EE,'sum(if(NET_TARGET_YEARMONTH= \'',NET_TARGET_YEARMONTH,'\',NET_SALARY,0)) as \'',NET_TARGET_YEARMONTH, '\',') AS aa FROM (SELECT DISTINCT NET_TARGET_YEARMONTH FROM ch_sa_payslip where status=0 and NET_TARGET_YEARMONTH>'2020-01') A;
+		SET @QQ = CONCAT('select name,WK_MODALITY_CN,DEPART_CLASS_CN,ifnull(card_no,\'TOTAL\')as card_no,',@EE,' sum(net_salary)/count(net_target_yearmonth) as AVE_VAL,count(net_target_yearmonth) as MONTHS,sum(net_salary) as TOTAL from ch_sa_payslip where status=0 and net_target_yearmonth>''2021-01'' group by name,card_no,WK_MODALITY_CN,DEPART_CLASS_CN');
+		PREPARE stmt FROM @QQ;
+		EXECUTE stmt;
+		DEALLOCATE PREPARE stmt; -->
+		SELECT 
+			NAME,
+			WK_MODALITY_CN,
+			DEPART_CLASS_CN,
+			ifnull( card_no, 'TOTAL' ) AS CARD_NO,
+			<foreach collection="months" open="" separator="," close="" item="item">
+				sum( IF ( NET_TARGET_YEARMONTH = #{item}, WAGE_PAYABLE_TOTAL, 0 ) ) AS #{item}
+			</foreach>
+			,
+			ROUND(sum(WAGE_PAYABLE_TOTAL) / count(net_target_yearmonth),2)  AS AVE_VAL,
+			count( net_target_yearmonth ) AS MONTHS,
+			sum( WAGE_PAYABLE_TOTAL ) AS TOTAL 
+			<!-- sum( net_salary ) AS TOTAL  -->
+		FROM
+			ch_sa_payslip 
+		WHERE
+			STATUS = 0 
+			<!-- AND net_target_yearmonth > '2021-01'  -->
+			<include refid="whereFilter" />
+		GROUP BY
+			NAME,
+			card_no,
+			WK_MODALITY_CN,
+			DEPART_CLASS_CN
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by ${page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		select count(1) from 
+		(
+		SELECT 
+			card_no
+		FROM
+			ch_sa_payslip 
+		WHERE
+			STATUS = 0 
+			<include refid="whereFilter" />
+		GROUP BY
+			card_no
+		) t
+	</select>
+	
+	<!-- 不分页查询数据集合-带序号-->
+	<select id="queryListWithSerial" resultType="java.util.Map">
+		SELECT
+			( @i := @i + 1 ) SERIAL_NO,
+			NAME,
+			WK_MODALITY_CN,
+			DEPART_CLASS_CN,
+			ifnull( card_no, 'TOTAL' ) AS CARD_NO,
+			<foreach collection="months" open="" separator="," close="" item="item">
+				sum( IF ( NET_TARGET_YEARMONTH = #{item}, WAGE_PAYABLE_TOTAL, 0 ) ) AS #{item}
+			</foreach>
+			,
+			sum( WAGE_PAYABLE_TOTAL ) / count( net_target_yearmonth ) AS AVE_VAL,
+			count( net_target_yearmonth ) AS MONTHS,
+			sum( WAGE_PAYABLE_TOTAL ) AS TOTAL 
+	  	FROM
+	  	ch_sa_payslip,
+	  	( SELECT @i := 0 ) AS i 
+	  	where STATUS = 0 
+		<include refid="whereFilter" />
+		GROUP BY
+			NAME,
+			card_no,
+			WK_MODALITY_CN,
+			DEPART_CLASS_CN
+	</select>
+	
+	<!-- 查询检索区域的工资月份-->
+	<select id="queryMonthList" resultType="java.lang.String" parameterType="java.util.Map">
+		SELECT 
+			DISTINCT NET_TARGET_YEARMONTH 
+		FROM ch_sa_payslip 
+		where 
+		status=0 
+		<include refid="whereFilter"/>
+	</select>
+	
+	
+	<!-- 统计区域 -->
+	<!-- 用工类型月工资汇总表 -->
+	<select id="st4modality" resultType="java.util.Map">
+		(
+			select * from (
+					select 
+					IFNULL(p.WK_MODALITY_CN,'总院小计') as modality,
+					'${ymonth}' as target_ymonth,
+					count(distinct p.CARD_NO) as size,
+					(sum(IFNULL(p.WAGE_TOTAL,0))/${rewards.size()}) as wage_totals,
+					(sum(IFNULL(p.WAGE_PAYABLE_TOTAL,0))/${rewards.size()}) as payable_totals,
+					<if test="rewards != null and rewards.size() > 0 ">
+						<foreach collection="rewards" open="" separator="" close="" item="item">
+							sum(IF(r.reward_item='${item}',IFNULL(REWARD_AMOUNT,0),0)) as '${item}',
+						</foreach>
+					</if>
+					sum(IFNULL(REWARD_AMOUNT,0)) as reward_totals
+	
+					from ch_sa_payslip p
+					left join ch_sa_payslip_reward r on p.CARD_NO=r.CARD_NO and p.NET_TARGET_YEARMONTH=r.TARGET_YEARMONTH and r.`STATUS`=0
+					where 
+					p.status = 0 
+					and p.NET_TARGET_YEARMONTH = #{ymonth}
+					and p.WK_MODALITY_CN is not null
+					and left(p.WK_MODALITY_CN,2)='总院'
+					group by p.WK_MODALITY_CN with rollup
+					order by (case when (substring(p.WK_MODALITY_CN,3,4)='正式' or substring(p.WK_MODALITY_CN,3,5)='正式1') THEN 1 else 2 END)
+			) as part1
+		)
+		union all
+		(
+			select * from (
+					select 
+					IFNULL(p.WK_MODALITY_CN,'基层小计') as modality,
+					'${ymonth}' as target_ymonth,
+					count(distinct p.CARD_NO) as size,
+					(sum(IFNULL(p.WAGE_TOTAL,0))/${rewards.size()}) as wage_totals,
+					(sum(IFNULL(p.WAGE_PAYABLE_TOTAL,0))/${rewards.size()}) as payable_totals,
+					<if test="rewards != null and rewards.size() > 0 ">
+						<foreach collection="rewards" open="" separator="" close="" item="item">
+							sum(IF(r.reward_item='${item}',IFNULL(REWARD_AMOUNT,0),0)) as '${item}',
+						</foreach>
+					</if>
+					sum(IFNULL(REWARD_AMOUNT,0)) as reward_totals
+	
+					from ch_sa_payslip p
+					left join ch_sa_payslip_reward r on p.CARD_NO=r.CARD_NO and p.NET_TARGET_YEARMONTH=r.TARGET_YEARMONTH and r.`STATUS`=0
+					where 
+					p.status = 0 
+					and p.NET_TARGET_YEARMONTH = #{ymonth}
+					and p.WK_MODALITY_CN is not null
+					and left(p.WK_MODALITY_CN,2)='基层'
+					group by p.WK_MODALITY_CN with rollup
+					order by (case when (substring(p.WK_MODALITY_CN,3,4)='正式' or substring(p.WK_MODALITY_CN,3,5)='正式1') THEN 1 else 2 END)
+			) as part2
+		)
+	</select>
+	
+	<!-- 根据人员类别和工资汇总表项目进行检索汇总 -->
+	<select id="st4common" resultType="java.util.Map">
+		select 
+			IFNULL(SA_SUM_PROJECT,'total') as sa_sum_project,<!-- 工资汇总表项目 -->
+			
+			count(1) as size,<!-- #人数 -->
+			sum(IFNULL(WAGE_POSIT_TOTAL,0)) as wage_posit_totals,<!-- #岗位工资合计 -->
+			sum(IFNULL(WAGE_NIGHT_SHIFT,0)) as wage_night_shifts,<!-- #夜班费合计 -->
+			sum(IFNULL(WAGE_OVERTIME,0)) as wage_overtime_totals,<!-- #加班工资合计 -->
+			sum(IFNULL(WAGE_YEARG,0)) as wage_yearg_totals,<!-- #年功工资合计 -->
+			sum(IFNULL(ALLOWANCE_HYGIENE,0)) as allowance_hygiene_totals,<!-- #卫生津贴合计 -->
+			sum(IFNULL(SUPP_4OTH,0)) as supp_4oth_totals,<!-- #其他合计 -->
+			sum(IFNULL(WAGE_TOTAL,0)) as wage_totals,<!-- #工资合计 -->
+			sum(IFNULL(WAGE_JX_TOTAL,0)) as wage_jx_totals,<!-- #绩效工资合计 -->
+			sum(IFNULL(WAGE_PAYABLE_TOTAL,0)) as wage_pageable_totals,<!-- #应发工资合计 -->
+			sum(IFNULL(BX_PENSION,0)) as bx_pension_totals,<!-- #养老保险 -->
+			sum(IFNULL(BX_MEDICAL,0)) as bx_medical_totals,<!-- #医疗保险 -->
+			sum(IFNULL(BX_UNEMPLOY,0)) as bx_unemp_totals,<!-- #失业保险 -->
+			sum(IFNULL(BX_SERIOUS_ILLNESS,0)) as bx_serious_totals,<!-- #大病保险 -->
+			sum(IFNULL(BX_HOUSFUND,0)) as bx_housfund_totals,<!-- #住房公积金 -->
+			sum(IFNULL(BX_ANNUAL_CORP_GOLD,0)) as bx_annual_totals,<!-- #企业年金 -->
+			sum(IFNULL(BX_TOTAL,0)) as bx_cut_totals,<!-- #保险扣款合计 -->
+			sum(IFNULL(CUT_OTHER,0)) as cut_other_totals,<!-- #其他扣款合计 -->
+			sum(IFNULL(CUT_ARREARS,0)) as cut_arrears_totals,<!-- #职工欠款 -->
+			sum(IFNULL(CUT_TOTAL,0)) as cut_totals,<!-- #扣款合计 -->
+			sum(IFNULL(TAX_INCOME_PERSONAL,0)) as tax_income_totals,<!-- #个税 -->
+			sum(IFNULL(NET_SALARY,0)) as net_salary_totals <!-- #实发工资合计 -->
+			
+		from
+		ch_sa_payslip
+		where NET_TARGET_YEARMONTH = #{ymonth} 
+			and status=0 
+			<if test="modalitys != null and modalitys.size() > 0 ">
+				and WK_MODALITY_CN in 
+				<foreach collection="modalitys" open="(" separator="," close=")" item="item">
+					#{item}
+				</foreach>
+			</if>
+			<if test="saSumProjects != null and saSumProjects.size() > 0 ">
+				and SA_SUM_PROJECT in 
+				<foreach collection="saSumProjects" open="(" separator="," close=")" item="item">
+					#{item}
+				</foreach>
+			</if>
+		group by SA_SUM_PROJECT with rollup
+	</select>
+	
+	<!-- 总院统计 (大类) -->
+	<select id="st4class" resultType="java.util.Map">
+		(
+			select 
+				'总院' as sa_sum_project,
+				count(1) as size,<!-- #人数 -->
+				sum(IFNULL(WAGE_POSIT_TOTAL,0)) as wage_posit_totals,<!-- #岗位工资合计 -->
+				sum(IFNULL(WAGE_NIGHT_SHIFT,0)) as wage_night_shifts,<!-- #夜班费合计 -->
+				sum(IFNULL(WAGE_OVERTIME,0)) as wage_overtime_totals,<!-- #加班工资合计 -->
+				sum(IFNULL(WAGE_YEARG,0)) as wage_yearg_totals,<!-- #年功工资合计 -->
+				sum(IFNULL(ALLOWANCE_HYGIENE,0)) as allowance_hygiene_totals,<!-- #卫生津贴合计 -->
+				sum(IFNULL(SUPP_4OTH,0)) as supp_4oth_totals,<!-- #其他合计 -->
+				sum(IFNULL(WAGE_TOTAL,0)) as wage_totals,<!-- #工资合计 -->
+				sum(IFNULL(WAGE_JX_TOTAL,0)) as wage_jx_totals,<!-- #绩效工资合计 -->
+				sum(IFNULL(WAGE_PAYABLE_TOTAL,0)) as wage_pageable_totals,<!-- #应发工资合计 -->
+				sum(IFNULL(BX_PENSION,0)) as bx_pension_totals,<!-- #养老保险 -->
+				sum(IFNULL(BX_MEDICAL,0)) as bx_medical_totals,<!-- #医疗保险 -->
+				sum(IFNULL(BX_UNEMPLOY,0)) as bx_unemp_totals,<!-- #失业保险 -->
+				sum(IFNULL(BX_SERIOUS_ILLNESS,0)) as bx_serious_totals,<!-- #大病保险 -->
+				sum(IFNULL(BX_HOUSFUND,0)) as bx_housfund_totals,<!-- #住房公积金 -->
+				sum(IFNULL(BX_ANNUAL_CORP_GOLD,0)) as bx_annual_totals,<!-- #企业年金 -->
+				sum(IFNULL(BX_TOTAL,0)) as bx_cut_totals,<!-- #保险扣款合计 -->
+				sum(IFNULL(CUT_OTHER,0)) as cut_other_totals,<!-- #其他扣款合计 -->
+				sum(IFNULL(CUT_ARREARS,0)) as cut_arrears_totals,<!-- #职工欠款 -->
+				sum(IFNULL(CUT_TOTAL,0)) as cut_totals,<!-- #扣款合计 -->
+				sum(IFNULL(TAX_INCOME_PERSONAL,0)) as tax_income_totals,<!-- #个税 -->
+				sum(IFNULL(NET_SALARY,0)) as net_salary_totals <!-- #实发工资合计 -->
+			from
+			ch_sa_payslip
+			where status=0 and NET_TARGET_YEARMONTH = #{ymonth} and left(WK_MODALITY_CN,2)='总院'
+		)
+		union
+		(
+			select 
+				'基层分院' as sa_sum_project,
+				count(1) as size,<!-- #人数 -->
+				sum(IFNULL(WAGE_POSIT_TOTAL,0)) as wage_posit_totals,<!-- #岗位工资合计 -->
+				sum(IFNULL(WAGE_NIGHT_SHIFT,0)) as wage_night_shifts,<!-- #夜班费合计 -->
+				sum(IFNULL(WAGE_OVERTIME,0)) as wage_overtime_totals,<!-- #加班工资合计 -->
+				sum(IFNULL(WAGE_YEARG,0)) as wage_yearg_totals,<!-- #年功工资合计 -->
+				sum(IFNULL(ALLOWANCE_HYGIENE,0)) as allowance_hygiene_totals,<!-- #卫生津贴合计 -->
+				sum(IFNULL(SUPP_4OTH,0)) as supp_4oth_totals,<!-- #其他合计 -->
+				sum(IFNULL(WAGE_TOTAL,0)) as wage_totals,<!-- #工资合计 -->
+				sum(IFNULL(WAGE_JX_TOTAL,0)) as wage_jx_totals,<!-- #绩效工资合计 -->
+				sum(IFNULL(WAGE_PAYABLE_TOTAL,0)) as wage_pageable_totals,<!-- #应发工资合计 -->
+				sum(IFNULL(BX_PENSION,0)) as bx_pension_totals,<!-- #养老保险 -->
+				sum(IFNULL(BX_MEDICAL,0)) as bx_medical_totals,<!-- #医疗保险 -->
+				sum(IFNULL(BX_UNEMPLOY,0)) as bx_unemp_totals,<!-- #失业保险 -->
+				sum(IFNULL(BX_SERIOUS_ILLNESS,0)) as bx_serious_totals,<!-- #大病保险 -->
+				sum(IFNULL(BX_HOUSFUND,0)) as bx_housfund_totals,<!-- #住房公积金 -->
+				sum(IFNULL(BX_ANNUAL_CORP_GOLD,0)) as bx_annual_totals,<!-- #企业年金 -->
+				sum(IFNULL(BX_TOTAL,0)) as bx_cut_totals,<!-- #保险扣款合计 -->
+				sum(IFNULL(CUT_OTHER,0)) as cut_other_totals,<!-- #其他扣款合计 -->
+				sum(IFNULL(CUT_ARREARS,0)) as cut_arrears_totals,<!-- #职工欠款 -->
+				sum(IFNULL(CUT_TOTAL,0)) as cut_totals,<!-- #扣款合计 -->
+				sum(IFNULL(TAX_INCOME_PERSONAL,0)) as tax_income_totals,<!-- #个税 -->
+				sum(IFNULL(NET_SALARY,0)) as net_salary_totals <!-- #实发工资合计 -->
+			from
+			ch_sa_payslip
+			where status=0 and NET_TARGET_YEARMONTH = #{ymonth} and left(WK_MODALITY_CN,2)='基层'
+		)
+		union 
+		(
+			select 
+				'合计' as sa_sum_project,
+				count(1) as size,<!-- #人数 -->
+				sum(IFNULL(WAGE_POSIT_TOTAL,0)) as wage_posit_totals,<!-- #岗位工资合计 -->
+				sum(IFNULL(WAGE_NIGHT_SHIFT,0)) as wage_night_shifts,<!-- #夜班费合计 -->
+				sum(IFNULL(WAGE_OVERTIME,0)) as wage_overtime_totals,<!-- #加班工资合计 -->
+				sum(IFNULL(WAGE_YEARG,0)) as wage_yearg_totals,<!-- #年功工资合计 -->
+				sum(IFNULL(ALLOWANCE_HYGIENE,0)) as allowance_hygiene_totals,<!-- #卫生津贴合计 -->
+				sum(IFNULL(SUPP_4OTH,0)) as supp_4oth_totals,<!-- #其他合计 -->
+				sum(IFNULL(WAGE_TOTAL,0)) as wage_totals,<!-- #工资合计 -->
+				sum(IFNULL(WAGE_JX_TOTAL,0)) as wage_jx_totals,<!-- #绩效工资合计 -->
+				sum(IFNULL(WAGE_PAYABLE_TOTAL,0)) as wage_pageable_totals,<!-- #应发工资合计 -->
+				sum(IFNULL(BX_PENSION,0)) as bx_pension_totals,<!-- #养老保险 -->
+				sum(IFNULL(BX_MEDICAL,0)) as bx_medical_totals,<!-- #医疗保险 -->
+				sum(IFNULL(BX_UNEMPLOY,0)) as bx_unemp_totals,<!-- #失业保险 -->
+				sum(IFNULL(BX_SERIOUS_ILLNESS,0)) as bx_serious_totals,<!-- #大病保险 -->
+				sum(IFNULL(BX_HOUSFUND,0)) as bx_housfund_totals,<!-- #住房公积金 -->
+				sum(IFNULL(BX_ANNUAL_CORP_GOLD,0)) as bx_annual_totals,<!-- #企业年金 -->
+				sum(IFNULL(BX_TOTAL,0)) as bx_cut_totals,<!-- #保险扣款合计 -->
+				sum(IFNULL(CUT_OTHER,0)) as cut_other_totals,<!-- #其他扣款合计 -->
+				sum(IFNULL(CUT_ARREARS,0)) as cut_arrears_totals,<!-- #职工欠款 -->
+				sum(IFNULL(CUT_TOTAL,0)) as cut_totals,<!-- #扣款合计 -->
+				sum(IFNULL(TAX_INCOME_PERSONAL,0)) as tax_income_totals,<!-- #个税 -->
+				sum(IFNULL(NET_SALARY,0)) as net_salary_totals <!-- #实发工资合计 -->
+			from
+			ch_sa_payslip
+			where status=0 and NET_TARGET_YEARMONTH = #{ymonth}
+		)
+	</select>
+	
+	<!-- 年统计（全年工资明细） -->
+	<select id="st4year" resultType="java.util.Map">
+		select 
+			IFNULL(p.NET_TARGET_YEARMONTH,'合计') as target_month,
+			'${modality}' as modality,
+			sum(IFNULL(p.WAGE_TOTAL,0))/${rewards.size()} as wage_totals,
+			<if test="rewards != null and rewards.size() > 0 ">
+				<foreach collection="rewards" open="" separator="" close="" item="item">
+					sum(IF(d.REWARD_ITEM = '${item}',IFNULL(d.REWARD_AMOUNT,0),0)) as '${item}',
+				</foreach>
+			</if>
+			(
+			sum(IFNULL(p.WAGE_TOTAL,0))/${rewards.size()}
+			<if test="rewards != null and rewards.size() > 0 ">
+				<foreach collection="rewards" open="" separator="" close="" item="item">
+					+ sum(IF(d.REWARD_ITEM = '${item}',IFNULL(d.REWARD_AMOUNT,0),0))
+				</foreach>
+			</if>
+			) as sub_total
+			
+		from ch_sa_payslip p
+		left join ch_sa_payslip_reward d on p.NET_TARGET_YEARMONTH = d.TARGET_YEARMONTH and p.CARD_NO=d.CARD_NO and left(d.TARGET_YEARMONTH,4)=#{year} and d.`STATUS`=0
+		where
+		left(p.NET_TARGET_YEARMONTH,4)=#{year} and p.`STATUS`=0
+		and p.WK_MODALITY_CN = #{modality}
+		group by p.NET_TARGET_YEARMONTH with rollup 
+	</select>
+</mapper>

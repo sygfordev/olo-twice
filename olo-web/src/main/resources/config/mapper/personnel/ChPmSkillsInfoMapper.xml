@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmSkillsInfoMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmSkillsInfoMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmSkillsInfoModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="workerId" column="WORKER_ID" jdbcType="BIGINT"/>
+		<result property="skills" column="SKILLS" jdbcType="INTEGER"/>
+		<result property="skillsCn" column="SKILLS_CN" jdbcType="VARCHAR"/>
+		<result property="skillsGotTime" column="SKILLS_GOT_TIME" jdbcType="TIMESTAMP"/>
+		<result property="skillsClass" column="SKILLS_CLASS" jdbcType="INTEGER"/>
+		<result property="skillsClassCn" column="SKILLS_CLASS_CN" jdbcType="VARCHAR"/>
+		<result property="skillsLevel" column="SKILLS_LEVEL" jdbcType="INTEGER"/>
+		<result property="skillsLevelCn" column="SKILLS_LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="skillsMax" column="SKILLS_MAX" jdbcType="INTEGER"/>
+		<result property="skillsOrder" column="SKILLS_ORDER" jdbcType="INTEGER"/>
+		<result property="skillsCertNo" column="SKILLS_CERT_NO" jdbcType="VARCHAR"/>
+		<result property="skillsOnitNo" column="SKILLS_ONIT_NO" jdbcType="VARCHAR"/>
+		<result property="skillsHireNo" column="SKILLS_HIRE_NO" jdbcType="VARCHAR"/>
+		<result property="skillsHStartTime" column="SKILLS_H_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="skillsHEndTime" column="SKILLS_H_END_TIME" jdbcType="TIMESTAMP"/>
+		<result property="skillsHCycle" column="SKILLS_H_CYCLE" jdbcType="INTEGER"/>
+		<result property="skillsOth" column="SKILLS_OTH" jdbcType="INTEGER"/>
+		<result property="skillsOthCn" column="SKILLS_OTH_CN" jdbcType="VARCHAR"/>
+		<result property="skillsOthGotTime" column="SKILLS_OTH_GOT_TIME" jdbcType="TIMESTAMP"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmSkillsInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_skills_info record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_skills_info record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 WORKER_ID, 
+				 SKILLS, 
+				 SKILLS_CN, 
+				 SKILLS_GOT_TIME, 
+				 SKILLS_CLASS, 
+				 SKILLS_CLASS_CN, 
+				 SKILLS_LEVEL, 
+				 SKILLS_LEVEL_CN, 
+				 SKILLS_MAX, 
+				 SKILLS_ORDER, 
+				 SKILLS_CERT_NO, 
+				 SKILLS_ONIT_NO, 
+				 SKILLS_HIRE_NO, 
+				 SKILLS_H_START_TIME, 
+				 SKILLS_H_END_TIME, 
+				 SKILLS_H_CYCLE, 
+				 SKILLS_OTH, 
+				 SKILLS_OTH_CN, 
+				 SKILLS_OTH_GOT_TIME, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.workerId != null">
+					<![CDATA[ and record.WORKER_ID  = #{entity.workerId} ]]>
+				</if>
+				<if test = "entity.skills != null">
+					<![CDATA[ and record.SKILLS  = #{entity.skills} ]]>
+				</if>
+				<if test = "entity.skillsCn != null and entity.skillsCn != ''">
+					<![CDATA[ and record.SKILLS_CN  = #{entity.skillsCn} ]]>
+				</if>
+				<if test = "entity.skillsGotTime != null">
+					<![CDATA[ and record.SKILLS_GOT_TIME  = #{entity.skillsGotTime} ]]>
+				</if>
+				<if test = "entity.skillsClass != null">
+					<![CDATA[ and record.SKILLS_CLASS  = #{entity.skillsClass} ]]>
+				</if>
+				<if test = "entity.skillsClassCn != null and entity.skillsClassCn != ''">
+					<![CDATA[ and record.SKILLS_CLASS_CN  = #{entity.skillsClassCn} ]]>
+				</if>
+				<if test = "entity.skillsLevel != null">
+					<![CDATA[ and record.SKILLS_LEVEL  = #{entity.skillsLevel} ]]>
+				</if>
+				<if test = "entity.skillsLevelCn != null and entity.skillsLevelCn != ''">
+					<![CDATA[ and record.SKILLS_LEVEL_CN  = #{entity.skillsLevelCn} ]]>
+				</if>
+				<if test = "entity.skillsMax != null">
+					<![CDATA[ and record.SKILLS_MAX  = #{entity.skillsMax} ]]>
+				</if>
+				<if test = "entity.skillsOrder != null">
+					<![CDATA[ and record.SKILLS_ORDER  = #{entity.skillsOrder} ]]>
+				</if>
+				<if test = "entity.skillsCertNo != null and entity.skillsCertNo != ''">
+					<![CDATA[ and record.SKILLS_CERT_NO  = #{entity.skillsCertNo} ]]>
+				</if>
+				<if test = "entity.skillsOnitNo != null and entity.skillsOnitNo != ''">
+					<![CDATA[ and record.SKILLS_ONIT_NO  = #{entity.skillsOnitNo} ]]>
+				</if>
+				<if test = "entity.skillsHireNo != null and entity.skillsHireNo != ''">
+					<![CDATA[ and record.SKILLS_HIRE_NO  = #{entity.skillsHireNo} ]]>
+				</if>
+				<if test = "entity.skillsHStartTime != null">
+					<![CDATA[ and record.SKILLS_H_START_TIME  = #{entity.skillsHStartTime} ]]>
+				</if>
+				<if test = "entity.skillsHEndTime != null">
+					<![CDATA[ and record.SKILLS_H_END_TIME  = #{entity.skillsHEndTime} ]]>
+				</if>
+				<if test = "entity.skillsHCycle != null">
+					<![CDATA[ and record.SKILLS_H_CYCLE  = #{entity.skillsHCycle} ]]>
+				</if>
+				<if test = "entity.skillsOth != null">
+					<![CDATA[ and record.SKILLS_OTH  = #{entity.skillsOth} ]]>
+				</if>
+				<if test = "entity.skillsOthCn != null and entity.skillsOthCn != ''">
+					<![CDATA[ and record.SKILLS_OTH_CN  = #{entity.skillsOthCn} ]]>
+				</if>
+				<if test = "entity.skillsOthGotTime != null">
+					<![CDATA[ and record.SKILLS_OTH_GOT_TIME  = #{entity.skillsOthGotTime} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmSkillsInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_skills_info record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmSkillsInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_skills_info record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="workerId != null">WORKER_ID,</if>
+			<if test="skills != null">SKILLS,</if>
+			<if test="skillsCn != null">SKILLS_CN,</if>
+			<if test="skillsGotTime != null">SKILLS_GOT_TIME,</if>
+			<if test="skillsClass != null">SKILLS_CLASS,</if>
+			<if test="skillsClassCn != null">SKILLS_CLASS_CN,</if>
+			<if test="skillsLevel != null">SKILLS_LEVEL,</if>
+			<if test="skillsLevelCn != null">SKILLS_LEVEL_CN,</if>
+			<if test="skillsMax != null">SKILLS_MAX,</if>
+			<if test="skillsOrder != null">SKILLS_ORDER,</if>
+			<if test="skillsCertNo != null">SKILLS_CERT_NO,</if>
+			<if test="skillsOnitNo != null">SKILLS_ONIT_NO,</if>
+			<if test="skillsHireNo != null">SKILLS_HIRE_NO,</if>
+			<if test="skillsHStartTime != null">SKILLS_H_START_TIME,</if>
+			<if test="skillsHEndTime != null">SKILLS_H_END_TIME,</if>
+			<if test="skillsHCycle != null">SKILLS_H_CYCLE,</if>
+			<if test="skillsOth != null">SKILLS_OTH,</if>
+			<if test="skillsOthCn != null">SKILLS_OTH_CN,</if>
+			<if test="skillsOthGotTime != null">SKILLS_OTH_GOT_TIME,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{workerId,jdbcType=BIGINT},</if>
+			<if test="skills != null">#{skills,jdbcType=INTEGER},</if>
+			<if test="skillsCn != null">#{skillsCn,jdbcType=VARCHAR},</if>
+			<if test="skillsGotTime != null">#{skillsGotTime,jdbcType=TIMESTAMP},</if>
+			<if test="skillsClass != null">#{skillsClass,jdbcType=INTEGER},</if>
+			<if test="skillsClassCn != null">#{skillsClassCn,jdbcType=VARCHAR},</if>
+			<if test="skillsLevel != null">#{skillsLevel,jdbcType=INTEGER},</if>
+			<if test="skillsLevelCn != null">#{skillsLevelCn,jdbcType=VARCHAR},</if>
+			<if test="skillsMax != null">#{skillsMax,jdbcType=INTEGER},</if>
+			<if test="skillsOrder != null">#{skillsOrder,jdbcType=INTEGER},</if>
+			<if test="skillsCertNo != null">#{skillsCertNo,jdbcType=VARCHAR},</if>
+			<if test="skillsOnitNo != null">#{skillsOnitNo,jdbcType=VARCHAR},</if>
+			<if test="skillsHireNo != null">#{skillsHireNo,jdbcType=VARCHAR},</if>
+			<if test="skillsHStartTime != null">#{skillsHStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="skillsHEndTime != null">#{skillsHEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="skillsHCycle != null">#{skillsHCycle,jdbcType=INTEGER},</if>
+			<if test="skillsOth != null">#{skillsOth,jdbcType=INTEGER},</if>
+			<if test="skillsOthCn != null">#{skillsOthCn,jdbcType=VARCHAR},</if>
+			<if test="skillsOthGotTime != null">#{skillsOthGotTime,jdbcType=TIMESTAMP},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{item.id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{item.workerId,jdbcType=BIGINT},</if>
+			<if test="skills != null">#{item.skills,jdbcType=INTEGER},</if>
+			<if test="skillsCn != null">#{item.skillsCn,jdbcType=VARCHAR},</if>
+			<if test="skillsGotTime != null">#{item.skillsGotTime,jdbcType=TIMESTAMP},</if>
+			<if test="skillsClass != null">#{item.skillsClass,jdbcType=INTEGER},</if>
+			<if test="skillsClassCn != null">#{item.skillsClassCn,jdbcType=VARCHAR},</if>
+			<if test="skillsLevel != null">#{item.skillsLevel,jdbcType=INTEGER},</if>
+			<if test="skillsLevelCn != null">#{item.skillsLevelCn,jdbcType=VARCHAR},</if>
+			<if test="skillsMax != null">#{item.skillsMax,jdbcType=INTEGER},</if>
+			<if test="skillsOrder != null">#{item.skillsOrder,jdbcType=INTEGER},</if>
+			<if test="skillsCertNo != null">#{item.skillsCertNo,jdbcType=VARCHAR},</if>
+			<if test="skillsOnitNo != null">#{item.skillsOnitNo,jdbcType=VARCHAR},</if>
+			<if test="skillsHireNo != null">#{item.skillsHireNo,jdbcType=VARCHAR},</if>
+			<if test="skillsHStartTime != null">#{item.skillsHStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="skillsHEndTime != null">#{item.skillsHEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="skillsHCycle != null">#{item.skillsHCycle,jdbcType=INTEGER},</if>
+			<if test="skillsOth != null">#{item.skillsOth,jdbcType=INTEGER},</if>
+			<if test="skillsOthCn != null">#{item.skillsOthCn,jdbcType=VARCHAR},</if>
+			<if test="skillsOthGotTime != null">#{item.skillsOthGotTime,jdbcType=TIMESTAMP},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmSkillsInfoModel">
+		INSERT INTO ch_pm_skills_info(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_pm_skills_info
+        (
+        	 WORKER_ID, 
+			 SKILLS, 
+			 SKILLS_CN, 
+			 SKILLS_GOT_TIME, 
+			 SKILLS_CLASS, 
+			 SKILLS_CLASS_CN, 
+			 SKILLS_LEVEL, 
+			 SKILLS_LEVEL_CN, 
+			 SKILLS_MAX, 
+			 SKILLS_ORDER, 
+			 SKILLS_CERT_NO, 
+			 SKILLS_ONIT_NO, 
+			 SKILLS_HIRE_NO, 
+			 SKILLS_H_START_TIME, 
+			 SKILLS_H_END_TIME, 
+			 SKILLS_H_CYCLE, 
+			 SKILLS_OTH, 
+			 SKILLS_OTH_CN, 
+			 SKILLS_OTH_GOT_TIME, 
+			 STATUS, 
+			 REMARK, 
+			 CREATE_TIME, 
+			 UPDATE_TIME 
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            #{item.workerId,jdbcType=BIGINT},
+			#{item.skills,jdbcType=INTEGER},
+			#{item.skillsCn,jdbcType=VARCHAR},
+			#{item.skillsGotTime,jdbcType=TIMESTAMP},
+			#{item.skillsClass,jdbcType=INTEGER},
+			#{item.skillsClassCn,jdbcType=VARCHAR},
+			#{item.skillsLevel,jdbcType=INTEGER},
+			#{item.skillsLevelCn,jdbcType=VARCHAR},
+			#{item.skillsMax,jdbcType=INTEGER},
+			#{item.skillsOrder,jdbcType=INTEGER},
+			#{item.skillsCertNo,jdbcType=VARCHAR},
+			#{item.skillsOnitNo,jdbcType=VARCHAR},
+			#{item.skillsHireNo,jdbcType=VARCHAR},
+			#{item.skillsHStartTime,jdbcType=TIMESTAMP},
+			#{item.skillsHEndTime,jdbcType=TIMESTAMP},
+			#{item.skillsHCycle,jdbcType=INTEGER},
+			#{item.skillsOth,jdbcType=INTEGER},
+			#{item.skillsOthCn,jdbcType=VARCHAR},
+			#{item.skillsOthGotTime,jdbcType=TIMESTAMP},
+			#{item.status,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmSkillsInfoModel">
+		UPDATE ch_pm_skills_info record 
+		<set>
+			<if test = "id != null ">
+				record.ID = #{id,jdbcType=BIGINT},
+			</if>
+			<if test = "workerId != null ">
+				record.WORKER_ID = #{workerId,jdbcType=BIGINT},
+			</if>
+			<if test = "skills != null ">
+				record.SKILLS = #{skills,jdbcType=INTEGER},
+			</if>
+			<if test = "skillsCn != null ">
+				record.SKILLS_CN = #{skillsCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "skillsGotTime != null ">
+				record.SKILLS_GOT_TIME = #{skillsGotTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "skillsClass != null ">
+				record.SKILLS_CLASS = #{skillsClass,jdbcType=INTEGER},
+			</if>
+			<if test = "skillsClassCn != null ">
+				record.SKILLS_CLASS_CN = #{skillsClassCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "skillsLevel != null ">
+				record.SKILLS_LEVEL = #{skillsLevel,jdbcType=INTEGER},
+			</if>
+			<if test = "skillsLevelCn != null ">
+				record.SKILLS_LEVEL_CN = #{skillsLevelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "skillsMax != null ">
+				record.SKILLS_MAX = #{skillsMax,jdbcType=INTEGER},
+			</if>
+			<if test = "skillsOrder != null ">
+				record.SKILLS_ORDER = #{skillsOrder,jdbcType=INTEGER},
+			</if>
+			<if test = "skillsCertNo != null ">
+				record.SKILLS_CERT_NO = #{skillsCertNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "skillsOnitNo != null ">
+				record.SKILLS_ONIT_NO = #{skillsOnitNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "skillsHireNo != null ">
+				record.SKILLS_HIRE_NO = #{skillsHireNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "skillsHStartTime != null ">
+				record.SKILLS_H_START_TIME = #{skillsHStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "skillsHEndTime != null ">
+				record.SKILLS_H_END_TIME = #{skillsHEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "skillsHCycle != null ">
+				record.SKILLS_H_CYCLE = #{skillsHCycle,jdbcType=INTEGER},
+			</if>
+			<if test = "skillsOth != null ">
+				record.SKILLS_OTH = #{skillsOth,jdbcType=INTEGER},
+			</if>
+			<if test = "skillsOthCn != null ">
+				record.SKILLS_OTH_CN = #{skillsOthCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "skillsOthGotTime != null ">
+				record.SKILLS_OTH_GOT_TIME = #{skillsOthGotTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+				record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_skills_info 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_skills_info 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_skills_info  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_skills_info  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	<!-- 查询所有需要做排序的职工编号列表 -->
+	<select id="queryAllWkIds4NeedSort" resultType="java.lang.Long">
+		select distinct worker_id from ch_pm_skills_info where status=0 and skills_order is null
+	</select>
+	
+	<!-- 根据职工编号对该职工的技能等级进行排序 -->
+	<update id="synSkillsInfoSortVal" parameterType="java.lang.Long">
+		update 
+		ch_pm_skills_info e,
+		(
+			  SELECT
+					( @i := @i + 1 ) sort,
+					id,
+					SKILLS_LEVEL
+			  FROM
+			  <!-- ( SELECT * FROM ch_pm_skills_info where worker_id=#{wkId} ORDER BY SKILLS_LEV asc ) sort, -->
+			  ( SELECT * FROM ch_pm_skills_info where worker_id=#{wkId} and status=0 ORDER BY SKILLS_MAX desc,SKILLS_LEVEL asc ) sort,
+			  ( SELECT @i := 0 ) AS i 
+		) t
+		set e.SKILLS_ORDER = t.sort
+		WHERE e.id=t.id AND e.worker_id = #{wkId} and e.status=0
+	</update>
+</mapper>

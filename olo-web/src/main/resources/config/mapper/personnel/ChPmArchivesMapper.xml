@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmArchivesMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmArchivesMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmArchivesModel" extends="com.hdfs.olo.olo_web.personnel.mapper.ChPmWorkerMapper.chPmWorkerMapper">
+		<result property="wagesId" column="WAGES_ID" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmArchivesMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_worker w
+		LEFT JOIN ch_pm_station s on s.WORKER_ID=w.ID
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_worker w
+		LEFT JOIN ch_pm_station s on s.WORKER_ID=w.ID
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 w.ID, 
+				 s.WAGES_ID,
+				 w.NAME, 
+				 w.SEX, 
+				 w.AGE, 
+				 w.CARD_TYPE, 
+				 w.CARD_NO, 
+				 w.BIRTH_DAY, 
+				 w.NATION, 
+				 w.NATION_CN, 
+				 w.POLITICS, 
+				 w.POLITICS_CN, 
+				 w.POLITICS_IN_TIME, 
+				 w.FIRST_WORK_TIME, 
+				 w.WORKED_YEAR, 
+				 w.INTO_LOCAL_COMP_TIME, 
+				 w.NATIVE_PLACE_PROV, 
+				 w.NATIVE_PLACE_PROV_CN, 
+				 w.NATIVE_PLACE_CITY, 
+				 w.NATIVE_PLACE_CITY_CN, 
+				 w.NATIVE_PLACE_AREA, 
+				 w.NATIVE_PLACE_AREA_CN, 
+				 w.RESIDENCE_TYPE, 
+				 w.RESIDENCE_TYPE_CN, 
+				 w.RESIDENCE_BIRTHLAND_PROV, 
+				 w.RESIDENCE_BIRTHLAND_PROV_CN, 
+				 w.RESIDENCE_BIRTHLAND_CITY, 
+				 w.RESIDENCE_BIRTHLAND_CITY_CN, 
+				 w.RESIDENCE_BIRTHLAND_AREA, 
+				 w.RESIDENCE_BIRTHLAND_AREA_CN, 
+				 w.HOME_PROV, 
+				 w.HOME_PROV_CN, 
+				 w.HOME_CITY, 
+				 w.HOME_CITY_CN, 
+				 w.HOME_ADDR, 
+				 w.TELPHONE_NO, 
+				 w.MAIL_BOX, 
+				 w.SALARY_ADJUST_TYPE, 
+				 w.SALARY_ADJUST_TYPE_CN, 
+				 w.STATUS, 
+				 w.REMARK, 
+				 w.CREATE_TIME, 
+				 w.UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null">
+					<![CDATA[ and w.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.wagesId != null and entity.wagesId != ''">
+					<![CDATA[ and s.NAME  = #{entity.wagesId} ]]>
+				</if>
+				<if test = "entity.name != null and entity.name != ''">
+					<![CDATA[ and w.NAME  = #{entity.name} ]]>
+				</if>
+				<if test = "entity.sex != null">
+					<![CDATA[ and w.SEX  = #{entity.sex} ]]>
+				</if>
+				<if test = "entity.age != null ">
+					<![CDATA[ and w.AGE  = #{entity.age} ]]>
+				</if>
+				<if test = "entity.cardType != null">
+					<![CDATA[ and w.CARD_TYPE  = #{entity.cardType} ]]>
+				</if>
+				<if test = "entity.cardNo != null and entity.cardNo != ''">
+					<![CDATA[ and w.CARD_NO  = #{entity.cardNo} ]]>
+				</if>
+				<if test = "entity.birthDay != null">
+					<![CDATA[ and w.BIRTH_DAY  = #{entity.birthDay} ]]>
+				</if>
+				<if test = "entity.nation != null">
+					<![CDATA[ and w.NATION  = #{entity.nation} ]]>
+				</if>
+				<if test = "entity.politics != null">
+					<![CDATA[ and w.POLITICS  = #{entity.politics} ]]>
+				</if>
+				<if test = "entity.politicsInTime != null">
+					<![CDATA[ and w.POLITICS_IN_TIME  = #{entity.politicsInTime} ]]>
+				</if>
+				<if test = "entity.firstWorkTime != null">
+					<![CDATA[ and w.FIRST_WORK_TIME  = #{entity.firstWorkTime} ]]>
+				</if>
+				<if test = "entity.workedYear != null">
+					<![CDATA[ and w.WORKED_YEAR  = #{entity.workedYear} ]]>
+				</if>
+				<if test = "entity.intoLocalCompTime != null">
+					<![CDATA[ and w.INTO_LOCAL_COMP_TIME  = #{entity.intoLocalCompTime} ]]>
+				</if>
+				<if test = "entity.nativePlaceProv != null">
+					<![CDATA[ and w.NATIVE_PLACE_PROV  = #{entity.nativePlaceProv} ]]>
+				</if>
+				<if test = "entity.nativePlaceCity != null">
+					<![CDATA[ and w.NATIVE_PLACE_CITY  = #{entity.nativePlaceCity} ]]>
+				</if>
+				<if test = "entity.nativePlaceArea != null">
+					<![CDATA[ and w.NATIVE_PLACE_AREA  = #{entity.nativePlaceArea} ]]>
+				</if>
+				<if test = "entity.residenceType != null">
+					<![CDATA[ and w.RESIDENCE_TYPE  = #{entity.residenceType} ]]>
+				</if>
+				<if test = "entity.residenceBirthlandProv != null">
+					<![CDATA[ and w.RESIDENCE_BIRTHLAND_PROV  = #{entity.residenceBirthlandProv} ]]>
+				</if>
+				<if test = "entity.residenceBirthlandCity != null">
+					<![CDATA[ and w.RESIDENCE_BIRTHLAND_CITY  = #{entity.residenceBirthlandCity} ]]>
+				</if>
+				<if test = "entity.residenceBirthlandArea != null">
+					<![CDATA[ and w.RESIDENCE_BIRTHLAND_AREA  = #{entity.residenceBirthlandArea} ]]>
+				</if>
+				<if test = "entity.homeProv != null">
+					<![CDATA[ and w.HOME_PROV  = #{entity.homeProv} ]]>
+				</if>
+				<if test = "entity.homeCity != null">
+					<![CDATA[ and w.HOME_CITY  = #{entity.homeCity} ]]>
+				</if>
+				<if test = "entity.homeAddr != null and entity.homeAddr != ''">
+					<![CDATA[ and w.HOME_ADDR  = #{entity.homeAddr} ]]>
+				</if>
+				<if test = "entity.telphoneNo != null and entity.telphoneNo != ''">
+					<![CDATA[ and w.TELPHONE_NO  = #{entity.telphoneNo} ]]>
+				</if>
+				<if test = "entity.mailBox != null and entity.mailBox != ''">
+					<![CDATA[ and w.MAIL_BOX  = #{entity.mailBox} ]]>
+				</if>
+				<if test = "entity.salaryAdjustType != null">
+					<![CDATA[ and w.SALARY_ADJUST_TYPE  = #{entity.salaryAdjustType} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and w.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null">
+					<![CDATA[ and w.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and w.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and w.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+				
+				<!-- 岗位条件 -->
+				<if test = "entity.identity != null">
+					<![CDATA[ and s.IDENTITY  = #{entity.identity} ]]>
+				</if>
+				<if test = "entity.wkModality != null">
+					<![CDATA[ and s.WK_MODALITY  = #{entity.wkModality} ]]>
+				</if>
+				<if test = "entity.stationSitu != null">
+					<!-- 0:在职  1：离职 -->
+					<if test="entity.stationSitu == 0">
+						<![CDATA[ and s.STATION_SITU  = 0 ]]>
+					</if>
+					<if test="entity.stationSitu == 1">
+						<![CDATA[ and s.STATION_SITU  != 0 ]]>
+					</if>
+				</if>
+				<if test = "entity.workArea != null">
+					<![CDATA[ and s.WORK_AREA  = #{entity.workArea} ]]>
+				</if>
+				<if test = "entity.hosBranch != null">
+					<![CDATA[ and s.HOS_BRANCH  = #{entity.hosBranch} ]]>
+				</if>
+				<if test = "entity.hosDepart1level != null">
+					<![CDATA[ and s.HOS_DEPART_1LEVEL  = #{entity.hosDepart1level} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+</mapper>

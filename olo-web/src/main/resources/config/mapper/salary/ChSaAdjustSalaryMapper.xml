@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.salary.mapper.ChSaAdjustSalaryMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chSaAdjustSalaryMapper" type="com.hdfs.olo.olo_web.salary.model.ChSaAdjustSalaryModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="name" column="NAME" jdbcType="VARCHAR"/>
+		<result property="cardNo" column="CARD_NO" jdbcType="VARCHAR"/>
+		<result property="wagesId" column="WAGES_ID" jdbcType="VARCHAR"/>
+		<result property="wagesSeq" column="WAGES_SEQ" jdbcType="VARCHAR"/>
+		<result property="wagesName" column="WAGES_NAME" jdbcType="VARCHAR"/>
+		<result property="wagesModalityCn" column="WAGES_MODALITY_CN" jdbcType="VARCHAR"/>
+		<result property="wagesDepart" column="WAGES_DEPART" jdbcType="VARCHAR"/>
+		<result property="wagesStandardBef" column="WAGES_STANDARD_BEF" jdbcType="DECIMAL"/>
+		<result property="salaryAdjustTypeCn" column="SALARY_ADJUST_TYPE_CN" jdbcType="VARCHAR"/>
+		<result property="hosDepart1levelCn" column="HOS_DEPART_1LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="hosDepart2levelCn" column="HOS_DEPART_2LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="edu4max" column="EDU_4MAX" jdbcType="VARCHAR"/>
+		<result property="edu4first" column="EDU_4FIRST" jdbcType="VARCHAR"/>
+		<result property="edu4wage" column="EDU_4WAGE" jdbcType="VARCHAR"/>
+		<result property="firstWorkTime" column="FIRST_WORK_TIME" jdbcType="TIMESTAMP"/>
+		<result property="workedYear" column="WORKED_YEAR" jdbcType="DOUBLE"/>
+		<result property="posit4nowCn" column="POSIT_4NOW_CN" jdbcType="VARCHAR"/>
+		<result property="posit4nowStartTime" column="POSIT_4NOW_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="posit4nowYears" column="POSIT_4NOW_YEARS" jdbcType="DOUBLE"/>
+		<result property="positLevelCn" column="POSIT_LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="positLevelCode" column="POSIT_LEVEL_CODE" jdbcType="VARCHAR"/>
+		<result property="onPrinPositStartTime" column="ON_PRIN_POSIT_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="onPrinPositYears" column="ON_PRIN_POSIT_YEARS" jdbcType="DOUBLE"/>
+		<result property="onDeptPositStartTime" column="ON_DEPT_POSIT_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="onDeptPositYears" column="ON_DEPT_POSIT_YEARS" jdbcType="DOUBLE"/>
+		<result property="title4max" column="TITLE_4MAX" jdbcType="VARCHAR"/>
+		<result property="title4maxGotTime" column="TITLE_4MAX_GOT_TIME" jdbcType="TIMESTAMP"/>
+		<result property="title4maxGotYears" column="TITLE_4MAX_GOT_YEARS" jdbcType="DOUBLE"/>
+		<result property="title4maxClassCn" column="TITLE_4MAX_CLASS_CN" jdbcType="VARCHAR"/>
+		<result property="title4maxLevelCn" column="TITLE_4MAX_LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="adjust4title" column="ADJUST_4TITLE" jdbcType="DECIMAL"/>
+		<result property="adjust4posit" column="ADJUST_4POSIT" jdbcType="DECIMAL"/>
+		<result property="adjust4edu" column="ADJUST_4EDU" jdbcType="DECIMAL"/>
+		<result property="wagesStandardAft" column="WAGES_STANDARD_AFT" jdbcType="DECIMAL"/>
+		<result property="adjustProof" column="ADJUST_PROOF" jdbcType="VARCHAR"/>
+		<result property="adjustDiffe" column="ADJUST_DIFFE" jdbcType="DECIMAL"/>
+		<result property="formulaId" column="FORMULA_ID" jdbcType="BIGINT"/>
+		<result property="recordId" column="RECORD_ID" jdbcType="BIGINT"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chSaAdjustSalaryMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_adjust_salary record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_sa_adjust_salary record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 NAME, 
+				 CARD_NO, 
+				 WAGES_ID, 
+				 WAGES_SEQ, 
+				 WAGES_NAME, 
+				 WAGES_MODALITY_CN, 
+				 WAGES_DEPART, 
+				 WAGES_STANDARD_BEF, 
+				 SALARY_ADJUST_TYPE_CN, 
+				 HOS_DEPART_1LEVEL_CN, 
+				 HOS_DEPART_2LEVEL_CN, 
+				 EDU_4MAX, 
+				 EDU_4FIRST, 
+				 EDU_4WAGE, 
+				 FIRST_WORK_TIME, 
+				 WORKED_YEAR, 
+				 POSIT_4NOW_CN, 
+				 POSIT_4NOW_START_TIME, 
+				 POSIT_4NOW_YEARS, 
+				 POSIT_LEVEL_CN, 
+				 POSIT_LEVEL_CODE, 
+				 ON_PRIN_POSIT_START_TIME, 
+				 ON_PRIN_POSIT_YEARS, 
+				 ON_DEPT_POSIT_START_TIME, 
+				 ON_DEPT_POSIT_YEARS, 
+				 TITLE_4MAX, 
+				 TITLE_4MAX_GOT_TIME, 
+				 TITLE_4MAX_GOT_YEARS, 
+				 TITLE_4MAX_CLASS_CN, 
+				 TITLE_4MAX_LEVEL_CN, 
+				 ADJUST_4TITLE, 
+				 ADJUST_4POSIT, 
+				 ADJUST_4EDU, 
+				 WAGES_STANDARD_AFT, 
+				 ADJUST_PROOF, 
+				 ADJUST_DIFFE, 
+				 FORMULA_ID, 
+				 RECORD_ID, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.name != null and entity.name != ''">
+					<![CDATA[ and record.NAME  = #{entity.name} ]]>
+				</if>
+				<if test = "entity.cardNo != null and entity.cardNo != ''">
+					<![CDATA[ and record.CARD_NO  = #{entity.cardNo} ]]>
+				</if>
+				<if test = "entity.wagesId != null and entity.wagesId != ''">
+					<![CDATA[ and record.WAGES_ID  = #{entity.wagesId} ]]>
+				</if>
+				<if test = "entity.wagesSeq != null and entity.wagesSeq != ''">
+					<![CDATA[ and record.WAGES_SEQ  = #{entity.wagesSeq} ]]>
+				</if>
+				<if test = "entity.wagesName != null and entity.wagesName != ''">
+					<![CDATA[ and record.WAGES_NAME  = #{entity.wagesName} ]]>
+				</if>
+				<if test = "entity.wagesModalityCn != null and entity.wagesModalityCn != ''">
+					<![CDATA[ and record.WAGES_MODALITY_CN  = #{entity.wagesModalityCn} ]]>
+				</if>
+				<if test = "entity.wagesDepart != null and entity.wagesDepart != ''">
+					<![CDATA[ and record.WAGES_DEPART  = #{entity.wagesDepart} ]]>
+				</if>
+				<if test = "entity.wagesStandardBef != null and entity.wagesStandardBef != ''">
+					<![CDATA[ and record.WAGES_STANDARD_BEF  = #{entity.wagesStandardBef} ]]>
+				</if>
+				<if test = "entity.salaryAdjustTypeCn != null and entity.salaryAdjustTypeCn != ''">
+					<![CDATA[ and record.SALARY_ADJUST_TYPE_CN  = #{entity.salaryAdjustTypeCn} ]]>
+				</if>
+				<if test = "entity.hosDepart1levelCn != null and entity.hosDepart1levelCn != ''">
+					<![CDATA[ and record.HOS_DEPART_1LEVEL_CN  = #{entity.hosDepart1levelCn} ]]>
+				</if>
+				<if test = "entity.hosDepart2levelCn != null and entity.hosDepart2levelCn != ''">
+					<![CDATA[ and record.HOS_DEPART_2LEVEL_CN  = #{entity.hosDepart2levelCn} ]]>
+				</if>
+				<if test = "entity.edu4max != null and entity.edu4max != ''">
+					<![CDATA[ and record.EDU_4MAX  = #{entity.edu4max} ]]>
+				</if>
+				<if test = "entity.edu4first != null and entity.edu4first != ''">
+					<![CDATA[ and record.EDU_4FIRST  = #{entity.edu4first} ]]>
+				</if>
+				<if test = "entity.edu4wage != null and entity.edu4wage != ''">
+					<![CDATA[ and record.EDU_4WAGE  = #{entity.edu4wage} ]]>
+				</if>
+				<if test = "entity.firstWorkTime != null">
+					<![CDATA[ and record.FIRST_WORK_TIME  = #{entity.firstWorkTime} ]]>
+				</if>
+				<if test = "entity.workedYear != null">
+					<![CDATA[ and record.WORKED_YEAR  = #{entity.workedYear} ]]>
+				</if>
+				<if test = "entity.posit4nowCn != null and entity.posit4nowCn != ''">
+					<![CDATA[ and record.POSIT_4NOW_CN  = #{entity.posit4nowCn} ]]>
+				</if>
+				<if test = "entity.posit4nowStartTime != null">
+					<![CDATA[ and record.POSIT_4NOW_START_TIME  = #{entity.posit4nowStartTime} ]]>
+				</if>
+				<if test = "entity.posit4nowYears != null">
+					<![CDATA[ and record.POSIT_4NOW_YEARS  = #{entity.posit4nowYears} ]]>
+				</if>
+				<if test = "entity.positLevelCn != null and entity.positLevelCn != ''">
+					<![CDATA[ and record.POSIT_LEVEL_CN  = #{entity.positLevelCn} ]]>
+				</if>
+				<if test = "entity.positLevelCode != null and entity.positLevelCode != ''">
+					<![CDATA[ and record.POSIT_LEVEL_CODE  = #{entity.positLevelCode} ]]>
+				</if>
+				<if test = "entity.onPrinPositStartTime != null">
+					<![CDATA[ and record.ON_PRIN_POSIT_START_TIME  = #{entity.onPrinPositStartTime} ]]>
+				</if>
+				<if test = "entity.onPrinPositYears != null">
+					<![CDATA[ and record.ON_PRIN_POSIT_YEARS  = #{entity.onPrinPositYears} ]]>
+				</if>
+				<if test = "entity.onDeptPositStartTime != null">
+					<![CDATA[ and record.ON_DEPT_POSIT_START_TIME  = #{entity.onDeptPositStartTime} ]]>
+				</if>
+				<if test = "entity.onDeptPositYears != null">
+					<![CDATA[ and record.ON_DEPT_POSIT_YEARS  = #{entity.onDeptPositYears} ]]>
+				</if>
+				<if test = "entity.title4max != null and entity.title4max != ''">
+					<![CDATA[ and record.TITLE_4MAX  = #{entity.title4max} ]]>
+				</if>
+				<if test = "entity.title4maxGotTime != null">
+					<![CDATA[ and record.TITLE_4MAX_GOT_TIME  = #{entity.title4maxGotTime} ]]>
+				</if>
+				<if test = "entity.title4maxGotYears != null">
+					<![CDATA[ and record.TITLE_4MAX_GOT_YEARS  = #{entity.title4maxGotYears} ]]>
+				</if>
+				<if test = "entity.title4maxClassCn != null and entity.title4maxClassCn != ''">
+					<![CDATA[ and record.TITLE_4MAX_CLASS_CN  = #{entity.title4maxClassCn} ]]>
+				</if>
+				<if test = "entity.title4maxLevelCn != null and entity.title4maxLevelCn != ''">
+					<![CDATA[ and record.TITLE_4MAX_LEVEL_CN  = #{entity.title4maxLevelCn} ]]>
+				</if>
+				<if test = "entity.adjust4title != null">
+					<![CDATA[ and record.ADJUST_4TITLE  = #{entity.adjust4title} ]]>
+				</if>
+				<if test = "entity.adjust4posit != null">
+					<![CDATA[ and record.ADJUST_4POSIT  = #{entity.adjust4posit} ]]>
+				</if>
+				<if test = "entity.adjust4edu != null">
+					<![CDATA[ and record.ADJUST_4EDU  = #{entity.adjust4edu} ]]>
+				</if>
+				<if test = "entity.wagesStandardAft != null">
+					<![CDATA[ and record.WAGES_STANDARD_AFT  = #{entity.wagesStandardAft} ]]>
+				</if>
+				<if test = "entity.adjustProof != null">
+					<![CDATA[ and record.ADJUST_PROOF  = #{entity.adjustProof} ]]>
+				</if>
+				<if test = "entity.adjustDiffe != null">
+					<![CDATA[ and record.ADJUST_DIFFE  = #{entity.adjustDiffe} ]]>
+				</if>
+				<if test = "entity.formulaId != null">
+					<![CDATA[ and record.FORMULA_ID  = #{entity.formulaId} ]]>
+				</if>
+				<if test = "entity.recordId != null">
+					<![CDATA[ and record.RECORD_ID  = #{entity.recordId} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chSaAdjustSalaryMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_adjust_salary record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chSaAdjustSalaryMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_adjust_salary record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="name != null">NAME,</if>
+			<if test="cardNo != null">CARD_NO,</if>
+			<if test="wagesId != null">WAGES_ID,</if>
+			<if test="wagesSeq != null">WAGES_SEQ,</if>
+			<if test="wagesName != null">WAGES_NAME,</if>
+			<if test="wagesModalityCn != null">WAGES_MODALITY_CN,</if>
+			<if test="wagesDepart != null">WAGES_DEPART,</if>
+			<if test="wagesStandardBef != null">WAGES_STANDARD_BEF,</if>
+			<if test="salaryAdjustTypeCn != null">SALARY_ADJUST_TYPE_CN,</if>
+			<if test="hosDepart1levelCn != null">HOS_DEPART_1LEVEL_CN,</if>
+			<if test="hosDepart2levelCn != null">HOS_DEPART_2LEVEL_CN,</if>
+			<if test="edu4max != null">EDU_4MAX,</if>
+			<if test="edu4first != null">EDU_4FIRST,</if>
+			<if test="edu4wage != null">EDU_4WAGE,</if>
+			<if test="firstWorkTime != null">FIRST_WORK_TIME,</if>
+			<if test="workedYear != null">WORKED_YEAR,</if>
+			<if test="posit4nowCn != null">POSIT_4NOW_CN,</if>
+			<if test="posit4nowStartTime != null">POSIT_4NOW_START_TIME,</if>
+			<if test="posit4nowYears != null">POSIT_4NOW_YEARS,</if>
+			<if test="positLevelCn != null">POSIT_LEVEL_CN,</if>
+			<if test="positLevelCode != null">POSIT_LEVEL_CODE,</if>
+			<if test="onPrinPositStartTime != null">ON_PRIN_POSIT_START_TIME,</if>
+			<if test="onPrinPositYears != null">ON_PRIN_POSIT_YEARS,</if>
+			<if test="onDeptPositStartTime != null">ON_DEPT_POSIT_START_TIME,</if>
+			<if test="onDeptPositYears != null">ON_DEPT_POSIT_YEARS,</if>
+			<if test="title4max != null">TITLE_4MAX,</if>
+			<if test="title4maxGotTime != null">TITLE_4MAX_GOT_TIME,</if>
+			<if test="title4maxGotYears != null">TITLE_4MAX_GOT_YEARS,</if>
+			<if test="title4maxClassCn != null">TITLE_4MAX_CLASS_CN,</if>
+			<if test="title4maxLevelCn != null">TITLE_4MAX_LEVEL_CN,</if>
+			<if test="adjust4title != null">ADJUST_4TITLE,</if>
+			<if test="adjust4posit != null">ADJUST_4POSIT,</if>
+			<if test="adjust4edu != null">ADJUST_4EDU,</if>
+			<if test="wagesStandardAft != null">WAGES_STANDARD_AFT,</if>
+			<if test="adjustProof != null">ADJUST_PROOF,</if>
+			<if test="adjustDiffe != null">ADJUST_DIFFE,</if>
+			<if test="formulaId != null">FORMULA_ID,</if>
+			<if test="recordId != null">RECORD_ID,</if>
+			STATUS,
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="name != null">#{name,jdbcType=VARCHAR},</if>
+			<if test="cardNo != null">#{cardNo,jdbcType=VARCHAR},</if>
+			<if test="wagesId != null">#{wagesId,jdbcType=VARCHAR},</if>
+			<if test="wagesSeq != null">#{wagesSeq,jdbcType=VARCHAR},</if>
+			<if test="wagesName != null">#{wagesName,jdbcType=VARCHAR},</if>
+			<if test="wagesModalityCn != null">#{wagesModalityCn,jdbcType=VARCHAR},</if>
+			<if test="wagesDepart != null">#{wagesDepart,jdbcType=VARCHAR},</if>
+			<if test="wagesStandardBef != null">#{wagesStandardBef,jdbcType=DECIMAL},</if>
+			<if test="salaryAdjustTypeCn != null">#{salaryAdjustTypeCn,jdbcType=VARCHAR},</if>
+			<if test="hosDepart1levelCn != null">#{hosDepart1levelCn,jdbcType=VARCHAR},</if>
+			<if test="hosDepart2levelCn != null">#{hosDepart2levelCn,jdbcType=VARCHAR},</if>
+			<if test="edu4max != null">#{edu4max,jdbcType=VARCHAR},</if>
+			<if test="edu4first != null">#{edu4first,jdbcType=VARCHAR},</if>
+			<if test="edu4wage != null">#{edu4wage,jdbcType=VARCHAR},</if>
+			<if test="firstWorkTime != null">#{firstWorkTime,jdbcType=TIMESTAMP},</if>
+			<if test="workedYear != null">#{workedYear,jdbcType=DOUBLE},</if>
+			<if test="posit4nowCn != null">#{posit4nowCn,jdbcType=VARCHAR},</if>
+			<if test="posit4nowStartTime != null">#{posit4nowStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="posit4nowYears != null">#{posit4nowYears,jdbcType=DOUBLE},</if>
+			<if test="positLevelCn != null">#{positLevelCn,jdbcType=VARCHAR},</if>
+			<if test="positLevelCode != null">#{positLevelCode,jdbcType=VARCHAR},</if>
+			<if test="onPrinPositStartTime != null">#{onPrinPositStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="onPrinPositYears != null">#{onPrinPositYears,jdbcType=DOUBLE},</if>
+			<if test="onDeptPositStartTime != null">#{onDeptPositStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="onDeptPositYears != null">#{onDeptPositYears,jdbcType=DOUBLE},</if>
+			<if test="title4max != null">#{title4max,jdbcType=VARCHAR},</if>
+			<if test="title4maxGotTime != null">#{title4maxGotTime,jdbcType=TIMESTAMP},</if>
+			<if test="title4maxGotYears != null">#{title4maxGotYears,jdbcType=DOUBLE},</if>
+			<if test="title4maxClassCn != null">#{title4maxClassCn,jdbcType=VARCHAR},</if>
+			<if test="title4maxLevelCn != null">#{title4maxLevelCn,jdbcType=VARCHAR},</if>
+			<if test="adjust4title != null">#{adjust4title,jdbcType=DECIMAL},</if>
+			<if test="adjust4posit != null">#{adjust4posit,jdbcType=DECIMAL},</if>
+			<if test="adjust4edu != null">#{adjust4edu,jdbcType=DECIMAL},</if>
+			<if test="wagesStandardAft != null">#{wagesStandardAft,jdbcType=DECIMAL},</if>
+			<if test="adjustProof != null">#{adjustProof,jdbcType=VARCHAR},</if>
+			<if test="adjustDiffe != null">#{adjustDiffe,jdbcType=DECIMAL},</if>
+			<if test="formulaId != null">#{formulaId,jdbcType=BIGINT},</if>
+			<if test="recordId != null">#{recordId,jdbcType=BIGINT},</if>
+			0,
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now()
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.salary.model.ChSaAdjustSalaryModel">
+		INSERT INTO ch_sa_adjust_salary(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_sa_adjust_salary
+        (
+			NAME,
+			CARD_NO,
+			WAGES_ID,
+			WAGES_SEQ,
+			WAGES_NAME,
+			WAGES_MODALITY_CN,
+			WAGES_DEPART,
+			WAGES_STANDARD_BEF,
+			SALARY_ADJUST_TYPE_CN,
+			HOS_DEPART_1LEVEL_CN,
+			HOS_DEPART_2LEVEL_CN,
+			EDU_4MAX,
+			EDU_4FIRST,
+			EDU_4WAGE,
+			FIRST_WORK_TIME,
+			WORKED_YEAR,
+			POSIT_4NOW_CN,
+			POSIT_4NOW_START_TIME,
+			POSIT_4NOW_YEARS,
+			POSIT_LEVEL_CN,
+			POSIT_LEVEL_CODE,
+			ON_PRIN_POSIT_START_TIME,
+			ON_PRIN_POSIT_YEARS,
+			ON_DEPT_POSIT_START_TIME,
+			ON_DEPT_POSIT_YEARS,
+			TITLE_4MAX,
+			TITLE_4MAX_GOT_TIME,
+			TITLE_4MAX_GOT_YEARS,
+			TITLE_4MAX_CLASS_CN,
+			TITLE_4MAX_LEVEL_CN,
+			ADJUST_4TITLE,
+			ADJUST_4POSIT,
+			ADJUST_4EDU,
+			WAGES_STANDARD_AFT,
+			ADJUST_PROOF,
+			ADJUST_DIFFE,
+			FORMULA_ID,
+			RECORD_ID,
+			STATUS,
+			REMARK,
+			CREATE_TIME,
+			UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+			#{item.name,jdbcType=VARCHAR},
+			#{item.cardNo,jdbcType=VARCHAR},
+			#{item.wagesId,jdbcType=VARCHAR},
+			#{item.wagesSeq,jdbcType=VARCHAR},
+			#{item.wagesName,jdbcType=VARCHAR},
+			#{item.wagesModalityCn,jdbcType=VARCHAR},
+			#{item.wagesDepart,jdbcType=VARCHAR},
+			#{item.wagesStandardBef,jdbcType=DECIMAL},
+			#{item.salaryAdjustTypeCn,jdbcType=VARCHAR},
+			#{item.hosDepart1levelCn,jdbcType=VARCHAR},
+			#{item.hosDepart2levelCn,jdbcType=VARCHAR},
+			#{item.edu4max,jdbcType=VARCHAR},
+			#{item.edu4first,jdbcType=VARCHAR},
+			#{item.edu4wage,jdbcType=VARCHAR},
+			#{item.firstWorkTime,jdbcType=TIMESTAMP},
+			#{item.workedYear,jdbcType=DOUBLE},
+			#{item.posit4nowCn,jdbcType=VARCHAR},
+			#{item.posit4nowStartTime,jdbcType=TIMESTAMP},
+			#{item.posit4nowYears,jdbcType=DOUBLE},
+			#{item.positLevelCn,jdbcType=VARCHAR},
+			#{item.positLevelCode,jdbcType=VARCHAR},
+			#{item.onPrinPositStartTime,jdbcType=TIMESTAMP},
+			#{item.onPrinPositYears,jdbcType=DOUBLE},
+			#{item.onDeptPositStartTime,jdbcType=TIMESTAMP},
+			#{item.onDeptPositYears,jdbcType=DOUBLE},
+			#{item.title4max,jdbcType=VARCHAR},
+			#{item.title4maxGotTime,jdbcType=TIMESTAMP},
+			#{item.title4maxGotYears,jdbcType=DOUBLE},
+			#{item.title4maxClassCn,jdbcType=VARCHAR},
+			#{item.title4maxLevelCn,jdbcType=VARCHAR},
+			#{item.adjust4title,jdbcType=DECIMAL},
+			#{item.adjust4posit,jdbcType=DECIMAL},
+			#{item.adjust4edu,jdbcType=DECIMAL},
+			#{item.wagesStandardAft,jdbcType=DECIMAL},
+			#{item.adjustProof,jdbcType=VARCHAR},
+			#{item.adjustDiffe,jdbcType=DECIMAL},
+			#{item.formulaId,jdbcType=BIGINT},
+			#{item.recordId,jdbcType=BIGINT},
+			0,
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.salary.model.ChSaAdjustSalaryModel">
+		UPDATE ch_sa_adjust_salary record 
+		<set>
+			<if test = "name != null ">
+				record.NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test = "cardNo != null ">
+				record.CARD_NO = #{cardNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "wagesId != null ">
+				record.WAGES_ID = #{wagesId,jdbcType=VARCHAR},
+			</if>
+			<if test = "wagesSeq != null ">
+				record.WAGES_SEQ = #{wagesSeq,jdbcType=VARCHAR},
+			</if>
+			<if test = "wagesName != null ">
+				record.WAGES_NAME = #{wagesName,jdbcType=VARCHAR},
+			</if>
+			<if test = "wagesModalityCn != null ">
+				record.WAGES_MODALITY_CN = #{wagesModalityCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "wagesDepart != null ">
+				record.WAGES_DEPART = #{wagesDepart,jdbcType=VARCHAR},
+			</if>
+			<if test = "wagesStandardBef != null ">
+				record.WAGES_STANDARD_BEF = #{wagesStandardBef,jdbcType=DECIMAL},
+			</if>
+			<if test = "salaryAdjustTypeCn != null ">
+				record.SALARY_ADJUST_TYPE_CN = #{salaryAdjustTypeCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "hosDepart1levelCn != null ">
+				record.HOS_DEPART_1LEVEL_CN = #{hosDepart1levelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "hosDepart2levelCn != null ">
+				record.HOS_DEPART_2LEVEL_CN = #{hosDepart2levelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "edu4max != null ">
+				record.EDU_4MAX = #{edu4max,jdbcType=VARCHAR},
+			</if>
+			<if test = "edu4first != null ">
+				record.EDU_4FIRST = #{edu4first,jdbcType=VARCHAR},
+			</if>
+			<if test = "edu4wage != null ">
+				record.EDU_4WAGE = #{edu4wage,jdbcType=VARCHAR},
+			</if>
+			<if test = "firstWorkTime != null ">
+				record.FIRST_WORK_TIME = #{firstWorkTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "workedYear != null ">
+				record.WORKED_YEAR = #{workedYear,jdbcType=DOUBLE},
+			</if>
+			<if test = "posit4nowCn != null ">
+				record.POSIT_4NOW_CN = #{posit4nowCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "posit4nowStartTime != null ">
+				record.POSIT_4NOW_START_TIME = #{posit4nowStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "posit4nowYears != null ">
+				record.POSIT_4NOW_YEARS = #{posit4nowYears,jdbcType=DOUBLE},
+			</if>
+			<if test = "positLevelCn != null ">
+				record.POSIT_LEVEL_CN = #{positLevelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "positLevelCode != null ">
+				record.POSIT_LEVEL_CODE = #{positLevelCode,jdbcType=VARCHAR},
+			</if>
+			<if test = "onPrinPositStartTime != null ">
+				record.ON_PRIN_POSIT_START_TIME = #{onPrinPositStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "onPrinPositYears != null ">
+				record.ON_PRIN_POSIT_YEARS = #{onPrinPositYears,jdbcType=DOUBLE},
+			</if>
+			<if test = "onDeptPositStartTime != null ">
+				record.ON_DEPT_POSIT_START_TIME = #{onDeptPositStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "onDeptPositYears != null ">
+				record.ON_DEPT_POSIT_YEARS = #{onDeptPositYears,jdbcType=DOUBLE},
+			</if>
+			<if test = "title4max != null ">
+				record.TITLE_4MAX = #{title4max,jdbcType=VARCHAR},
+			</if>
+			<if test = "title4maxGotTime != null ">
+				record.TITLE_4MAX_GOT_TIME = #{title4maxGotTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "title4maxGotYears != null ">
+				record.TITLE_4MAX_GOT_YEARS = #{title4maxGotYears,jdbcType=DOUBLE},
+			</if>
+			<if test = "title4maxClassCn != null ">
+				record.TITLE_4MAX_CLASS_CN = #{title4maxClassCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "title4maxLevelCn != null ">
+				record.TITLE_4MAX_LEVEL_CN = #{title4maxLevelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "adjust4title != null ">
+				record.ADJUST_4TITLE = #{adjust4title,jdbcType=DECIMAL},
+			</if>
+			<if test = "adjust4posit != null ">
+				record.ADJUST_4POSIT = #{adjust4posit,jdbcType=DECIMAL},
+			</if>
+			<if test = "adjust4edu != null ">
+				record.ADJUST_4EDU = #{adjust4edu,jdbcType=DECIMAL},
+			</if>
+			<if test = "wagesStandardAft != null ">
+				record.WAGES_STANDARD_AFT = #{wagesStandardAft,jdbcType=DECIMAL},
+			</if>
+			<if test = "adjustProof != null ">
+				record.ADJUST_PROOF = #{adjustProof,jdbcType=VARCHAR},
+			</if>
+			<if test = "adjustDiffe != null ">
+				record.ADJUST_DIFFE = #{adjustDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "formulaId != null ">
+				record.FORMULA_ID = #{formulaId,jdbcType=BIGINT},
+			</if>
+			<if test = "recordId != null ">
+				record.RECORD_ID = #{recordId,jdbcType=BIGINT},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test = "updateTime != null ">
+				record.UPDATE_TIME = now()
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_sa_adjust_salary 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_sa_adjust_salary 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_sa_adjust_salary  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_sa_adjust_salary  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	
+	<!-- 根据字段名获取所有状态正常的去重列表 -->
+	<select id="querySelectFields" parameterType="java.lang.String" resultType="java.lang.String">
+		<!-- select IF(count(1)>0,GROUP_CONCAT(t.fvals),null) as fields 
+		from 
+		(
+		SELECT 
+			DISTINCT ${column} as fvals
+		FROM
+			ch_sa_adjust_salary
+			where status=0
+		) t 
+		where t.fvals is not null and t.fvals != ''
+		order by t.fvals -->
+		SELECT 
+			DISTINCT ${column}
+		FROM
+			ch_sa_adjust_salary
+		where status=0
+		and ${column} != '#N/A' and ${column} is not null
+	</select>
+</mapper>

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmSpecProfeMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmSpecProfeMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmSpecProfeModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="workerId" column="WORKER_ID" jdbcType="BIGINT"/>
+		<result property="specPName" column="SPEC_P_NAME" jdbcType="VARCHAR"/>
+		<result property="specPStartTime" column="SPEC_P_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="specPEndTime" column="SPEC_P_END_TIME" jdbcType="TIMESTAMP"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmSpecProfeMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_spec_profe record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_spec_profe record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 WORKER_ID, 
+				 SPEC_P_NAME, 
+				 SPEC_P_START_TIME, 
+				 SPEC_P_END_TIME, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null and entity.id != ''">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.workerId != null and entity.workerId != ''">
+					<![CDATA[ and record.WORKER_ID  = #{entity.workerId} ]]>
+				</if>
+				<if test = "entity.specPName != null and entity.specPName != ''">
+					<![CDATA[ and record.SPEC_P_NAME  = #{entity.specPName} ]]>
+				</if>
+				<if test = "entity.specPStartTime != null and entity.specPStartTime != ''">
+					<![CDATA[ and record.SPEC_P_START_TIME  = #{entity.specPStartTime} ]]>
+				</if>
+				<if test = "entity.specPEndTime != null and entity.specPEndTime != ''">
+					<![CDATA[ and record.SPEC_P_END_TIME  = #{entity.specPEndTime} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null and entity.createTime != ''">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null and entity.updateTime != ''">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmSpecProfeMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_spec_profe record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmSpecProfeMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_spec_profe record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="workerId != null">WORKER_ID,</if>
+			<if test="specPName != null">SPEC_P_NAME,</if>
+			<if test="specPStartTime != null">SPEC_P_START_TIME,</if>
+			<if test="specPEndTime != null">SPEC_P_END_TIME,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{workerId,jdbcType=BIGINT},</if>
+			<if test="specPName != null">#{specPName,jdbcType=VARCHAR},</if>
+			<if test="specPStartTime != null">#{specPStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="specPEndTime != null">#{specPEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{item.id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{item.workerId,jdbcType=BIGINT},</if>
+			<if test="specPName != null">#{item.specPName,jdbcType=VARCHAR},</if>
+			<if test="specPStartTime != null">#{item.specPStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="specPEndTime != null">#{item.specPEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmSpecProfeModel">
+		INSERT INTO ch_pm_spec_profe(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_pm_spec_profe
+        (
+        	WORKER_ID,
+			SPEC_P_NAME,
+			SPEC_P_START_TIME,
+			SPEC_P_END_TIME,
+			STATUS,
+			REMARK,
+			CREATE_TIME,
+			UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            #{item.workerId,jdbcType=BIGINT},
+			#{item.specPName,jdbcType=VARCHAR},
+			#{item.specPStartTime,jdbcType=TIMESTAMP},
+			#{item.specPEndTime,jdbcType=TIMESTAMP},
+			#{item.status,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmSpecProfeModel">
+		UPDATE ch_pm_spec_profe record 
+		<set>
+			<if test = "workerId != null ">
+				record.WORKER_ID = #{workerId,jdbcType=BIGINT},
+			</if>
+			<if test = "specPName != null ">
+				record.SPEC_P_NAME = #{specPName,jdbcType=VARCHAR},
+			</if>
+			<if test = "specPStartTime != null ">
+				record.SPEC_P_START_TIME = #{specPStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "specPEndTime != null ">
+				record.SPEC_P_END_TIME = #{specPEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test = "createTime != null ">
+				record.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "updateTime != null ">
+				record.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_spec_profe 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_spec_profe 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_spec_profe  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_spec_profe  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+</mapper>

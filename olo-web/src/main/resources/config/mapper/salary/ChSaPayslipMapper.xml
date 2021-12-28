@@ -1,0 +1,1318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.salary.mapper.ChSaPayslipMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chSaPayslipMapper" type="com.hdfs.olo.olo_web.salary.model.ChSaPayslipModel">
+		<result property="serialNo" column="SERIAL_NO" jdbcType="BIGINT"/>
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="workerId" column="WORKER_ID" jdbcType="BIGINT"/>
+		<result property="name" column="NAME" jdbcType="VARCHAR"/>
+		<result property="cardNo" column="CARD_NO" jdbcType="VARCHAR"/>
+		<result property="bankCardNo" column="BANK_CARD_NO" jdbcType="VARCHAR"/>
+		<result property="mobileNo" column="MOBILE_NO" jdbcType="VARCHAR"/>
+		<result property="wkModality" column="WK_MODALITY" jdbcType="INTEGER"/>
+		<result property="wkModalityCn" column="WK_MODALITY_CN" jdbcType="VARCHAR"/>
+		<result property="wagesId" column="WAGES_ID" jdbcType="VARCHAR"/>
+		<result property="posit" column="POSIT" jdbcType="INTEGER"/>
+		<result property="positCn" column="POSIT_CN" jdbcType="VARCHAR"/>
+		<result property="title" column="TITLE" jdbcType="INTEGER"/>
+		<result property="titleCn" column="TITLE_CN" jdbcType="VARCHAR"/>
+		<result property="hosBranch" column="HOS_BRANCH" jdbcType="INTEGER"/>
+		<result property="hosBranchCn" column="HOS_BRANCH_CN" jdbcType="VARCHAR"/>
+		<result property="hosDepart1level" column="HOS_DEPART_1LEVEL" jdbcType="INTEGER"/>
+		<result property="hosDepart1levelCn" column="HOS_DEPART_1LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="hosDepart2level" column="HOS_DEPART_2LEVEL" jdbcType="INTEGER"/>
+		<result property="hosDepart2levelCn" column="HOS_DEPART_2LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="departClassCn" column="DEPART_CLASS_CN" jdbcType="VARCHAR"/>
+		<result property="departClassPop" column="DEPART_CLASS_POP" jdbcType="VARCHAR"/>
+		<result property="stationCn" column="STATION_CN" jdbcType="VARCHAR"/>
+		<result property="stationTypeCn" column="STATION_TYPE_CN" jdbcType="VARCHAR"/>
+		<result property="stationStatusCn" column="STATION_STATUS_CN" jdbcType="VARCHAR"/>
+		<result property="stationSeqCn" column="STATION_SEQ_CN" jdbcType="VARCHAR"/>
+		<result property="titleClassCn" column="TITLE_CLASS_CN" jdbcType="VARCHAR"/>
+		<result property="skillsLevelCn" column="SKILLS_LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="eduLev4nowCn" column="EDU_LEV_4NOW_CN" jdbcType="VARCHAR"/>
+		<result property="yearlySalaryMan" column="YEARLY_SALARY_MAN" jdbcType="VARCHAR"/>
+		<result property="saSumProject" column="SA_SUM_PROJECT" jdbcType="VARCHAR"/>
+		<result property="rptWkDepClass" column="RPT_WK_DEP_CLASS" jdbcType="VARCHAR"/>
+		<result property="manwkStandard" column="MANWK_STANDARD" jdbcType="DECIMAL"/>
+		<result property="manwkAttend" column="MANWK_ATTEND" jdbcType="DECIMAL"/>
+		<result property="manwkMiner" column="MANWK_MINER" jdbcType="DECIMAL"/>
+		<result property="manwkQuit" column="MANWK_QUIT" jdbcType="DECIMAL"/>
+		<result property="manwkSick" column="MANWK_SICK" jdbcType="DECIMAL"/>
+		<result property="manwkMaternity" column="MANWK_MATERNITY" jdbcType="DECIMAL"/>
+		<result property="manwkPrivpassion" column="MANWK_PRIVPASSION" jdbcType="DECIMAL"/>
+		<result property="manwkOvertime" column="MANWK_OVERTIME" jdbcType="DECIMAL"/>
+		<result property="wageStandard4posit" column="WAGE_STANDARD_4POSIT" jdbcType="DECIMAL"/>
+		<result property="wageDay4posit" column="WAGE_DAY_4POSIT" jdbcType="DECIMAL"/>
+		<result property="wageAttend" column="WAGE_ATTEND" jdbcType="DECIMAL"/>
+		<result property="wageSick" column="WAGE_SICK" jdbcType="DECIMAL"/>
+		<result property="wagePositTotal" column="WAGE_POSIT_TOTAL" jdbcType="DECIMAL"/>
+		<result property="wageNightShift" column="WAGE_NIGHT_SHIFT" jdbcType="DECIMAL"/>
+		<result property="wageOvertime" column="WAGE_OVERTIME" jdbcType="DECIMAL"/>
+		<result property="wageYearg" column="WAGE_YEARG" jdbcType="DECIMAL"/>
+		<result property="allowanceHygiene" column="ALLOWANCE_HYGIENE" jdbcType="DECIMAL"/>
+		<result property="wageErrorCorrent" column="WAGE_ERROR_CORRENT" jdbcType="DECIMAL"/>
+		<result property="supp4tel" column="SUPP_4TEL" jdbcType="DECIMAL"/>
+		<result property="supp4traffic" column="SUPP_4TRAFFIC" jdbcType="DECIMAL"/>
+		<result property="supp4mining" column="SUPP_4MINING" jdbcType="DECIMAL"/>
+		<result property="supp4other" column="SUPP_4OTHER" jdbcType="DECIMAL"/>
+		<result property="supp4univeStuLife" column="SUPP_4UNIVE_STU_LIFE" jdbcType="DECIMAL"/>
+		<result property="supp4oth" column="SUPP_4OTH" jdbcType="DECIMAL"/>
+		<result property="suppTotal" column="SUPP_TOTAL" jdbcType="DECIMAL"/>
+		<result property="wageTotal" column="WAGE_TOTAL" jdbcType="DECIMAL"/>
+		<result property="wageJxTotal" column="WAGE_JX_TOTAL" jdbcType="DECIMAL"/>
+		<result property="wagePayableTotal" column="WAGE_PAYABLE_TOTAL" jdbcType="DECIMAL"/>
+		<result property="bxPension" column="BX_PENSION" jdbcType="DECIMAL"/>
+		<result property="bxMedical" column="BX_MEDICAL" jdbcType="DECIMAL"/>
+		<result property="bxUnemploy" column="BX_UNEMPLOY" jdbcType="DECIMAL"/>
+		<result property="bxSeriousIllness" column="BX_SERIOUS_ILLNESS" jdbcType="DECIMAL"/>
+		<result property="bxHousfund" column="BX_HOUSFUND" jdbcType="DECIMAL"/>
+		<result property="bxAnnualCorpGold" column="BX_ANNUAL_CORP_GOLD" jdbcType="DECIMAL"/>
+		<result property="bxTotal" column="BX_TOTAL" jdbcType="DECIMAL"/>
+		<result property="cutWater2elect" column="CUT_WATER2ELECT" jdbcType="DECIMAL"/>
+		<result property="cutHygiene" column="CUT_HYGIENE" jdbcType="DECIMAL"/>
+		<result property="cutOther" column="CUT_OTHER" jdbcType="DECIMAL"/>
+		<result property="cutArrears" column="CUT_ARREARS" jdbcType="DECIMAL"/>
+		<result property="cutTotal" column="CUT_TOTAL" jdbcType="DECIMAL"/>
+		<result property="taxableWage" column="TAXABLE_WAGE" jdbcType="DECIMAL"/>
+		<result property="taxIncomePersonal" column="TAX_INCOME_PERSONAL" jdbcType="DECIMAL"/>
+		<result property="netSalary" column="NET_SALARY" jdbcType="DECIMAL"/>
+		<result property="netTargetYearmonth" column="NET_TARGET_YEARMONTH" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="btimpNo" column="BTIMP_NO" jdbcType="VARCHAR"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chSaPayslipMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_payslip record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by ${page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_sa_payslip record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 WORKER_ID, 
+				 NAME, 
+				 CARD_NO, 
+				 BANK_CARD_NO, 
+				 MOBILE_NO, 
+				 WK_MODALITY, 
+				 WK_MODALITY_CN, 
+				 WAGES_ID, 
+				 POSIT, 
+				 POSIT_CN, 
+				 TITLE, 
+				 TITLE_CN, 
+				 HOS_BRANCH, 
+				 HOS_BRANCH_CN, 
+				 HOS_DEPART_1LEVEL, 
+				 HOS_DEPART_1LEVEL_CN, 
+				 HOS_DEPART_2LEVEL, 
+				 HOS_DEPART_2LEVEL_CN, 
+				 DEPART_CLASS_CN, 
+				 DEPART_CLASS_POP, 
+				 STATION_CN, 
+				 STATION_TYPE_CN, 
+				 STATION_STATUS_CN, 
+				 STATION_SEQ_CN, 
+				 TITLE_CLASS_CN, 
+				 SKILLS_LEVEL_CN, 
+				 EDU_LEV_4NOW_CN, 
+				 YEARLY_SALARY_MAN, 
+				 SA_SUM_PROJECT, 
+				 RPT_WK_DEP_CLASS, 
+				 MANWK_STANDARD, 
+				 MANWK_ATTEND, 
+				 MANWK_MINER, 
+				 MANWK_QUIT, 
+				 MANWK_SICK, 
+				 MANWK_MATERNITY, 
+				 MANWK_PRIVPASSION, 
+				 MANWK_OVERTIME, 
+				 WAGE_STANDARD_4POSIT, 
+				 WAGE_DAY_4POSIT, 
+				 WAGE_ATTEND, 
+				 WAGE_SICK, 
+				 WAGE_POSIT_TOTAL, 
+				 WAGE_NIGHT_SHIFT, 
+				 WAGE_OVERTIME, 
+				 WAGE_YEARG, 
+				 ALLOWANCE_HYGIENE, 
+				 WAGE_ERROR_CORRENT, 
+				 SUPP_4TEL, 
+				 SUPP_4TRAFFIC, 
+				 SUPP_4MINING, 
+				 SUPP_4OTHER, 
+				 SUPP_4UNIVE_STU_LIFE, 
+				 SUPP_4OTH, 
+				 SUPP_TOTAL, 
+				 WAGE_TOTAL, 
+				 WAGE_JX_TOTAL, 
+				 WAGE_PAYABLE_TOTAL, 
+				 BX_PENSION, 
+				 BX_MEDICAL, 
+				 BX_UNEMPLOY, 
+				 BX_SERIOUS_ILLNESS, 
+				 BX_HOUSFUND, 
+				 BX_ANNUAL_CORP_GOLD, 
+				 BX_TOTAL, 
+				 CUT_WATER2ELECT, 
+				 CUT_HYGIENE, 
+				 CUT_OTHER, 
+				 CUT_ARREARS, 
+				 CUT_TOTAL, 
+				 TAXABLE_WAGE, 
+				 TAX_INCOME_PERSONAL, 
+				 NET_SALARY, 
+				 NET_TARGET_YEARMONTH, 
+				 STATUS, 
+				 BTIMP_NO, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.workerId != null">
+					<![CDATA[ and record.WORKER_ID  = #{entity.workerId} ]]>
+				</if>
+				<if test = "entity.name != null and entity.name != ''">
+					<![CDATA[ and record.NAME  = #{entity.name} ]]>
+				</if>
+				<if test = "entity.cardNo != null and entity.cardNo != ''">
+					<![CDATA[ and record.CARD_NO  = #{entity.cardNo} ]]>
+				</if>
+				<if test = "entity.bankCardNo != null and entity.bankCardNo != ''">
+					<![CDATA[ and record.BANK_CARD_NO  = #{entity.bankCardNo} ]]>
+				</if>
+				<if test = "entity.mobileNo != null and entity.mobileNo != ''">
+					<![CDATA[ and record.MOBILE_NO  = #{entity.mobileNo} ]]>
+				</if>
+				<if test = "entity.wkModality != null">
+					<![CDATA[ and record.WK_MODALITY  = #{entity.wkModality} ]]>
+				</if>
+				<choose>
+					<when test="entity.wkModalityCns != null">
+						and record.WK_MODALITY_CN in
+						<foreach collection="entity.wkModalityCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test="entity.wkModalityCn != null and entity.wkModalityCn != ''">
+						<![CDATA[ and record.WK_MODALITY_CN  = #{entity.wkModalityCn} ]]>
+					</when>
+				</choose>
+				<if test = "entity.wagesId != null">
+					<![CDATA[ and record.WAGES_ID  = #{entity.wagesId} ]]>
+				</if>
+				<if test = "entity.posit != null">
+					<![CDATA[ and record.POSIT  = #{entity.posit} ]]>
+				</if>
+				<choose>
+					<when test="entity.positCns != null">
+						and record.POSIT_CN in
+						<foreach collection="entity.positCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test="entity.positCn != null and entity.positCn != ''">
+						<![CDATA[ and record.POSIT_CN  = #{entity.positCn} ]]>
+					</when>
+				</choose>
+				<if test = "entity.title != null">
+					<![CDATA[ and record.TITLE  = #{entity.title} ]]>
+				</if>
+				<choose>
+					<when test="entity.titleCns != null">
+						and record.TITLE_CN in
+						<foreach collection="entity.titleCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test="entity.titleCn != null and entity.titleCn != ''">
+						<![CDATA[ and record.TITLE_CN  = #{entity.titleCn} ]]>
+					</when>
+				</choose>
+				<if test = "entity.hosBranch != null">
+					<![CDATA[ and record.HOS_BRANCH  = #{entity.hosBranch} ]]>
+				</if>
+				<choose>
+					<when test="entity.hosBranchCns != null">
+						and record.HOS_BRANCH_CN in
+						<foreach collection="entity.hosBranchCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test = "entity.hosBranchCn != null and entity.hosBranchCn != ''">
+						<![CDATA[ and record.HOS_BRANCH_CN  = #{entity.hosBranchCn} ]]>
+					</when>
+				</choose>
+				<if test = "entity.hosDepart1level != null">
+					<![CDATA[ and record.HOS_DEPART_1LEVEL  = #{entity.hosDepart1level} ]]>
+				</if>
+				<choose>
+					<when test="entity.hosDepart1levelCns != null">
+						and record.HOS_DEPART_1LEVEL_CN in
+						<foreach collection="entity.hosDepart1levelCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test="entity.hosDepart1levelCn != null and entity.hosDepart1levelCn != ''">
+						<![CDATA[ and record.HOS_DEPART_1LEVEL_CN  = #{entity.hosDepart1levelCn} ]]>
+					</when>
+				</choose>
+				<if test = "entity.hosDepart2level != null">
+					<![CDATA[ and record.HOS_DEPART_2LEVEL  = #{entity.hosDepart2level} ]]>
+				</if>
+				<choose>
+					<when test="entity.hosDepart2levelCns != null">
+						and record.HOS_DEPART_2LEVEL_CN in
+						<foreach collection="entity.hosDepart2levelCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test="entity.hosDepart2levelCn != null and entity.hosDepart2levelCn != ''">
+						<![CDATA[ and record.HOS_DEPART_2LEVEL_CN  = #{entity.hosDepart2levelCn} ]]>
+					</when>
+				</choose>
+				<choose>
+					<when test="entity.departClassCns != null">
+						and record.DEPART_CLASS_CN in
+						<foreach collection="entity.departClassCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test = "entity.departClassCn != null and entity.departClassCn != ''">
+						<![CDATA[ and record.DEPART_CLASS_CN  = #{entity.departClassCn} ]]>
+					</when>
+				</choose>
+				<choose>
+					<when test="entity.departClassPops != null">
+						and record.DEPART_CLASS_POP in
+						<foreach collection="entity.departClassPops" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test = "entity.departClassPop != null and entity.departClassPop != ''">
+						<![CDATA[ and record.DEPART_CLASS_POP  = #{entity.departClassPop} ]]>
+					</when>
+				</choose>
+				<choose>
+					<when test="entity.stationCns != null">
+						and record.STATION_CN in
+						<foreach collection="entity.stationCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test = "entity.stationCn != null and entity.stationCn != ''">
+						<![CDATA[ and record.STATION_CN  = #{entity.stationCn} ]]>
+					</when>
+				</choose>
+				<choose>
+					<when test="entity.stationTypeCns != null">
+						and record.STATION_TYPE_CN in
+						<foreach collection="entity.stationTypeCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test = "entity.stationTypeCn != null and entity.stationTypeCn != ''">
+						<![CDATA[ and record.STATION_TYPE_CN  = #{entity.stationTypeCn} ]]>
+					</when>
+				</choose>
+				<choose>
+					<when test="entity.stationStatusCns != null">
+						and record.STATION_STATUS_CN in
+						<foreach collection="entity.stationStatusCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test = "entity.stationStatusCn != null and entity.stationStatusCn != ''">
+						<![CDATA[ and record.STATION_STATUS_CN  = #{entity.stationStatusCn} ]]>
+					</when>
+				</choose>
+				<choose>
+					<when test="entity.stationSeqCns != null">
+						and record.STATION_SEQ_CN in
+						<foreach collection="entity.stationSeqCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test = "entity.stationSeqCn != null and entity.stationSeqCn != ''">
+						<![CDATA[ and record.STATION_SEQ_CN  = #{entity.stationSeqCn} ]]>
+					</when>
+				</choose>
+				<choose>
+					<when test="entity.titleClassCns != null">
+						and record.TITLE_CLASS_CN in
+						<foreach collection="entity.titleClassCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test = "entity.titleClassCn != null and entity.titleClassCn != ''">
+						<![CDATA[ and record.TITLE_CLASS_CN  = #{entity.titleClassCn} ]]>
+					</when>
+				</choose>
+				<choose>
+					<when test="entity.skillsLevelCns != null">
+						and record.SKILLS_LEVEL_CN in
+						<foreach collection="entity.skillsLevelCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test = "entity.skillsLevelCn != null and entity.skillsLevelCn != ''">
+						<![CDATA[ and record.SKILLS_LEVEL_CN  = #{entity.skillsLevelCn} ]]>
+					</when>
+				</choose>
+				<choose>
+					<when test="entity.eduLev4nowCns != null">
+						and record.EDU_LEV_4NOW_CN in
+						<foreach collection="entity.eduLev4nowCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test = "entity.eduLev4nowCn != null and entity.eduLev4nowCn != ''">
+						<![CDATA[ and record.EDU_LEV_4NOW_CN  = #{entity.eduLev4nowCn} ]]>
+					</when>
+				</choose>
+				<if test = "entity.yearlySalaryMan != null and entity.yearlySalaryMan != ''">
+					<![CDATA[ and record.YEARLY_SALARY_MAN  = #{entity.yearlySalaryMan} ]]>
+				</if>
+				<choose>
+					<when test="entity.saSumProjects != null">
+						and record.SA_SUM_PROJECT in
+						<foreach collection="entity.saSumProjects" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test = "entity.saSumProject != null and entity.saSumProject != ''">
+						<![CDATA[ and record.SA_SUM_PROJECT  = #{entity.saSumProject} ]]>
+					</when>
+				</choose>
+				<choose>
+					<when test="entity.rptWkDepClasss != null">
+						and record.RPT_WK_DEP_CLASS in
+						<foreach collection="entity.rptWkDepClasss" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test = "entity.rptWkDepClass != null and entity.rptWkDepClass != ''">
+						<![CDATA[ and record.RPT_WK_DEP_CLASS  = #{entity.rptWkDepClass} ]]>
+					</when>
+				</choose>
+				<if test = "entity.manwkStandard != null">
+					<![CDATA[ and record.MANWK_STANDARD  = #{entity.manwkStandard} ]]>
+				</if>
+				<if test = "entity.manwkAttend != null">
+					<![CDATA[ and record.MANWK_ATTEND  = #{entity.manwkAttend} ]]>
+				</if>
+				<if test = "entity.manwkMiner != null">
+					<![CDATA[ and record.MANWK_MINER  = #{entity.manwkMiner} ]]>
+				</if>
+				<if test = "entity.manwkQuit != null">
+					<![CDATA[ and record.MANWK_QUIT  = #{entity.manwkQuit} ]]>
+				</if>
+				<if test = "entity.manwkSick != null">
+					<![CDATA[ and record.MANWK_SICK  = #{entity.manwkSick} ]]>
+				</if>
+				<if test = "entity.manwkMaternity != null">
+					<![CDATA[ and record.MANWK_MATERNITY  = #{entity.manwkMaternity} ]]>
+				</if>
+				<if test = "entity.manwkPrivpassion != null">
+					<![CDATA[ and record.MANWK_PRIVPASSION  = #{entity.manwkPrivpassion} ]]>
+				</if>
+				<if test = "entity.manwkOvertime != null">
+					<![CDATA[ and record.MANWK_OVERTIME  = #{entity.manwkOvertime} ]]>
+				</if>
+				<if test = "entity.wageStandard4posit != null">
+					<![CDATA[ and record.WAGE_STANDARD_4POSIT  = #{entity.wageStandard4posit} ]]>
+				</if>
+				<if test = "entity.wageDay4posit != null">
+					<![CDATA[ and record.WAGE_DAY_4POSIT  = #{entity.wageDay4posit} ]]>
+				</if>
+				<if test = "entity.wageAttend != null">
+					<![CDATA[ and record.WAGE_ATTEND  = #{entity.wageAttend} ]]>
+				</if>
+				<if test = "entity.wageSick != null">
+					<![CDATA[ and record.WAGE_SICK  = #{entity.wageSick} ]]>
+				</if>
+				<if test = "entity.wagePositTotal != null">
+					<![CDATA[ and record.WAGE_POSIT_TOTAL  = #{entity.wagePositTotal} ]]>
+				</if>
+				<if test = "entity.wageNightShift != null">
+					<![CDATA[ and record.WAGE_NIGHT_SHIFT  = #{entity.wageNightShift} ]]>
+				</if>
+				<if test = "entity.wageOvertime != null">
+					<![CDATA[ and record.WAGE_OVERTIME  = #{entity.wageOvertime} ]]>
+				</if>
+				<if test = "entity.wageYearg != null">
+					<![CDATA[ and record.WAGE_YEARG  = #{entity.wageYearg} ]]>
+				</if>
+				<if test = "entity.allowanceHygiene != null">
+					<![CDATA[ and record.ALLOWANCE_HYGIENE  = #{entity.allowanceHygiene} ]]>
+				</if>
+				<if test = "entity.wageErrorCorrent != null">
+					<![CDATA[ and record.WAGE_ERROR_CORRENT  = #{entity.wageErrorCorrent} ]]>
+				</if>
+				<if test = "entity.supp4tel != null">
+					<![CDATA[ and record.SUPP_4TEL  = #{entity.supp4tel} ]]>
+				</if>
+				<if test = "entity.supp4traffic != null">
+					<![CDATA[ and record.SUPP_4TRAFFIC  = #{entity.supp4traffic} ]]>
+				</if>
+				<if test = "entity.supp4mining != null">
+					<![CDATA[ and record.SUPP_4MINING  = #{entity.supp4mining} ]]>
+				</if>
+				<if test = "entity.supp4other != null">
+					<![CDATA[ and record.SUPP_4OTHER  = #{entity.supp4other} ]]>
+				</if>
+				<if test = "entity.supp4univeStuLife != null">
+					<![CDATA[ and record.SUPP_4UNIVE_STU_LIFE  = #{entity.supp4univeStuLife} ]]>
+				</if>
+				<if test = "entity.supp4oth != null">
+					<![CDATA[ and record.SUPP_4OTH  = #{entity.supp4oth} ]]>
+				</if>
+				<if test = "entity.suppTotal != null">
+					<![CDATA[ and record.SUPP_TOTAL  = #{entity.suppTotal} ]]>
+				</if>
+				<if test = "entity.wageTotal != null">
+					<![CDATA[ and record.WAGE_TOTAL  = #{entity.wageTotal} ]]>
+				</if>
+				<if test = "entity.wageJxTotal != null">
+					<![CDATA[ and record.WAGE_JX_TOTAL  = #{entity.wageJxTotal} ]]>
+				</if>
+				<if test = "entity.wagePayableTotal != null">
+					<![CDATA[ and record.WAGE_PAYABLE_TOTAL  = #{entity.wagePayableTotal} ]]>
+				</if>
+				<if test = "entity.bxPension != null">
+					<![CDATA[ and record.BX_PENSION  = #{entity.bxPension} ]]>
+				</if>
+				<if test = "entity.bxMedical != null">
+					<![CDATA[ and record.BX_MEDICAL  = #{entity.bxMedical} ]]>
+				</if>
+				<if test = "entity.bxUnemploy != null">
+					<![CDATA[ and record.BX_UNEMPLOY  = #{entity.bxUnemploy} ]]>
+				</if>
+				<if test = "entity.bxSeriousIllness != null">
+					<![CDATA[ and record.BX_SERIOUS_ILLNESS  = #{entity.bxSeriousIllness} ]]>
+				</if>
+				<if test = "entity.bxHousfund != null">
+					<![CDATA[ and record.BX_HOUSFUND  = #{entity.bxHousfund} ]]>
+				</if>
+				<if test = "entity.bxAnnualCorpGold != null">
+					<![CDATA[ and record.BX_ANNUAL_CORP_GOLD  = #{entity.bxAnnualCorpGold} ]]>
+				</if>
+				<if test = "entity.bxTotal != null">
+					<![CDATA[ and record.BX_TOTAL  = #{entity.bxTotal} ]]>
+				</if>
+				<if test = "entity.cutWater2elect != null">
+					<![CDATA[ and record.CUT_WATER2ELECT  = #{entity.cutWater2elect} ]]>
+				</if>
+				<if test = "entity.cutHygiene != null">
+					<![CDATA[ and record.CUT_HYGIENE  = #{entity.cutHygiene} ]]>
+				</if>
+				<if test = "entity.cutOther != null">
+					<![CDATA[ and record.CUT_OTHER  = #{entity.cutOther} ]]>
+				</if>
+				<if test = "entity.cutArrears != null">
+					<![CDATA[ and record.CUT_ARREARS  = #{entity.cutArrears} ]]>
+				</if>
+				<if test = "entity.cutTotal != null">
+					<![CDATA[ and record.CUT_TOTAL  = #{entity.cutTotal} ]]>
+				</if>
+				<if test = "entity.taxableWage != null">
+					<![CDATA[ and record.TAXABLE_WAGE  = #{entity.taxableWage} ]]>
+				</if>
+				<if test = "entity.taxIncomePersonal != null and entity.taxIncomePersonal != ''">
+					<![CDATA[ and record.TAX_INCOME_PERSONAL  = #{entity.taxIncomePersonal} ]]>
+				</if>
+				<if test = "entity.netSalary != null and entity.netSalary != ''">
+					<![CDATA[ and record.NET_SALARY  = #{entity.netSalary} ]]>
+				</if>
+				<if test = "entity.netTargetYearmonth != null and entity.netTargetYearmonth != ''">
+					<![CDATA[ and record.NET_TARGET_YEARMONTH  = #{entity.netTargetYearmonth} ]]>
+				</if>
+				<if test = "entity.startMonth != null and entity.startMonth != ''">
+					<![CDATA[ and record.NET_TARGET_YEARMONTH >= #{entity.startMonth} ]]>
+				</if>
+				<if test = "entity.endMonth != null and entity.endMonth != ''">
+					<![CDATA[ and record.NET_TARGET_YEARMONTH <= #{entity.endMonth} ]]>
+				</if>
+				<!-- <if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if> -->
+				and record.status = 0
+				<if test = "entity.btimpNo != null and entity.btimpNo != ''">
+					<![CDATA[ and record.BTIMP_NO  = #{entity.btimpNo} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chSaPayslipMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_payslip record
+		<include refid="whereFilter" />
+		ORDER BY NET_TARGET_YEARMONTH DESC
+	</select>
+	
+	<!-- 不分页查询数据集合-带序号-->
+	<select id="queryListWithSerial" resultMap="chSaPayslipMapper" >
+		SELECT
+			( @i := @i + 1 ) SERIAL_NO,
+			<include refid="queryColumns"/>
+	  	FROM
+	  	ch_sa_payslip record,
+	  	( SELECT @i := 0 ) AS i 
+		<include refid="whereFilter" />
+		ORDER BY NET_TARGET_YEARMONTH DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chSaPayslipMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_payslip record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<select id="queryExisted" resultType="java.lang.String">
+	    select card_no from ch_sa_payslip
+        where card_no in
+	    <!-- <foreach collection="list" open="(" separator="or" close=")" item="item">
+            <foreach collection="item.entrySet()" item="key" open="(" separator="," close=")">
+		        ${key} = #{item[${key}]}
+		    </foreach>
+        </foreach> -->
+	    <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+        and NET_TARGET_YEARMONTH = #{targetMonth} and status=0
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="workerId != null">WORKER_ID,</if>
+			<if test="name != null">NAME,</if>
+			<if test="cardNo != null">CARD_NO,</if>
+			<if test="bankCardNo != null">BANK_CARD_NO,</if>
+			<if test="mobileNo != null">MOBILE_NO,</if>
+			<if test="wkModality != null">WK_MODALITY,</if>
+			<if test="wkModalityCn != null">WK_MODALITY_CN,</if>
+			<if test="wagesId != null">WAGES_ID,</if>
+			<if test="posit != null">POSIT,</if>
+			<if test="positCn != null">POSIT_CN,</if>
+			<if test="title != null">TITLE,</if>
+			<if test="titleCn != null">TITLE_CN,</if>
+			<if test="hosBranch != null">HOS_BRANCH,</if>
+			<if test="hosBranchCn != null">HOS_BRANCH_CN,</if>
+			<if test="hosDepart1level != null">HOS_DEPART_1LEVEL,</if>
+			<if test="hosDepart1levelCn != null">HOS_DEPART_1LEVEL_CN,</if>
+			<if test="hosDepart2level != null">HOS_DEPART_2LEVEL,</if>
+			<if test="hosDepart2levelCn != null">HOS_DEPART_2LEVEL_CN,</if>
+			<if test="departClassCn != null">DEPART_CLASS_CN,</if>
+			<if test="departClassPop != null">DEPART_CLASS_POP,</if>
+			<if test="stationCn != null">STATION_CN,</if>
+			<if test="stationTypeCn != null">STATION_TYPE_CN,</if>
+			<if test="stationStatusCn != null">STATION_STATUS_CN,</if>
+			<if test="stationSeqCn != null">STATION_SEQ_CN,</if>
+			<if test="titleClassCn != null">TITLE_CLASS_CN,</if>
+			<if test="skillsLevelCn != null">SKILLS_LEVEL_CN,</if>
+			<if test="eduLev4nowCn != null">EDU_LEV_4NOW_CN,</if>
+			<if test="yearlySalaryMan != null">YEARLY_SALARY_MAN,</if>
+			<if test="saSumProject != null">SA_SUM_PROJECT,</if>
+			<if test="rptWkDepClass != null">RPT_WK_DEP_CLASS,</if>
+			<if test="manwkStandard != null">MANWK_STANDARD,</if>
+			<if test="manwkAttend != null">MANWK_ATTEND,</if>
+			<if test="manwkMiner != null">MANWK_MINER,</if>
+			<if test="manwkQuit != null">MANWK_QUIT,</if>
+			<if test="manwkSick != null">MANWK_SICK,</if>
+			<if test="manwkMaternity != null">MANWK_MATERNITY,</if>
+			<if test="manwkPrivpassion != null">MANWK_PRIVPASSION,</if>
+			<if test="manwkOvertime != null">MANWK_OVERTIME,</if>
+			<if test="wageStandard4posit != null">WAGE_STANDARD_4POSIT,</if>
+			<if test="wageDay4posit != null">WAGE_DAY_4POSIT,</if>
+			<if test="wageAttend != null">WAGE_ATTEND,</if>
+			<if test="wageSick != null">WAGE_SICK,</if>
+			<if test="wagePositTotal != null">WAGE_POSIT_TOTAL,</if>
+			<if test="wageNightShift != null">WAGE_NIGHT_SHIFT,</if>
+			<if test="wageOvertime != null">WAGE_OVERTIME,</if>
+			<if test="wageYearg != null">WAGE_YEARG,</if>
+			<if test="allowanceHygiene != null">ALLOWANCE_HYGIENE,</if>
+			<if test="wageErrorCorrent != null">WAGE_ERROR_CORRENT,</if>
+			<if test="supp4tel != null">SUPP_4TEL,</if>
+			<if test="supp4traffic != null">SUPP_4TRAFFIC,</if>
+			<if test="supp4mining != null">SUPP_4MINING,</if>
+			<if test="supp4other != null">SUPP_4OTHER,</if>
+			<if test="supp4univeStuLife != null">SUPP_4UNIVE_STU_LIFE,</if>
+			<if test="supp4oth != null">SUPP_4OTH,</if>
+			<if test="suppTotal != null">SUPP_TOTAL,</if>
+			<if test="wageTotal != null">WAGE_TOTAL,</if>
+			<if test="wageJxTotal != null">WAGE_JX_TOTAL,</if>
+			<if test="wagePayableTotal != null">WAGE_PAYABLE_TOTAL,</if>
+			<if test="bxPension != null">BX_PENSION,</if>
+			<if test="bxMedical != null">BX_MEDICAL,</if>
+			<if test="bxUnemploy != null">BX_UNEMPLOY,</if>
+			<if test="bxSeriousIllness != null">BX_SERIOUS_ILLNESS,</if>
+			<if test="bxHousfund != null">BX_HOUSFUND,</if>
+			<if test="bxAnnualCorpGold != null">BX_ANNUAL_CORP_GOLD,</if>
+			<if test="bxTotal != null">BX_TOTAL,</if>
+			<if test="cutWater2elect != null">CUT_WATER2ELECT,</if>
+			<if test="cutHygiene != null">CUT_HYGIENE,</if>
+			<if test="cutOther != null">CUT_OTHER,</if>
+			<if test="cutArrears != null">CUT_ARREARS,</if>
+			<if test="cutTotal != null">CUT_TOTAL,</if>
+			<if test="taxableWage != null">TAXABLE_WAGE,</if>
+			<if test="taxIncomePersonal != null">TAX_INCOME_PERSONAL,</if>
+			<if test="netSalary != null">NET_SALARY,</if>
+			<if test="netTargetYearmonth != null">NET_TARGET_YEARMONTH,</if>
+			STATUS,
+			<if test="btimpNo != null">BTIMP_NO,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{workerId,jdbcType=BIGINT},</if>
+			<if test="name != null">#{name,jdbcType=VARCHAR},</if>
+			<if test="cardNo != null">#{cardNo,jdbcType=VARCHAR},</if>
+			<if test="bankCardNo != null">#{bankCardNo,jdbcType=VARCHAR},</if>
+			<if test="mobileNo != null">#{mobileNo,jdbcType=VARCHAR},</if>
+			<if test="wkModality != null">#{wkModality,jdbcType=INTEGER},</if>
+			<if test="wkModalityCn != null">#{wkModalityCn,jdbcType=VARCHAR},</if>
+			<if test="wagesId != null">#{wagesId,jdbcType=VARCHAR},</if>
+			<if test="posit != null">#{posit,jdbcType=INTEGER},</if>
+			<if test="positCn != null">#{positCn,jdbcType=VARCHAR},</if>
+			<if test="title != null">#{title,jdbcType=INTEGER},</if>
+			<if test="titleCn != null">#{titleCn,jdbcType=VARCHAR},</if>
+			<if test="hosBranch != null">#{hosBranch,jdbcType=INTEGER},</if>
+			<if test="hosBranchCn != null">#{hosBranchCn,jdbcType=VARCHAR},</if>
+			<if test="hosDepart1level != null">#{hosDepart1level,jdbcType=INTEGER},</if>
+			<if test="hosDepart1levelCn != null">#{hosDepart1levelCn,jdbcType=VARCHAR},</if>
+			<if test="hosDepart2level != null">#{hosDepart2level,jdbcType=INTEGER},</if>
+			<if test="hosDepart2levelCn != null">#{hosDepart2levelCn,jdbcType=VARCHAR},</if>
+			<if test="departClassCn != null">#{departClassCn,jdbcType=VARCHAR},</if>
+			<if test="departClassPop != null">#{departClassPop,jdbcType=VARCHAR},</if>
+			<if test="stationCn != null">#{stationCn,jdbcType=VARCHAR},</if>
+			<if test="stationTypeCn != null">#{stationTypeCn,jdbcType=VARCHAR},</if>
+			<if test="stationStatusCn != null">#{stationStatusCn,jdbcType=VARCHAR},</if>
+			<if test="stationSeqCn != null">#{stationSeqCn,jdbcType=VARCHAR},</if>
+			<if test="titleClassCn != null">#{titleClassCn,jdbcType=VARCHAR},</if>
+			<if test="skillsLevelCn != null">#{skillsLevelCn,jdbcType=VARCHAR},</if>
+			<if test="eduLev4nowCn != null">#{eduLev4nowCn,jdbcType=VARCHAR},</if>
+			<if test="yearlySalaryMan != null">#{yearlySalaryMan,jdbcType=VARCHAR},</if>
+			<if test="saSumProject != null">#{saSumProject,jdbcType=VARCHAR},</if>
+			<if test="rptWkDepClass != null">#{rptWkDepClass,jdbcType=VARCHAR},</if>
+			<if test="manwkStandard != null">#{manwkStandard,jdbcType=DECIMAL},</if>
+			<if test="manwkAttend != null">#{manwkAttend,jdbcType=DECIMAL},</if>
+			<if test="manwkMiner != null">#{manwkMiner,jdbcType=DECIMAL},</if>
+			<if test="manwkQuit != null">#{manwkQuit,jdbcType=DECIMAL},</if>
+			<if test="manwkSick != null">#{manwkSick,jdbcType=DECIMAL},</if>
+			<if test="manwkMaternity != null">#{manwkMaternity,jdbcType=DECIMAL},</if>
+			<if test="manwkPrivpassion != null">#{manwkPrivpassion,jdbcType=DECIMAL},</if>
+			<if test="manwkOvertime != null">#{manwkOvertime,jdbcType=DECIMAL},</if>
+			<if test="wageStandard4posit != null">#{wageStandard4posit,jdbcType=DECIMAL},</if>
+			<if test="wageDay4posit != null">#{wageDay4posit,jdbcType=DECIMAL},</if>
+			<if test="wageAttend != null">#{wageAttend,jdbcType=DECIMAL},</if>
+			<if test="wageSick != null">#{wageSick,jdbcType=DECIMAL},</if>
+			<if test="wagePositTotal != null">#{wagePositTotal,jdbcType=DECIMAL},</if>
+			<if test="wageNightShift != null">#{wageNightShift,jdbcType=DECIMAL},</if>
+			<if test="wageOvertime != null">#{wageOvertime,jdbcType=DECIMAL},</if>
+			<if test="wageYearg != null">#{wageYearg,jdbcType=DECIMAL},</if>
+			<if test="allowanceHygiene != null">#{allowanceHygiene,jdbcType=DECIMAL},</if>
+			<if test="wageErrorCorrent != null">#{wageErrorCorrent,jdbcType=DECIMAL},</if>
+			<if test="supp4tel != null">#{supp4tel,jdbcType=DECIMAL},</if>
+			<if test="supp4traffic != null">#{supp4traffic,jdbcType=DECIMAL},</if>
+			<if test="supp4mining != null">#{supp4mining,jdbcType=DECIMAL},</if>
+			<if test="supp4other != null">#{supp4other,jdbcType=DECIMAL},</if>
+			<if test="supp4univeStuLife != null">#{supp4univeStuLife,jdbcType=DECIMAL},</if>
+			<if test="supp4oth != null">#{supp4oth,jdbcType=DECIMAL},</if>
+			<if test="suppTotal != null">#{suppTotal,jdbcType=DECIMAL},</if>
+			<if test="wageTotal != null">#{wageTotal,jdbcType=DECIMAL},</if>
+			<if test="wageJxTotal != null">#{wageJxTotal,jdbcType=DECIMAL},</if>
+			<if test="wagePayableTotal != null">#{wagePayableTotal,jdbcType=DECIMAL},</if>
+			<if test="bxPension != null">#{bxPension,jdbcType=DECIMAL},</if>
+			<if test="bxMedical != null">#{bxMedical,jdbcType=DECIMAL},</if>
+			<if test="bxUnemploy != null">#{bxUnemploy,jdbcType=DECIMAL},</if>
+			<if test="bxSeriousIllness != null">#{bxSeriousIllness,jdbcType=DECIMAL},</if>
+			<if test="bxHousfund != null">#{bxHousfund,jdbcType=DECIMAL},</if>
+			<if test="bxAnnualCorpGold != null">#{bxAnnualCorpGold,jdbcType=DECIMAL},</if>
+			<if test="bxTotal != null">#{bxTotal,jdbcType=DECIMAL},</if>
+			<if test="cutWater2elect != null">#{cutWater2elect,jdbcType=DECIMAL},</if>
+			<if test="cutHygiene != null">#{cutHygiene,jdbcType=DECIMAL},</if>
+			<if test="cutOther != null">#{cutOther,jdbcType=DECIMAL},</if>
+			<if test="cutArrears != null">#{cutArrears,jdbcType=DECIMAL},</if>
+			<if test="cutTotal != null">#{cutTotal,jdbcType=DECIMAL},</if>
+			<if test="taxableWage != null">#{taxableWage,jdbcType=DECIMAL},</if>
+			<if test="taxIncomePersonal != null">#{taxIncomePersonal,jdbcType=DECIMAL},</if>
+			<if test="netSalary != null">#{netSalary,jdbcType=DECIMAL},</if>
+			<if test="netTargetYearmonth != null">#{netTargetYearmonth,jdbcType=VARCHAR},</if>
+			0,
+			<if test="btimpNo != null">#{btimpNo,jdbcType=VARCHAR},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.salary.model.ChSaPayslipModel">
+		INSERT INTO ch_sa_payslip(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_sa_payslip
+        (
+			WORKER_ID,
+			NAME,
+			CARD_NO,
+			BANK_CARD_NO,
+			MOBILE_NO,
+			WK_MODALITY,
+			WK_MODALITY_CN,
+			WAGES_ID,
+			POSIT,
+			POSIT_CN,
+			TITLE,
+			TITLE_CN,
+			HOS_BRANCH,
+			HOS_BRANCH_CN,
+			HOS_DEPART_1LEVEL,
+			HOS_DEPART_1LEVEL_CN,
+			HOS_DEPART_2LEVEL,
+			HOS_DEPART_2LEVEL_CN,
+			DEPART_CLASS_CN,
+			DEPART_CLASS_POP,
+			STATION_CN,
+			STATION_TYPE_CN,
+			STATION_STATUS_CN,
+			STATION_SEQ_CN,
+			TITLE_CLASS_CN,
+			SKILLS_LEVEL_CN,
+			EDU_LEV_4NOW_CN,
+			YEARLY_SALARY_MAN,
+			SA_SUM_PROJECT,
+			RPT_WK_DEP_CLASS,
+			MANWK_STANDARD,
+			MANWK_ATTEND,
+			MANWK_MINER,
+			MANWK_QUIT,
+			MANWK_SICK,
+			MANWK_MATERNITY,
+			MANWK_PRIVPASSION,
+			MANWK_OVERTIME,
+			WAGE_STANDARD_4POSIT,
+			WAGE_DAY_4POSIT,
+			WAGE_ATTEND,
+			WAGE_SICK,
+			WAGE_POSIT_TOTAL,
+			WAGE_NIGHT_SHIFT,
+			WAGE_OVERTIME,
+			WAGE_YEARG,
+			ALLOWANCE_HYGIENE,
+			WAGE_ERROR_CORRENT,
+			SUPP_4TEL,
+			SUPP_4TRAFFIC,
+			SUPP_4MINING,
+			SUPP_4OTHER,
+			SUPP_4UNIVE_STU_LIFE,
+			SUPP_4OTH,
+			SUPP_TOTAL,
+			WAGE_TOTAL,
+			WAGE_JX_TOTAL,
+			WAGE_PAYABLE_TOTAL,
+			BX_PENSION,
+			BX_MEDICAL,
+			BX_UNEMPLOY,
+			BX_SERIOUS_ILLNESS,
+			BX_HOUSFUND,
+			BX_ANNUAL_CORP_GOLD,
+			BX_TOTAL,
+			CUT_WATER2ELECT,
+			CUT_HYGIENE,
+			CUT_OTHER,
+			CUT_ARREARS,
+			CUT_TOTAL,
+			TAXABLE_WAGE,
+			TAX_INCOME_PERSONAL,
+			NET_SALARY,
+			NET_TARGET_YEARMONTH,
+			STATUS,
+			BTIMP_NO,
+			REMARK,
+			CREATE_TIME,
+			UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+			#{item.workerId,jdbcType=BIGINT},
+			#{item.name,jdbcType=VARCHAR},
+			#{item.cardNo,jdbcType=VARCHAR},
+			#{item.bankCardNo,jdbcType=VARCHAR},
+			#{item.mobileNo,jdbcType=VARCHAR},
+			#{item.wkModality,jdbcType=INTEGER},
+			#{item.wkModalityCn,jdbcType=VARCHAR},
+			#{item.wagesId,jdbcType=VARCHAR},
+			#{item.posit,jdbcType=INTEGER},
+			#{item.positCn,jdbcType=VARCHAR},
+			#{item.title,jdbcType=INTEGER},
+			#{item.titleCn,jdbcType=VARCHAR},
+			#{item.hosBranch,jdbcType=INTEGER},
+			#{item.hosBranchCn,jdbcType=VARCHAR},
+			#{item.hosDepart1level,jdbcType=INTEGER},
+			#{item.hosDepart1levelCn,jdbcType=VARCHAR},
+			#{item.hosDepart2level,jdbcType=INTEGER},
+			#{item.hosDepart2levelCn,jdbcType=VARCHAR},
+			#{item.departClassCn,jdbcType=VARCHAR},
+			#{item.departClassPop,jdbcType=VARCHAR},
+			#{item.stationCn,jdbcType=VARCHAR},
+			#{item.stationTypeCn,jdbcType=VARCHAR},
+			#{item.stationStatusCn,jdbcType=VARCHAR},
+			#{item.stationSeqCn,jdbcType=VARCHAR},
+			#{item.titleClassCn,jdbcType=VARCHAR},
+			#{item.skillsLevelCn,jdbcType=VARCHAR},
+			#{item.eduLev4nowCn,jdbcType=VARCHAR},
+			#{item.yearlySalaryMan,jdbcType=VARCHAR},
+			#{item.saSumProject,jdbcType=VARCHAR},
+			#{item.rptWkDepClass,jdbcType=VARCHAR},
+			#{item.manwkStandard,jdbcType=DECIMAL},
+			#{item.manwkAttend,jdbcType=DECIMAL},
+			#{item.manwkMiner,jdbcType=DECIMAL},
+			#{item.manwkQuit,jdbcType=DECIMAL},
+			#{item.manwkSick,jdbcType=DECIMAL},
+			#{item.manwkMaternity,jdbcType=DECIMAL},
+			#{item.manwkPrivpassion,jdbcType=DECIMAL},
+			#{item.manwkOvertime,jdbcType=DECIMAL},
+			#{item.wageStandard4posit,jdbcType=DECIMAL},
+			#{item.wageDay4posit,jdbcType=DECIMAL},
+			#{item.wageAttend,jdbcType=DECIMAL},
+			#{item.wageSick,jdbcType=DECIMAL},
+			#{item.wagePositTotal,jdbcType=DECIMAL},
+			#{item.wageNightShift,jdbcType=DECIMAL},
+			#{item.wageOvertime,jdbcType=DECIMAL},
+			#{item.wageYearg,jdbcType=DECIMAL},
+			#{item.allowanceHygiene,jdbcType=DECIMAL},
+			#{item.wageErrorCorrent,jdbcType=DECIMAL},
+			#{item.supp4tel,jdbcType=DECIMAL},
+			#{item.supp4traffic,jdbcType=DECIMAL},
+			#{item.supp4mining,jdbcType=DECIMAL},
+			#{item.supp4other,jdbcType=DECIMAL},
+			#{item.supp4univeStuLife,jdbcType=DECIMAL},
+			#{item.supp4oth,jdbcType=DECIMAL},
+			#{item.suppTotal,jdbcType=DECIMAL},
+			#{item.wageTotal,jdbcType=DECIMAL},
+			#{item.wageJxTotal,jdbcType=DECIMAL},
+			#{item.wagePayableTotal,jdbcType=DECIMAL},
+			#{item.bxPension,jdbcType=DECIMAL},
+			#{item.bxMedical,jdbcType=DECIMAL},
+			#{item.bxUnemploy,jdbcType=DECIMAL},
+			#{item.bxSeriousIllness,jdbcType=DECIMAL},
+			#{item.bxHousfund,jdbcType=DECIMAL},
+			#{item.bxAnnualCorpGold,jdbcType=DECIMAL},
+			#{item.bxTotal,jdbcType=DECIMAL},
+			#{item.cutWater2elect,jdbcType=DECIMAL},
+			#{item.cutHygiene,jdbcType=DECIMAL},
+			#{item.cutOther,jdbcType=DECIMAL},
+			#{item.cutArrears,jdbcType=DECIMAL},
+			#{item.cutTotal,jdbcType=DECIMAL},
+			#{item.taxableWage,jdbcType=DECIMAL},
+			#{item.taxIncomePersonal,jdbcType=DECIMAL},
+			#{item.netSalary,jdbcType=DECIMAL},
+			#{item.netTargetYearmonth,jdbcType=VARCHAR},
+			0,
+			#{item.btimpNo,jdbcType=VARCHAR},
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.salary.model.ChSaPayslipModel">
+		UPDATE ch_sa_payslip record 
+		<set>
+			<if test = "workerId != null ">
+				record.WORKER_ID = #{workerId,jdbcType=BIGINT},
+			</if>
+			<if test = "name != null ">
+				record.NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test = "cardNo != null ">
+				record.CARD_NO = #{cardNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "bankCardNo != null ">
+				record.BANK_CARD_NO = #{bankCardNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "mobileNo != null ">
+				record.MOBILE_NO = #{mobileNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "wkModality != null ">
+				record.WK_MODALITY = #{wkModality,jdbcType=INTEGER},
+			</if>
+			<if test = "wkModalityCn != null ">
+				record.WK_MODALITY_CN = #{wkModalityCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "wagesId != null ">
+				record.WAGES_ID = #{wagesId,jdbcType=VARCHAR},
+			</if>
+			<if test = "posit != null ">
+				record.POSIT = #{posit,jdbcType=INTEGER},
+			</if>
+			<if test = "positCn != null ">
+				record.POSIT_CN = #{positCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "title != null ">
+				record.TITLE = #{title,jdbcType=INTEGER},
+			</if>
+			<if test = "titleCn != null ">
+				record.TITLE_CN = #{titleCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "hosBranch != null ">
+				record.HOS_BRANCH = #{hosBranch,jdbcType=INTEGER},
+			</if>
+			<if test = "hosBranchCn != null ">
+				record.HOS_BRANCH_CN = #{hosBranchCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "hosDepart1level != null ">
+				record.HOS_DEPART_1LEVEL = #{hosDepart1level,jdbcType=INTEGER},
+			</if>
+			<if test = "hosDepart1levelCn != null ">
+				record.HOS_DEPART_1LEVEL_CN = #{hosDepart1levelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "hosDepart2level != null ">
+				record.HOS_DEPART_2LEVEL = #{hosDepart2level,jdbcType=INTEGER},
+			</if>
+			<if test = "hosDepart2levelCn != null ">
+				record.HOS_DEPART_2LEVEL_CN = #{hosDepart2levelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "departClassCn != null ">
+				record.DEPART_CLASS_CN = #{departClassCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "departClassPop != null ">
+				record.DEPART_CLASS_POP = #{departClassPop,jdbcType=VARCHAR},
+			</if>
+			<if test = "stationCn != null ">
+				record.STATION_CN = #{stationCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "stationTypeCn != null ">
+				record.STATION_TYPE_CN = #{stationTypeCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "stationStatusCn != null ">
+				record.STATION_STATUS_CN = #{stationStatusCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "stationSeqCn != null ">
+				record.STATION_SEQ_CN = #{stationSeqCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "titleClassCn != null ">
+				record.TITLE_CLASS_CN = #{titleClassCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "skillsLevelCn != null ">
+				record.SKILLS_LEVEL_CN = #{skillsLevelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "eduLev4nowCn != null ">
+				record.EDU_LEV_4NOW_CN = #{eduLev4nowCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "yearlySalaryMan != null ">
+				record.YEARLY_SALARY_MAN = #{yearlySalaryMan,jdbcType=VARCHAR},
+			</if>
+			<if test = "saSumProject != null ">
+				record.SA_SUM_PROJECT = #{saSumProject,jdbcType=VARCHAR},
+			</if>
+			<if test = "rptWkDepClass != null ">
+				record.RPT_WK_DEP_CLASS = #{rptWkDepClass,jdbcType=VARCHAR},
+			</if>
+			<if test = "manwkStandard != null ">
+				record.MANWK_STANDARD = #{manwkStandard,jdbcType=DECIMAL},
+			</if>
+			<if test = "manwkAttend != null ">
+				record.MANWK_ATTEND = #{manwkAttend,jdbcType=DECIMAL},
+			</if>
+			<if test = "manwkMiner != null ">
+				record.MANWK_MINER = #{manwkMiner,jdbcType=DECIMAL},
+			</if>
+			<if test = "manwkQuit != null ">
+				record.MANWK_QUIT = #{manwkQuit,jdbcType=DECIMAL},
+			</if>
+			<if test = "manwkSick != null ">
+				record.MANWK_SICK = #{manwkSick,jdbcType=DECIMAL},
+			</if>
+			<if test = "manwkMaternity != null ">
+				record.MANWK_MATERNITY = #{manwkMaternity,jdbcType=DECIMAL},
+			</if>
+			<if test = "manwkPrivpassion != null ">
+				record.MANWK_PRIVPASSION = #{manwkPrivpassion,jdbcType=DECIMAL},
+			</if>
+			<if test = "manwkOvertime != null ">
+				record.MANWK_OVERTIME = #{manwkOvertime,jdbcType=DECIMAL},
+			</if>
+			<if test = "wageStandard4posit != null ">
+				record.WAGE_STANDARD_4POSIT = #{wageStandard4posit,jdbcType=DECIMAL},
+			</if>
+			<if test = "wageDay4posit != null ">
+				record.WAGE_DAY_4POSIT = #{wageDay4posit,jdbcType=DECIMAL},
+			</if>
+			<if test = "wageAttend != null ">
+				record.WAGE_ATTEND = #{wageAttend,jdbcType=DECIMAL},
+			</if>
+			<if test = "wageSick != null ">
+				record.WAGE_SICK = #{wageSick,jdbcType=DECIMAL},
+			</if>
+			<if test = "wagePositTotal != null ">
+				record.WAGE_POSIT_TOTAL = #{wagePositTotal,jdbcType=DECIMAL},
+			</if>
+			<if test = "wageNightShift != null ">
+				record.WAGE_NIGHT_SHIFT = #{wageNightShift,jdbcType=DECIMAL},
+			</if>
+			<if test = "wageOvertime != null ">
+				record.WAGE_OVERTIME = #{wageOvertime,jdbcType=DECIMAL},
+			</if>
+			<if test = "wageYearg != null ">
+				record.WAGE_YEARG = #{wageYearg,jdbcType=DECIMAL},
+			</if>
+			<if test = "allowanceHygiene != null ">
+				record.ALLOWANCE_HYGIENE = #{allowanceHygiene,jdbcType=DECIMAL},
+			</if>
+			<if test = "wageErrorCorrent != null ">
+				record.WAGE_ERROR_CORRENT = #{wageErrorCorrent,jdbcType=DECIMAL},
+			</if>
+			<if test = "supp4tel != null ">
+				record.SUPP_4TEL = #{supp4tel,jdbcType=DECIMAL},
+			</if>
+			<if test = "supp4traffic != null ">
+				record.SUPP_4TRAFFIC = #{supp4traffic,jdbcType=DECIMAL},
+			</if>
+			<if test = "supp4mining != null ">
+				record.SUPP_4MINING = #{supp4mining,jdbcType=DECIMAL},
+			</if>
+			<if test = "supp4other != null ">
+				record.SUPP_4OTHER = #{supp4other,jdbcType=DECIMAL},
+			</if>
+			<if test = "supp4univeStuLife != null ">
+				record.SUPP_4UNIVE_STU_LIFE = #{supp4univeStuLife,jdbcType=DECIMAL},
+			</if>
+			<if test = "supp4oth != null ">
+				record.SUPP_4OTH = #{supp4oth,jdbcType=DECIMAL},
+			</if>
+			<if test = "suppTotal != null ">
+				record.SUPP_TOTAL = #{suppTotal,jdbcType=DECIMAL},
+			</if>
+			<if test = "wageTotal != null ">
+				record.WAGE_TOTAL = #{wageTotal,jdbcType=DECIMAL},
+			</if>
+			<if test = "wageJxTotal != null ">
+				record.WAGE_JX_TOTAL = #{wageJxTotal,jdbcType=DECIMAL},
+			</if>
+			<if test = "wagePayableTotal != null ">
+				record.WAGE_PAYABLE_TOTAL = #{wagePayableTotal,jdbcType=DECIMAL},
+			</if>
+			<if test = "bxPension != null ">
+				record.BX_PENSION = #{bxPension,jdbcType=DECIMAL},
+			</if>
+			<if test = "bxMedical != null ">
+				record.BX_MEDICAL = #{bxMedical,jdbcType=DECIMAL},
+			</if>
+			<if test = "bxUnemploy != null ">
+				record.BX_UNEMPLOY = #{bxUnemploy,jdbcType=DECIMAL},
+			</if>
+			<if test = "bxSeriousIllness != null ">
+				record.BX_SERIOUS_ILLNESS = #{bxSeriousIllness,jdbcType=DECIMAL},
+			</if>
+			<if test = "bxHousfund != null ">
+				record.BX_HOUSFUND = #{bxHousfund,jdbcType=DECIMAL},
+			</if>
+			<if test = "bxAnnualCorpGold != null ">
+				record.BX_ANNUAL_CORP_GOLD = #{bxAnnualCorpGold,jdbcType=DECIMAL},
+			</if>
+			<if test = "bxTotal != null ">
+				record.BX_TOTAL = #{bxTotal,jdbcType=DECIMAL},
+			</if>
+			<if test = "cutWater2elect != null ">
+				record.CUT_WATER2ELECT = #{cutWater2elect,jdbcType=DECIMAL},
+			</if>
+			<if test = "cutHygiene != null ">
+				record.CUT_HYGIENE = #{cutHygiene,jdbcType=DECIMAL},
+			</if>
+			<if test = "cutOther != null ">
+				record.CUT_OTHER = #{cutOther,jdbcType=DECIMAL},
+			</if>
+			<if test = "cutArrears != null ">
+				record.CUT_ARREARS = #{cutArrears,jdbcType=DECIMAL},
+			</if>
+			<if test = "cutTotal != null ">
+				record.CUT_TOTAL = #{cutTotal,jdbcType=DECIMAL},
+			</if>
+			<if test = "taxableWage != null ">
+				record.TAXABLE_WAGE = #{taxableWage,jdbcType=DECIMAL},
+			</if>
+			<if test = "taxIncomePersonal != null ">
+				record.TAX_INCOME_PERSONAL = #{taxIncomePersonal,jdbcType=DECIMAL},
+			</if>
+			<if test = "netSalary != null ">
+				record.NET_SALARY = #{netSalary,jdbcType=DECIMAL},
+			</if>
+			<if test = "netTargetYearmonth != null ">
+				record.NET_TARGET_YEARMONTH = #{netTargetYearmonth,jdbcType=VARCHAR},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "btimpNo != null ">
+				record.BTIMP_NO = #{btimpNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_sa_payslip 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_sa_payslip 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_sa_payslip  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_sa_payslip  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	
+	<!-- 根据字段名获取所有状态正常的去重列表 -->
+	<select id="querySelectFields" parameterType="java.lang.String" resultType="java.lang.String">
+		<!-- select IF(count(1)>0,GROUP_CONCAT(t.fvals),null) as fields 
+		from 
+		(
+		SELECT 
+			DISTINCT ${column} as fvals
+		FROM
+			ch_sa_payslip
+			where status=0
+		) t 
+		where t.fvals is not null and t.fvals != ''
+		order by t.fvals -->
+		SELECT 
+			DISTINCT ${column}
+		FROM
+			ch_sa_payslip
+		where status=0
+		<if test="year != null and year != ''">
+		and left(NET_TARGET_YEARMONTH,4)= #{year}
+		</if>
+		and ${column} != '#N/A' and ${column} is not null
+	</select>
+	
+	<!-- 根据导入编号逻辑删除-->
+	<update id="delBatchByBtImpNo4Logic" parameterType="java.lang.String">
+		UPDATE ch_sa_payslip 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE BTIMP_NO = #{btimpNo}
+	</update>
+	
+	<!-- 根据身份证号查询工资单 -->
+	<select id="query4Wechat" resultMap="chSaPayslipMapper" >
+		SELECT 
+		*
+		FROM ch_sa_payslip
+		where card_no=#{cardNo} and status = 0
+		<if test = "month != null and month != ''">
+			and NET_TARGET_YEARMONTH = #{month}
+		</if>
+		order by NET_TARGET_YEARMONTH desc
+		limit 6
+	</select>
+</mapper>

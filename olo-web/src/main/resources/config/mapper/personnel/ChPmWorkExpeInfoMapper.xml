@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmWorkExpeInfoMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmWorkExpeInfoMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmWorkExpeInfoModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="workerId" column="WORKER_ID" jdbcType="BIGINT"/>
+		<result property="wkComName" column="WK_COM_NAME" jdbcType="VARCHAR"/>
+		<result property="wkDepName" column="WK_DEP_NAME" jdbcType="VARCHAR"/>
+		<result property="wkStation" column="WK_STATION" jdbcType="VARCHAR"/>
+		<result property="wkPosit" column="WK_POSIT" jdbcType="VARCHAR"/>
+		<result property="wkTitle" column="WK_TITLE" jdbcType="VARCHAR"/>
+		<result property="transDocno" column="TRANS_DOCNO" jdbcType="VARCHAR"/>
+		<result property="wkStartTime" column="WK_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="wkEndTime" column="WK_END_TIME" jdbcType="TIMESTAMP"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmWorkExpeInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_work_expe_info record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_work_expe_info record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 WORKER_ID, 
+				 WK_COM_NAME, 
+				 WK_DEP_NAME, 
+				 WK_STATION, 
+				 WK_POSIT, 
+				 WK_TITLE, 
+				 TRANS_DOCNO, 
+				 WK_START_TIME, 
+				 WK_END_TIME, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null and entity.id != ''">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.workerId != null and entity.workerId != ''">
+					<![CDATA[ and record.WORKER_ID  = #{entity.workerId} ]]>
+				</if>
+				<if test = "entity.wkComName != null and entity.wkComName != ''">
+					<![CDATA[ and record.WK_COM_NAME  = #{entity.wkComName} ]]>
+				</if>
+				<if test = "entity.wkDepName != null and entity.wkDepName != ''">
+					<![CDATA[ and record.WK_DEP_NAME  = #{entity.wkDepName} ]]>
+				</if>
+				<if test = "entity.wkStation != null and entity.wkStation != ''">
+					<![CDATA[ and record.WK_STATION  = #{entity.wkStation} ]]>
+				</if>
+				<if test = "entity.wkPosit != null and entity.wkPosit != ''">
+					<![CDATA[ and record.WK_POSIT  = #{entity.wkPosit} ]]>
+				</if>
+				<if test = "entity.wkTitle != null and entity.wkTitle != ''">
+					<![CDATA[ and record.WK_TITLE  = #{entity.wkTitle} ]]>
+				</if>
+				<if test = "entity.transDocno != null and entity.transDocno != ''">
+					<![CDATA[ and record.TRANS_DOCNO  = #{entity.transDocno} ]]>
+				</if>
+				<if test = "entity.wkStartTime != null and entity.wkStartTime != ''">
+					<![CDATA[ and record.WK_START_TIME  = #{entity.wkStartTime} ]]>
+				</if>
+				<if test = "entity.wkEndTime != null and entity.wkEndTime != ''">
+					<![CDATA[ and record.WK_END_TIME  = #{entity.wkEndTime} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null and entity.createTime != ''">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null and entity.updateTime != ''">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmWorkExpeInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_work_expe_info record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmWorkExpeInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_work_expe_info record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="workerId != null">WORKER_ID,</if>
+			<if test="wkComName != null">WK_COM_NAME,</if>
+			<if test="wkDepName != null">WK_DEP_NAME,</if>
+			<if test="wkStation != null">WK_STATION,</if>
+			<if test="wkPosit != null">WK_POSIT,</if>
+			<if test="wkTitle != null">WK_TITLE,</if>
+			<if test="transDocno != null">TRANS_DOCNO,</if>
+			<if test="wkStartTime != null">WK_START_TIME,</if>
+			<if test="wkEndTime != null">WK_END_TIME,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{workerId,jdbcType=BIGINT},</if>
+			<if test="wkComName != null">#{wkComName,jdbcType=VARCHAR},</if>
+			<if test="wkDepName != null">#{wkDepName,jdbcType=VARCHAR},</if>
+			<if test="wkStation != null">#{wkStation,jdbcType=VARCHAR},</if>
+			<if test="wkPosit != null">#{wkPosit,jdbcType=VARCHAR},</if>
+			<if test="wkTitle != null">#{wkTitle,jdbcType=VARCHAR},</if>
+			<if test="transDocno != null">#{transDocno,jdbcType=VARCHAR},</if>
+			<if test="wkStartTime != null">#{wkStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="wkEndTime != null">#{wkEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{item.id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{item.workerId,jdbcType=BIGINT},</if>
+			<if test="wkComName != null">#{item.wkComName,jdbcType=VARCHAR},</if>
+			<if test="wkDepName != null">#{item.wkDepName,jdbcType=VARCHAR},</if>
+			<if test="wkStation != null">#{item.wkStation,jdbcType=VARCHAR},</if>
+			<if test="wkPosit != null">#{item.wkPosit,jdbcType=VARCHAR},</if>
+			<if test="wkTitle != null">#{item.wkTitle,jdbcType=VARCHAR},</if>
+			<if test="transDocno != null">#{item.transDocno,jdbcType=VARCHAR},</if>
+			<if test="wkStartTime != null">#{item.wkStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="wkEndTime != null">#{item.wkEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmWorkExpeInfoModel">
+		INSERT INTO ch_pm_work_expe_info(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_pm_work_expe_info
+        (
+        	WORKER_ID,
+			WK_COM_NAME,
+			WK_DEP_NAME,
+			WK_STATION,
+			WK_POSIT,
+			WK_TITLE,
+			TRANS_DOCNO,
+			WK_START_TIME,
+			WK_END_TIME,
+			STATUS,
+			REMARK,
+			CREATE_TIME,
+			UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            #{item.workerId,jdbcType=BIGINT},
+			#{item.wkComName,jdbcType=VARCHAR},
+			#{item.wkDepName,jdbcType=VARCHAR},
+			#{item.wkStation,jdbcType=VARCHAR},
+			#{item.wkPosit,jdbcType=VARCHAR},
+			#{item.wkTitle,jdbcType=VARCHAR},
+			#{item.transDocno,jdbcType=VARCHAR},
+			#{item.wkStartTime,jdbcType=TIMESTAMP},
+			#{item.wkEndTime,jdbcType=TIMESTAMP},
+			#{item.status,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmWorkExpeInfoModel">
+		UPDATE ch_pm_work_expe_info record 
+		<set>
+			<if test = "workerId != null ">
+				record.WORKER_ID = #{workerId,jdbcType=BIGINT},
+			</if>
+			<if test = "wkComName != null ">
+				record.WK_COM_NAME = #{wkComName,jdbcType=VARCHAR},
+			</if>
+			<if test = "wkDepName != null ">
+				record.WK_DEP_NAME = #{wkDepName,jdbcType=VARCHAR},
+			</if>
+			<if test = "wkStation != null ">
+				record.WK_STATION = #{wkStation,jdbcType=VARCHAR},
+			</if>
+			<if test = "wkPosit != null ">
+				record.WK_POSIT = #{wkPosit,jdbcType=VARCHAR},
+			</if>
+			<if test = "wkTitle != null ">
+				record.WK_TITLE = #{wkTitle,jdbcType=VARCHAR},
+			</if>
+			<if test = "transDocno != null ">
+				record.TRANS_DOCNO = #{transDocno,jdbcType=VARCHAR},
+			</if>
+			<if test = "wkStartTime != null ">
+				record.WK_START_TIME = #{wkStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "wkEndTime != null ">
+				record.WK_END_TIME = #{wkEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test = "createTime != null ">
+				record.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "updateTime != null ">
+				record.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_work_expe_info 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_work_expe_info 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_work_expe_info  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_work_expe_info  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+</mapper>

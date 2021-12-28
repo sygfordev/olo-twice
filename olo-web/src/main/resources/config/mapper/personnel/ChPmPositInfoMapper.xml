@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmPositInfoMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmPositInfoMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmPositInfoModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="workerId" column="WORKER_ID" jdbcType="BIGINT"/>
+		<result property="posit" column="POSIT" jdbcType="INTEGER"/>
+		<result property="positCn" column="POSIT_CN" jdbcType="VARCHAR"/>
+		<result property="positDepart" column="POSIT_DEPART" jdbcType="VARCHAR"/>
+		<result property="positLevel" column="POSIT_LEVEL" jdbcType="INTEGER"/>
+		<result property="positLevelCn" column="POSIT_LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="positMax" column="POSIT_MAX" jdbcType="INTEGER"/>
+		<result property="onPositOrder" column="ON_POSIT_ORDER" jdbcType="INTEGER"/>
+		<result property="onPositStartTime" column="ON_POSIT_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="onPositEndTime" column="ON_POSIT_END_TIME" jdbcType="TIMESTAMP"/>
+		<result property="onPositDocno" column="ON_POSIT_DOCNO" jdbcType="VARCHAR"/>
+		<result property="conPosit" column="CON_POSIT" jdbcType="INTEGER"/>
+		<result property="conPositCn" column="CON_POSIT_CN" jdbcType="VARCHAR"/>
+		<result property="conPositDepart" column="CON_POSIT_DEPART" jdbcType="VARCHAR"/>
+		<result property="conPositStartTime" column="CON_POSIT_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="conPositEndTime" column="CON_POSIT_END_TIME" jdbcType="TIMESTAMP"/>
+		<result property="treatLevel" column="TREAT_LEVEL" jdbcType="INTEGER"/>
+		<result property="treatLevelCn" column="TREAT_LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmPositInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_posit_info record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_posit_info record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 WORKER_ID, 
+				 POSIT, 
+				 POSIT_CN, 
+				 POSIT_DEPART, 
+				 POSIT_LEVEL, 
+				 POSIT_LEVEL_CN, 
+				 POSIT_MAX, 
+				 ON_POSIT_ORDER, 
+				 ON_POSIT_START_TIME, 
+				 ON_POSIT_END_TIME, 
+				 ON_POSIT_DOCNO, 
+				 CON_POSIT, 
+				 CON_POSIT_CN, 
+				 CON_POSIT_DEPART, 
+				 CON_POSIT_START_TIME, 
+				 CON_POSIT_END_TIME, 
+				 TREAT_LEVEL, 
+				 TREAT_LEVEL_CN, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null and entity.id != ''">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.workerId != null and entity.workerId != ''">
+					<![CDATA[ and record.WORKER_ID  = #{entity.workerId} ]]>
+				</if>
+				<if test = "entity.posit != null and entity.posit != ''">
+					<![CDATA[ and record.POSIT  = #{entity.posit} ]]>
+				</if>
+				<if test = "entity.positCn != null and entity.positCn != ''">
+					<![CDATA[ and record.POSIT_CN  = #{entity.positCn} ]]>
+				</if>
+				<if test = "entity.positDepart != null and entity.positDepart != ''">
+					<![CDATA[ and record.POSIT_DEPART  = #{entity.positDepart} ]]>
+				</if>
+				<if test = "entity.positLevel != null and entity.positLevel != ''">
+					<![CDATA[ and record.POSIT_LEVEL  = #{entity.positLevel} ]]>
+				</if>
+				<if test = "entity.positLevelCn != null and entity.positLevelCn != ''">
+					<![CDATA[ and record.POSIT_LEVEL_CN  = #{entity.positLevelCn} ]]>
+				</if>
+				<if test = "entity.positMax != null and entity.positMax != ''">
+					<![CDATA[ and record.POSIT_MAX  = #{entity.positMax} ]]>
+				</if>
+				<if test = "entity.onPositOrder != null and entity.onPositOrder != ''">
+					<![CDATA[ and record.ON_POSIT_ORDER  = #{entity.onPositOrder} ]]>
+				</if>
+				<if test = "entity.onPositStartTime != null and entity.onPositStartTime != ''">
+					<![CDATA[ and record.ON_POSIT_START_TIME  = #{entity.onPositStartTime} ]]>
+				</if>
+				<if test = "entity.onPositEndTime != null and entity.onPositEndTime != ''">
+					<![CDATA[ and record.ON_POSIT_END_TIME  = #{entity.onPositEndTime} ]]>
+				</if>
+				<if test = "entity.onPositDocno != null and entity.onPositDocno != ''">
+					<![CDATA[ and record.ON_POSIT_DOCNO  = #{entity.onPositDocno} ]]>
+				</if>
+				<if test = "entity.conPosit != null and entity.conPosit != ''">
+					<![CDATA[ and record.CON_POSIT  = #{entity.conPosit} ]]>
+				</if>
+				<if test = "entity.conPositCn != null and entity.conPositCn != ''">
+					<![CDATA[ and record.CON_POSIT_CN  = #{entity.conPositCn} ]]>
+				</if>
+				<if test = "entity.conPositDepart != null and entity.conPositDepart != ''">
+					<![CDATA[ and record.CON_POSIT_DEPART  = #{entity.conPositDepart} ]]>
+				</if>
+				<if test = "entity.conPositStartTime != null and entity.conPositStartTime != ''">
+					<![CDATA[ and record.CON_POSIT_START_TIME  = #{entity.conPositStartTime} ]]>
+				</if>
+				<if test = "entity.conPositEndTime != null and entity.conPositEndTime != ''">
+					<![CDATA[ and record.CON_POSIT_END_TIME  = #{entity.conPositEndTime} ]]>
+				</if>
+				<if test = "entity.treatLevel != null and entity.treatLevel != ''">
+					<![CDATA[ and record.TREAT_LEVEL  = #{entity.treatLevel} ]]>
+				</if>
+				<if test = "entity.treatLevelCn != null and entity.treatLevelCn != ''">
+					<![CDATA[ and record.TREAT_LEVEL_CN  = #{entity.treatLevelCn} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null and entity.createTime != ''">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null and entity.updateTime != ''">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmPositInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_posit_info record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmPositInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_posit_info record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="workerId != null">WORKER_ID,</if>
+			<if test="posit != null">POSIT,</if>
+			<if test="positCn != null">POSIT_CN,</if>
+			<if test="positDepart != null">POSIT_DEPART,</if>
+			<if test="positLevel != null">POSIT_LEVEL,</if>
+			<if test="positLevelCn != null">POSIT_LEVEL_CN,</if>
+			<if test="positMax != null">POSIT_MAX,</if>
+			<if test="onPositOrder != null">ON_POSIT_ORDER,</if>
+			<if test="onPositStartTime != null">ON_POSIT_START_TIME,</if>
+			<if test="onPositEndTime != null">ON_POSIT_END_TIME,</if>
+			<if test="onPositDocno != null">ON_POSIT_DOCNO,</if>
+			<if test="conPosit != null">CON_POSIT,</if>
+			<if test="conPositCn != null">CON_POSIT_CN,</if>
+			<if test="conPositDepart != null">CON_POSIT_DEPART,</if>
+			<if test="conPositStartTime != null">CON_POSIT_START_TIME,</if>
+			<if test="conPositEndTime != null">CON_POSIT_END_TIME,</if>
+			<if test="treatLevel != null">TREAT_LEVEL,</if>
+			<if test="treatLevelCn != null">TREAT_LEVEL_CN,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{workerId,jdbcType=BIGINT},</if>
+			<if test="posit != null">#{posit,jdbcType=INTEGER},</if>
+			<if test="positCn != null">#{positCn,jdbcType=VARCHAR},</if>
+			<if test="positDepart != null">#{positDepart,jdbcType=VARCHAR},</if>
+			<if test="positLevel != null">#{positLevel,jdbcType=INTEGER},</if>
+			<if test="positLevelCn != null">#{positLevelCn,jdbcType=VARCHAR},</if>
+			<if test="positMax != null">#{positMax,jdbcType=INTEGER},</if>
+			<if test="onPositOrder != null">#{onPositOrder,jdbcType=INTEGER},</if>
+			<if test="onPositStartTime != null">#{onPositStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="onPositEndTime != null">#{onPositEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="onPositDocno != null">#{onPositDocno,jdbcType=VARCHAR},</if>
+			<if test="conPosit != null">#{conPosit,jdbcType=INTEGER},</if>
+			<if test="conPositCn != null">#{conPositCn,jdbcType=VARCHAR},</if>
+			<if test="conPositDepart != null">#{conPositDepart,jdbcType=VARCHAR},</if>
+			<if test="conPositStartTime != null">#{conPositStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="conPositEndTime != null">#{conPositEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="treatLevel != null">#{treatLevel,jdbcType=INTEGER},</if>
+			<if test="treatLevelCn != null">#{treatLevelCn,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{item.id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{item.workerId,jdbcType=BIGINT},</if>
+			<if test="posit != null">#{item.posit,jdbcType=INTEGER},</if>
+			<if test="positCn != null">#{item.positCn,jdbcType=VARCHAR},</if>
+			<if test="positDepart != null">#{item.positDepart,jdbcType=VARCHAR},</if>
+			<if test="positLevel != null">#{item.positLevel,jdbcType=INTEGER},</if>
+			<if test="positLevelCn != null">#{item.positLevelCn,jdbcType=VARCHAR},</if>
+			<if test="positMax != null">#{item.positMax,jdbcType=INTEGER},</if>
+			<if test="onPositOrder != null">#{item.onPositOrder,jdbcType=INTEGER},</if>
+			<if test="onPositStartTime != null">#{item.onPositStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="onPositEndTime != null">#{item.onPositEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="onPositDocno != null">#{item.onPositDocno,jdbcType=VARCHAR},</if>
+			<if test="conPosit != null">#{item.conPosit,jdbcType=INTEGER},</if>
+			<if test="conPositCn != null">#{item.conPositCn,jdbcType=VARCHAR},</if>
+			<if test="conPositDepart != null">#{item.conPositDepart,jdbcType=VARCHAR},</if>
+			<if test="conPositStartTime != null">#{item.conPositStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="conPositEndTime != null">#{item.conPositEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="treatLevel != null">#{item.treatLevel,jdbcType=INTEGER},</if>
+			<if test="treatLevelCn != null">#{item.treatLevelCn,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmPositInfoModel">
+		INSERT INTO ch_pm_posit_info(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_pm_posit_info
+        (
+        	WORKER_ID,
+			POSIT,
+			POSIT_CN,
+			POSIT_DEPART,
+			POSIT_LEVEL,
+			POSIT_LEVEL_CN,
+			POSIT_MAX,
+			ON_POSIT_ORDER,
+			ON_POSIT_START_TIME,
+			ON_POSIT_END_TIME,
+			ON_POSIT_DOCNO,
+			CON_POSIT,
+			CON_POSIT_CN,
+			CON_POSIT_DEPART,
+			CON_POSIT_START_TIME,
+			CON_POSIT_END_TIME,
+			TREAT_LEVEL,
+			TREAT_LEVEL_CN,
+			STATUS,
+			REMARK,
+			CREATE_TIME,
+			UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+			#{item.workerId,jdbcType=BIGINT},
+			#{item.posit,jdbcType=INTEGER},
+			#{item.positCn,jdbcType=VARCHAR},
+			#{item.positDepart,jdbcType=VARCHAR},
+			#{item.positLevel,jdbcType=INTEGER},
+			#{item.positLevelCn,jdbcType=VARCHAR},
+			#{item.positMax,jdbcType=INTEGER},
+			#{item.onPositOrder,jdbcType=INTEGER},
+			#{item.onPositStartTime,jdbcType=TIMESTAMP},
+			#{item.onPositEndTime,jdbcType=TIMESTAMP},
+			#{item.onPositDocno,jdbcType=VARCHAR},
+			#{item.conPosit,jdbcType=INTEGER},
+			#{item.conPositCn,jdbcType=VARCHAR},
+			#{item.conPositDepart,jdbcType=VARCHAR},
+			#{item.conPositStartTime,jdbcType=TIMESTAMP},
+			#{item.conPositEndTime,jdbcType=TIMESTAMP},
+			#{item.treatLevel,jdbcType=INTEGER},
+			#{item.treatLevelCn,jdbcType=VARCHAR},
+			#{item.status,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmPositInfoModel">
+		UPDATE ch_pm_posit_info record 
+		<set>
+			<if test = "id != null ">
+				record.ID = #{id,jdbcType=BIGINT},
+			</if>
+			<if test = "workerId != null ">
+				record.WORKER_ID = #{workerId,jdbcType=BIGINT},
+			</if>
+			<if test = "posit != null ">
+				record.POSIT = #{posit,jdbcType=INTEGER},
+			</if>
+			<if test = "positCn != null ">
+				record.POSIT_CN = #{positCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "positDepart != null ">
+				record.POSIT_DEPART = #{positDepart,jdbcType=VARCHAR},
+			</if>
+			<if test = "positLevel != null ">
+				record.POSIT_LEVEL = #{positLevel,jdbcType=INTEGER},
+			</if>
+			<if test = "positLevelCn != null ">
+				record.POSIT_LEVEL_CN = #{positLevelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "positMax != null ">
+				record.POSIT_MAX = #{positMax,jdbcType=INTEGER},
+			</if>
+			<if test = "onPositOrder != null ">
+				record.ON_POSIT_ORDER = #{onPositOrder,jdbcType=INTEGER},
+			</if>
+			<if test = "onPositStartTime != null ">
+				record.ON_POSIT_START_TIME = #{onPositStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "onPositEndTime != null ">
+				record.ON_POSIT_END_TIME = #{onPositEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "onPositDocno != null ">
+				record.ON_POSIT_DOCNO = #{onPositDocno,jdbcType=VARCHAR},
+			</if>
+			<if test = "conPosit != null ">
+				record.CON_POSIT = #{conPosit,jdbcType=INTEGER},
+			</if>
+			<if test = "conPositCn != null ">
+				record.CON_POSIT_CN = #{conPositCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "conPositDepart != null ">
+				record.CON_POSIT_DEPART = #{conPositDepart,jdbcType=VARCHAR},
+			</if>
+			<if test = "conPositStartTime != null ">
+				record.CON_POSIT_START_TIME = #{conPositStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "conPositEndTime != null ">
+				record.CON_POSIT_END_TIME = #{conPositEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "treatLevel != null ">
+				record.TREAT_LEVEL = #{treatLevel,jdbcType=INTEGER},
+			</if>
+			<if test = "treatLevelCn != null ">
+				record.TREAT_LEVEL_CN = #{treatLevelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+				record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_posit_info 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_posit_info 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_posit_info  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_posit_info  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	
+	<!-- 查询所有需要做排序的职工编号列表 -->
+	<select id="queryAllWkIds4NeedSort" resultType="java.lang.Long">
+		select distinct worker_id from ch_pm_posit_info where status=0 and on_posit_order is null
+	</select>
+	
+	<!-- 根据职工编号对该职工的职务进行排序 -->
+	<update id="synPositInfoSortVal" parameterType="java.lang.Long">
+		update 
+		ch_pm_posit_info e,
+		(
+			  SELECT
+					( @i := @i + 1 ) sort,
+					id,
+					POSIT_LEVEL
+			  FROM
+			  <!-- ( SELECT * FROM ch_pm_posit_info where worker_id=#{wkId} ORDER BY POSIT_LEVEL asc ) sort, -->
+			  ( SELECT * FROM ch_pm_posit_info where worker_id=#{wkId} and status=0 ORDER BY POSIT_MAX desc,POSIT_LEVEL asc ) sort,
+			  ( SELECT @i := 0 ) AS i 
+		) t
+		set e.ON_POSIT_ORDER = t.sort
+		WHERE e.id=t.id AND e.worker_id = #{wkId} and e.status=0
+	</update>
+</mapper>

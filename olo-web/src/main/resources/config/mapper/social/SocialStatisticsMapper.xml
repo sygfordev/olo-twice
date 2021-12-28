@@ -1,0 +1,1253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.social.mapper.Statistics4SocialMapper">
+	
+	<!-- 养老保险按月汇总-->
+	<select id="st4pen" resultType="java.util.Map">
+		select 
+			IFNULL(SOCIAL_YMONTH,'TOTAL') as social_ymonth,
+			@a1:=
+			sum(
+				IFNULL(S_PEN_BASE,0)
+			) as base_comp_total,
+			@b1:=
+			sum(IF(WK_MODALITY_CN='总院正式1' or WK_MODALITY_CN='基层正式1' or null,
+					IFNULL(S_PEN_BASE,0)
+			,0)) as base_comp_laohe,
+			@c1:=
+			sum(IF(WK_MODALITY_CN in ('总院众鑫','基层众鑫','总院启日','基层启日','总院启日1','基层启日1') or null,
+					IFNULL(S_PEN_BASE,0)
+			,0)) as base_comp_laowu,
+			@a1 as base_pers_total,
+			@b1 as base_pers_laohe,
+			@c1 as base_pers_laowu,
+			
+			<!-- 档期征缴 -->
+			@a2:=
+			sum(
+					IFNULL(S_PEN_COMP_AMOUNT,0)+IFNULL(S_PEN_PERS_AMOUNT,0)
+			) as amount,
+			@b2:=
+			sum(IF(WK_MODALITY_CN in ('总院正式1','基层正式1') or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+IFNULL(S_PEN_PERS_AMOUNT,0)
+			,0)) as amount_laohe,
+			sum(IF(WK_MODALITY_CN in ('总院正式1','基层正式1') or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)
+			,0)) as amount_laohe_comp,
+			@c2:=
+			sum(IF(WK_MODALITY_CN in ('总院众鑫','基层众鑫','总院启日','基层启日','总院启日1','基层启日1') or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+IFNULL(S_PEN_PERS_AMOUNT,0)
+			,0)) as amount_laowu,
+			sum(IF(WK_MODALITY_CN in ('总院众鑫','基层众鑫','总院启日','基层启日','总院启日1','基层启日1') or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)
+			,0)) as amount_laowu_comp,
+			@a2 as amount_recap,
+			@b2 as amount_recap_laohe,
+			@c2 as amount_recap_laowu,
+			'100%' as rate_dangqi
+			
+		from ch_social_info
+		where status = 0 
+			<if test = "startMonth != null and startMonth != ''">
+				<![CDATA[ and SOCIAL_YMONTH >= #{startMonth} ]]>
+			</if>
+			<if test = "endMonth != null and endMonth != ''">
+				<![CDATA[ and SOCIAL_YMONTH <= #{endMonth} ]]>
+			</if>
+		group by SOCIAL_YMONTH with rollup
+	</select>
+	
+	<!-- 医疗保险按月汇总-->
+	<select id="st4medi" resultType="java.util.Map">
+		select 
+			IFNULL(SOCIAL_YMONTH,'TOTAL') as social_ymonth,
+			@a1:=
+			sum(
+				IFNULL(S_MEDI_BASE,0)
+			) as base_comp_total,
+			@b1:=
+			sum(IF(WK_MODALITY_CN='总院正式1' or WK_MODALITY_CN='基层正式1' or null,
+					IFNULL(S_MEDI_BASE,0)
+			,0)) as base_comp_laohe,
+			@c1:=
+			sum(IF(WK_MODALITY_CN in ('总院众鑫','基层众鑫','总院启日','基层启日','总院启日1','基层启日1') or null,
+					IFNULL(S_MEDI_BASE,0)
+			,0)) as base_comp_laowu,
+			@a1 as base_pers_total,
+			@b1 as base_pers_laohe,
+			@c1 as base_pers_laowu,
+			
+			<!-- 档期征缴 -->
+			@a2:=
+			sum(
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+IFNULL(S_MEDI_PERS_AMOUNT,0)
+			) as amount,
+			@b2:=
+			sum(IF(WK_MODALITY_CN in ('总院正式1','基层正式1') or null,
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+IFNULL(S_MEDI_PERS_AMOUNT,0)
+			,0)) as amount_laohe,
+			sum(IF(WK_MODALITY_CN in ('总院正式1','基层正式1') or null,
+					IFNULL(S_MEDI_COMP_AMOUNT,0)
+			,0)) as amount_laohe_comp,
+			@c2:=
+			sum(IF(WK_MODALITY_CN in ('总院众鑫','基层众鑫','总院启日','基层启日','总院启日1','基层启日1') or null,
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+IFNULL(S_MEDI_PERS_AMOUNT,0)
+			,0)) as amount_laowu,
+			sum(IF(WK_MODALITY_CN in ('总院众鑫','基层众鑫','总院启日','基层启日','总院启日1','基层启日1') or null,
+					IFNULL(S_MEDI_COMP_AMOUNT,0)
+			,0)) as amount_laowu_comp,
+			@a2 as amount_recap,
+			@b2 as amount_recap_laohe,
+			@c2 as amount_recap_laowu,
+			'100%' as rate_dangqi
+			
+		from ch_social_info
+		where status = 0 
+			<if test = "startMonth != null and startMonth != ''">
+				<![CDATA[ and SOCIAL_YMONTH >= #{startMonth} ]]>
+			</if>
+			<if test = "endMonth != null and endMonth != ''">
+				<![CDATA[ and SOCIAL_YMONTH <= #{endMonth} ]]>
+			</if>
+		group by SOCIAL_YMONTH with rollup
+	</select>
+	
+	<!-- 失业保险按月汇总-->
+	<select id="st4unemp" resultType="java.util.Map">
+		select 
+			IFNULL(SOCIAL_YMONTH,'TOTAL') as social_ymonth,
+			@a1:=
+			sum(
+				IFNULL(S_UNEMP_BASE,0)
+			) as base_comp_total,
+			@b1:=
+			sum(IF(WK_MODALITY_CN='总院正式1' or WK_MODALITY_CN='基层正式1' or null,
+					IFNULL(S_UNEMP_BASE,0)
+			,0)) as base_comp_laohe,
+			@c1:=
+			sum(IF(WK_MODALITY_CN in ('总院众鑫','基层众鑫','总院启日','基层启日','总院启日1','基层启日1') or null,
+					IFNULL(S_UNEMP_BASE,0)
+			,0)) as base_comp_laowu,
+			@a1 as base_pers_total,
+			@b1 as base_pers_laohe,
+			@c1 as base_pers_laowu,
+			
+			<!-- 档期征缴 -->
+			@a2:=
+			sum(
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+IFNULL(S_UNEMP_PERS_AMOUNT,0)
+			) as amount,
+			@b2:=
+			sum(IF(WK_MODALITY_CN in ('总院正式1','基层正式1') or null,
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+IFNULL(S_UNEMP_PERS_AMOUNT,0)
+			,0)) as amount_laohe,
+			sum(IF(WK_MODALITY_CN in ('总院正式1','基层正式1') or null,
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)
+			,0)) as amount_laohe_comp,
+			@c2:=
+			sum(IF(WK_MODALITY_CN in ('总院众鑫','基层众鑫','总院启日','基层启日','总院启日1','基层启日1') or null,
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+IFNULL(S_UNEMP_PERS_AMOUNT,0)
+			,0)) as amount_laowu,
+			sum(IF(WK_MODALITY_CN in ('总院众鑫','基层众鑫','总院启日','基层启日','总院启日1','基层启日1') or null,
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)
+			,0)) as amount_laowu_comp,
+			@a2 as amount_recap,
+			@b2 as amount_recap_laohe,
+			@c2 as amount_recap_laowu,
+			'100%' as rate_dangqi
+			
+		from ch_social_info
+		where status = 0 
+			<if test = "startMonth != null and startMonth != ''">
+				<![CDATA[ and SOCIAL_YMONTH >= #{startMonth} ]]>
+			</if>
+			<if test = "endMonth != null and endMonth != ''">
+				<![CDATA[ and SOCIAL_YMONTH <= #{endMonth} ]]>
+			</if>
+		group by SOCIAL_YMONTH with rollup
+	</select>
+	
+	<!-- 工伤保险按月汇总-->
+	<select id="st4injury" resultType="java.util.Map">
+		select 
+			IFNULL(SOCIAL_YMONTH,'TOTAL') as social_ymonth,
+			@a1:=
+			sum(
+				IFNULL(S_INJURY_BASE,0)
+			) as base_comp_total,
+			@b1:=
+			sum(IF(WK_MODALITY_CN='总院正式1' or WK_MODALITY_CN='基层正式1' or null,
+					IFNULL(S_INJURY_BASE,0)
+			,0)) as base_comp_laohe,
+			@c1:=
+			sum(IF(WK_MODALITY_CN in ('总院众鑫','基层众鑫','总院启日','基层启日','总院启日1','基层启日1') or null,
+					IFNULL(S_INJURY_BASE,0)
+			,0)) as base_comp_laowu,
+			@a1 as base_pers_total,
+			@b1 as base_pers_laohe,
+			@c1 as base_pers_laowu,
+			
+			<!-- 档期征缴 -->
+			@a2:=
+			sum(
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+IFNULL(S_INJURY_PERS_AMOUNT,0)
+			) as amount,
+			@b2:=
+			sum(IF(WK_MODALITY_CN in ('总院正式1','基层正式1') or null,
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+IFNULL(S_INJURY_PERS_AMOUNT,0)
+			,0)) as amount_laohe,
+			sum(IF(WK_MODALITY_CN in ('总院正式1','基层正式1') or null,
+					IFNULL(S_INJURY_COMP_AMOUNT,0)
+			,0)) as amount_laohe_comp,
+			@c2:=
+			sum(IF(WK_MODALITY_CN in ('总院众鑫','基层众鑫','总院启日','基层启日','总院启日1','基层启日1') or null,
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+IFNULL(S_INJURY_PERS_AMOUNT,0)
+			,0)) as amount_laowu,
+			sum(IF(WK_MODALITY_CN in ('总院众鑫','基层众鑫','总院启日','基层启日','总院启日1','基层启日1') or null,
+					IFNULL(S_INJURY_COMP_AMOUNT,0)
+			,0)) as amount_laowu_comp,
+			@a2 as amount_recap,
+			@b2 as amount_recap_laohe,
+			@c2 as amount_recap_laowu,
+			'100%' as rate_dangqi
+			
+		from ch_social_info
+		where status = 0 
+			<if test = "startMonth != null and startMonth != ''">
+				<![CDATA[ and SOCIAL_YMONTH >= #{startMonth} ]]>
+			</if>
+			<if test = "endMonth != null and endMonth != ''">
+				<![CDATA[ and SOCIAL_YMONTH <= #{endMonth} ]]>
+			</if>
+		group by SOCIAL_YMONTH with rollup
+	</select>
+	
+	<!-- 社保参保人数月统计 -->
+	<select id="st4Insured" resultType="java.util.Map">
+		select 
+			SOCIAL_YMONTH as social_ymonth,
+			<!-- #单位人数 -->
+			@a:=
+			count(WK_MODALITY_CN='总院正式1' or WK_MODALITY_CN='基层正式1' or null) as size_laohe,
+			0 as size_retire,
+			@b:=
+			count(WK_MODALITY_CN='总院众鑫' or WK_MODALITY_CN='总院启日' or WK_MODALITY_CN='总院启日1' or WK_MODALITY_CN='基层启日1' or null) as size_laowu,
+			(@a+@b) as size_total,
+			
+			<!-- #养老保险 -->
+			@a1:=
+			count((S_PEN_COMP_AMOUNT is not null and S_PEN_COMP_AMOUNT>0) and (WK_MODALITY_CN='总院正式' or WK_MODALITY_CN='基层正式') or null) as size_pen, 
+			@b1:=
+			count((S_PEN_COMP_AMOUNT is not null and S_PEN_COMP_AMOUNT>0) and (WK_MODALITY_CN='总院正式1' or WK_MODALITY_CN='基层正式1') or null) as size_pen_laohe,
+			@c1:=
+			count((S_PEN_COMP_AMOUNT is not null and S_PEN_COMP_AMOUNT>0) and (WK_MODALITY_CN='总院众鑫' or WK_MODALITY_CN='总院启日' or WK_MODALITY_CN='总院启日1' or WK_MODALITY_CN='基层启日1') or null) as size_pen_laowu,
+			(@a1+@b1+@c1) as size_pen_total,
+			'100%'as rate_pen, 
+			
+			
+			<!-- #医疗保险 -->
+			@a2:=
+			count((S_MEDI_COMP_AMOUNT is not null and S_MEDI_COMP_AMOUNT>0) and (WK_MODALITY_CN='总院正式' or WK_MODALITY_CN='基层正式') or null) as size_medi,
+			@b2:=
+			count((S_MEDI_COMP_AMOUNT is not null and S_MEDI_COMP_AMOUNT>0) and (WK_MODALITY_CN='总院正式1' or WK_MODALITY_CN='基层正式1') or null) as size_medi_laohe,
+			@c2:=
+			count((S_MEDI_COMP_AMOUNT is not null and S_MEDI_COMP_AMOUNT>0) and (WK_MODALITY_CN='总院众鑫' or WK_MODALITY_CN='总院启日' or WK_MODALITY_CN='总院启日1' or WK_MODALITY_CN='基层启日1') or null) as size_medi_laowu,
+			0 as size_medi_retire,
+			(@a2+@b2+@c2) as size_medi_total,
+			'100%'as rate_medi,
+			
+			<!-- #工伤保险 -->
+			@a3:=
+			count((S_INJURY_COMP_AMOUNT is not null and S_INJURY_COMP_AMOUNT>0) and (WK_MODALITY_CN='总院正式' or WK_MODALITY_CN='基层正式') or null) as size_injury, 
+			@b3:=
+			count((S_INJURY_COMP_AMOUNT is not null and S_INJURY_COMP_AMOUNT>0) and (WK_MODALITY_CN='总院正式1' or WK_MODALITY_CN='基层正式1') or null) as size_injury_laohe,
+			@c3:=
+			count((S_INJURY_COMP_AMOUNT is not null and S_INJURY_COMP_AMOUNT>0) and (WK_MODALITY_CN='总院众鑫' or WK_MODALITY_CN='总院启日' or WK_MODALITY_CN='总院启日1' or WK_MODALITY_CN='基层启日1') or null) as size_injury_laowu,
+			(@a3+@b3+@c3) as size_injury_total,
+			'100%'as rate_injury,
+			
+			
+			<!-- #失业保险 -->
+			@a4:=
+			count((S_UNEMP_COMP_AMOUNT is not null and S_UNEMP_COMP_AMOUNT>0) and (WK_MODALITY_CN='总院正式' or WK_MODALITY_CN='基层正式') or null) as size_unemp,
+			@b4:=
+			count((S_UNEMP_COMP_AMOUNT is not null and S_UNEMP_COMP_AMOUNT>0) and (WK_MODALITY_CN='总院正式1' or WK_MODALITY_CN='基层正式1') or null) as size_unemp_laohe,
+			@c4:=
+			count((S_UNEMP_COMP_AMOUNT is not null and S_UNEMP_COMP_AMOUNT>0) and (WK_MODALITY_CN='总院众鑫' or WK_MODALITY_CN='总院启日' or WK_MODALITY_CN='总院启日1' or WK_MODALITY_CN='基层启日1') or null) as size_unemp_laowu,
+			(@a4+@b4+@c4) as size_unemp_total,
+			'100%'as rate_unemp,
+			
+			<!-- 生育保险 -->
+			0 as size_birth, 
+			0 as size_birth_laohe,
+			0 as size_birth_laowu,
+			0 as size_birth_total,
+			'0%'as rate_birth
+			
+			from ch_social_info 
+			where status = 0
+			<if test = "startMonth != null and startMonth != ''">
+				<![CDATA[ and SOCIAL_YMONTH >= DATE_FORMAT(DATE_SUB(str_to_date('${startMonth}-01','%Y-%m-%d'),INTERVAL 1 MONTH),'%Y-%m') ]]>
+			</if>
+			<if test = "endMonth != null and endMonth != ''">
+				<![CDATA[ and SOCIAL_YMONTH <= #{endMonth} ]]>
+			</if>
+			group by SOCIAL_YMONTH
+	</select>
+	
+	<!-- 年度社保征缴明细 -->
+	<select id="st4zhengjiaoYear" resultType="java.util.Map">
+		select 
+			IFNULL(SOCIAL_YMONTH,'小计') as social_ymonth,
+			<!-- '全部' as WK_MODALITY_CN, -->
+			<choose>
+				<when test="modalityStr != null">
+					'${modalityStr}' as wk_modality_cn,
+				</when>
+				<otherwise>
+					'全部' as wk_modality_cn,
+				</otherwise>
+			</choose>
+			
+			<!-- #人数 -->
+			sum(IF(S_PEN_COMP_AMOUNT is not null and S_PEN_COMP_AMOUNT>0,1,0)) as num_pen,
+			sum(IF(S_MEDI_COMP_AMOUNT is not null and S_MEDI_COMP_AMOUNT>0,1,0)) as num_medi,
+			sum(IF(S_INJURY_COMP_AMOUNT is not null and S_MEDI_COMP_AMOUNT>0,1,0)) as num_injury,
+			sum(IF(S_UNEMP_COMP_AMOUNT is not null and S_MEDI_COMP_AMOUNT>0,1,0)) as num_unemp,
+			sum(IF(S_OVP_COMP_AMOUNT is not null and S_MEDI_COMP_AMOUNT>0,1,0)) as num_ovp,
+			sum(IF(S_SP_MEDI_COMP_AMOUNT is not null and S_MEDI_COMP_AMOUNT>0,1,0)) as num_spmedi,
+			
+			<!-- #缴费基数 -->
+			sum(IFNULL(S_PEN_BASE,0)) as base_pen,
+			sum(IFNULL(S_MEDI_BASE,0)) as base_medi,
+			sum(IFNULL(S_INJURY_BASE,0)) as base_injury,
+			sum(IFNULL(S_UNEMP_BASE,0)) as base_unemp,
+			sum(IFNULL(S_OVP_BASE,0)) as base_ovp,
+			sum(IFNULL(S_SP_MEDI_BASE,0)) as base_spmedi,
+			
+			<!-- #单位应缴 -->
+			@a1:=
+			sum(IFNULL(S_PEN_COMP_AMOUNT,0)) as comp_pen,
+			@a2:=
+			sum(IFNULL(S_MEDI_COMP_AMOUNT,0)) as comp_medi,
+			@a3:=
+			sum(IFNULL(S_INJURY_COMP_AMOUNT,0)) as comp_injury,
+			@a4:=
+			sum(IFNULL(S_UNEMP_COMP_AMOUNT,0)) as comp_unemp,
+			@a5:=
+			<!-- sum(IFNULL(S_ANNUITY_COMP_AMOUNT,0)) as comp_annuity, -->
+			0 as comp_serious,
+			@a6:=
+			sum(IFNULL(S_OVP_COMP_AMOUNT,0)) as comp_ovp,
+			@a7:=
+			sum(IFNULL(S_SP_MEDI_COMP_AMOUNT,0)) as comp_spmedi,
+			@a8:=
+			sum(
+				IFNULL(S_PEN_COMP_OVERPAID,0)+
+				IFNULL(S_MEDI_COMP_OVERPAID,0)+
+				IFNULL(S_INJURY_COMP_OVERPAID,0)+
+				IFNULL(S_UNEMP_COMP_OVERPAID,0)+
+				IFNULL(S_ANNUITY_COMP_OVERPAID,0)+
+				IFNULL(S_OVP_COMP_OVERPAID,0)+
+				IFNULL(S_SP_MEDI_COMP_OVERPAID,0)
+			) as comp_overpaid,
+			@a1+@a2+@a3+@a4+@a5+@a6+@a7+@a8 as comp_total,
+			
+			<!-- #个人应缴 -->
+			@b1:=
+			sum(IFNULL(S_PEN_PERS_AMOUNT,0)) as pers_pen,
+			@b2:=
+			sum(IFNULL(S_MEDI_PERS_AMOUNT,0)) as pers_medi,
+			@b3:=
+			sum(IFNULL(S_INJURY_PERS_AMOUNT,0)) as pers_injury,
+			@b4:=
+			sum(IFNULL(S_UNEMP_PERS_AMOUNT,0)) as pers_unemp,
+			@b5:=
+			<!-- sum(IFNULL(S_ANNUITY_PERS_AMOUNT,0)) as pers_annuity, -->
+			0 as pers_serious,
+			@b6:=
+			sum(IFNULL(S_OVP_PERS_AMOUNT,0)) as pers_ovp,
+			@b7:=
+			sum(IFNULL(S_SP_MEDI_PERS_AMOUNT,0)) as pers_spmedi,
+			@b8:=
+			sum(
+				IFNULL(S_PEN_PERS_COMPLE,0)+
+				IFNULL(S_MEDI_PERS_COMPLE,0)+
+				IFNULL(S_INJURY_PERS_COMPLE,0)+
+				IFNULL(S_UNEMP_PERS_COMPLE,0)+
+				IFNULL(S_ANNUITY_PERS_COMPLE,0)+
+				IFNULL(S_OVP_PERS_COMPLE,0)+
+				IFNULL(S_SP_MEDI_PERS_COMPLE,0)
+			) as pers_comple,
+			@b1+@b2+@b3+@b4+@b5+@b6+@b7+@b8 as pers_total,
+			
+			<!-- #上交财务 -->
+			0 as comp_handin,
+			0 as pers_handin,
+			0 as total_handin
+			
+		from
+		ch_social_info
+		where SOCIAL_YMONTH &gt;= '${year}-01' and SOCIAL_YMONTH &lt;= '${year}-12' and status=0
+		<if test="modalitys != null">
+			and WK_MODALITY_CN in 
+			<foreach collection="modalitys" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+		</if>
+		group by SOCIAL_YMONTH with rollup
+	</select>
+	
+	
+	<!-- 社保计划表 -->
+	<select id="st4socialplan" resultType="java.util.Map" parameterType="com.hdfs.olo.olo_web.social.model.ChSocialInfoExtModel">
+		select 
+			IFNULL(CARD_NO,'合计') as card_no,
+			<choose>
+				<when test="model.startMonth != null">
+					'${model.startMonth}' as start_time,
+				</when>
+				<otherwise>
+					'-' as start_time,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="model.endMonth != null">
+					'${model.endMonth}' as end_time,
+				</when>
+				<otherwise>
+					'-' as end_time,
+				</otherwise>
+			</choose>
+			(select name from ch_social_info where card_no=s.card_no and status = 0 limit 1) as name,
+			IFNULL((select WORK_AREA_CN from ch_social_info where card_no=s.card_no and status = 0 limit 1),'-') as work_area_cn,
+			IFNULL((select HOS_DEPART_1LEVEL_CN from ch_social_info where card_no=s.card_no and status = 0 limit 1),'-') as hos_depart_1level_cn,
+			IFNULL((select HOS_DEPART_2LEVEL_CN from ch_social_info where card_no=s.card_no and status = 0 limit 1),'-') as hos_depart_2level_cn,
+			1 as size,
+			
+			<!-- #单位应缴金额 -->
+			sum(IFNULL(S_PEN_COMP_AMOUNT,0)) as comp_pen,
+			sum(IFNULL(S_MEDI_COMP_AMOUNT,0)) as comp_medi,
+			sum(IFNULL(S_INJURY_COMP_AMOUNT,0)) as comp_injury,
+			sum(IFNULL(S_UNEMP_COMP_AMOUNT,0)) as comp_unemp,
+			<!-- sum(IFNULL(S_ANNUITY_COMP_AMOUNT,0)) as comp_annuity, -->
+			sum(IFNULL(S_OVP_COMP_AMOUNT,0)) as comp_ovp,
+			sum(IFNULL(S_SP_MEDI_COMP_AMOUNT,0)) as comp_spmedi,
+			0 as comp_serious,
+			
+			<!-- #个人应缴金额 -->
+			sum(IFNULL(S_PEN_PERS_AMOUNT,0)) as pers_pen,
+			sum(IFNULL(S_MEDI_PERS_AMOUNT,0)) as pers_medi,
+			sum(IFNULL(S_INJURY_PERS_AMOUNT,0)) as pers_injury,
+			sum(IFNULL(S_UNEMP_PERS_AMOUNT,0)) as pers_unemp,
+			<!-- sum(IFNULL(S_ANNUITY_PERS_AMOUNT,0)) as pers_annuity, -->
+			sum(IFNULL(S_OVP_PERS_AMOUNT,0)) as pers_ovp,
+			sum(IFNULL(S_SP_MEDI_PERS_AMOUNT,0)) as pers_spmedi,
+			0 as pers_serious,
+			
+			<!-- #单位实缴金额 -->
+			sum(IFNULL(S_PEN_COMP_RECAP_AMOUNT,0)) as comp_recap_pen,
+			sum(IFNULL(S_MEDI_COMP_RECAP_AMOUNT,0)) as comp_recap_medi,
+			sum(IFNULL(S_INJURY_COMP_RECAP_AMOUNT,0)) as comp_recap_injury,
+			sum(IFNULL(S_UNEMP_COMP_RECAP_AMOUNT,0)) as comp_recap_unemp,
+			<!-- sum(IFNULL(S_ANNUITY_COMP_RECAP_AMOUNT,0)) as comp_recap_annuity, -->
+			sum(IFNULL(S_OVP_COMP_RECAP_AMOUNT,0)) as comp_recap_ovp,
+			sum(IFNULL(S_SP_MEDI_COMP_RECAP_AMOUNT,0)) as comp_recap_spmedi,
+			0 as comp_recap_serious,
+			
+			<!-- #个人实缴金额 -->
+			sum(IFNULL(S_PEN_PERS_RECAP_AMOUNT,0)) as pers_recap_pen,
+			sum(IFNULL(S_MEDI_PERS_RECAP_AMOUNT,0)) as pers_recap_medi,
+			sum(IFNULL(S_INJURY_PERS_RECAP_AMOUNT,0)) as pers_recap_injury,
+			sum(IFNULL(S_UNEMP_PERS_RECAP_AMOUNT,0)) as pers_recap_unemp,
+			<!-- sum(IFNULL(S_ANNUITY_PERS_RECAP_AMOUNT,0)) as pers_recap_annuity, -->
+			sum(IFNULL(S_OVP_PERS_RECAP_AMOUNT,0)) as pers_recap_ovp,
+			sum(IFNULL(S_SP_MEDI_PERS_RECAP_AMOUNT,0)) as pers_recap_spmedi,
+			0 as pers_recap_serious
+			
+		from ch_social_info s
+		where status = 0
+			<if test="model.name != null and model.name !=''">
+				<![CDATA[ and name = #{model.name} ]]>
+			</if>
+			<if test="model.cardNo != null and model.cardNo !=''">
+				<![CDATA[ and card_no = #{model.cardNo} ]]>
+			</if>
+			<if test = "model.startMonth != null and model.startMonth != ''">
+				<![CDATA[ and SOCIAL_YMONTH >= #{model.startMonth} ]]>
+			</if>
+			<if test = "model.endMonth != null and model.endMonth != ''">
+				<![CDATA[ and SOCIAL_YMONTH <= #{model.endMonth} ]]>
+			</if>
+			<if test = "model.wkModalityCns != null">
+				and WK_MODALITY_CN in 
+				<foreach collection="model.wkModalityCns" open="(" separator="," close=")" item="item">
+					#{item}
+				</foreach>
+			</if>
+			<if test = "model.wkAreasCns != null">
+				and WORK_AREA_CN in 
+				<foreach collection="model.wkAreasCns" open="(" separator="," close=")" item="item">
+					#{item}
+				</foreach>
+			</if>
+			<if test = "model.hosDepart1levelCns != null">
+				and HOS_DEPART_1LEVEL_CN in 
+				<foreach collection="model.hosDepart1levelCns" open="(" separator="," close=")" item="item">
+					#{item}
+				</foreach>
+			</if>
+			<if test = "model.hosDepart2levelCns != null">
+				and HOS_DEPART_2LEVEL_CN in 
+				<foreach collection="model.hosDepart2levelCns" open="(" separator="," close=")" item="item">
+					#{item}
+				</foreach>
+			</if>
+		group by CARD_NO with rollup
+	</select>
+	
+	<!-- 用工形式应缴汇总 -->
+	<select id="st4Modality" resultType="java.util.Map" parameterType="com.hdfs.olo.olo_web.social.model.ChSocialInfoExtModel">
+		select 
+			IFNULL(SOCIAL_YMONTH,'TOTAL') as social_ymonth,
+			
+			<!-- #总计 -->
+			count(1) as size,
+			sum(
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			) as base,
+			@a:=
+			sum(
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			) as comp,
+			@b:=
+			sum(
+					IFNULL(S_PEN_COMP_RECAP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_RECAP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_RECAP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_RECAP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_RECAP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_RECAP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_RECAP_AMOUNT,0)
+			) as comp_recap,
+			@c:=
+			sum(
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			) as pers,
+			@d:=
+			sum(
+					IFNULL(S_PEN_PERS_RECAP_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_RECAP_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_RECAP_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_RECAP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_RECAP_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_RECAP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_RECAP_AMOUNT,0)
+			) as pers_recap,
+			@e:=
+			ROUND(0,2) as serious,
+			ROUND(@a+@b+@c+@d+@e,2) as total,
+			
+			<!-- #正式 -->
+			sum(IF(WK_MODALITY_CN='总院正式' or WK_MODALITY_CN='基层正式' or null,1,0)) as size_formal,
+			sum(IF(WK_MODALITY_CN='总院正式' or WK_MODALITY_CN='基层正式' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_formal,
+			@a1:=
+			sum(IF(WK_MODALITY_CN='总院正式' or WK_MODALITY_CN='基层正式' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_formal,
+			@b1:=
+			sum(IF(WK_MODALITY_CN='总院正式' or WK_MODALITY_CN='基层正式' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_formal,
+			@c1:=
+			ROUND(0,2) as serious_formal,
+			ROUND(@a1+@b1+@c1,2) as total_formal,
+			
+			
+			<!-- #总院正式 -->
+			sum(IF(WK_MODALITY_CN='总院正式' or null,1,0)) as size_formalz,
+			sum(IF(WK_MODALITY_CN='总院正式' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_formalz,
+			@a2:=
+			sum(IF(WK_MODALITY_CN='总院正式' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_formalz,
+			@b2:=
+			sum(IF(WK_MODALITY_CN='总院正式' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_formalz,
+			@c2:=
+			ROUND(0,2) as serious_formalz,
+			ROUND(@a2+@b2+@c2,2) as total_formalz,
+			
+			
+			<!-- #基层正式 -->
+			sum(IF(WK_MODALITY_CN='基层正式' or null,1,0)) as size_formalj,
+			sum(IF(WK_MODALITY_CN='基层正式' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_formalj,
+			@a3:=
+			sum(IF(WK_MODALITY_CN='基层正式' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_formalj,
+			@b3:=
+			sum(IF(WK_MODALITY_CN='基层正式' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_formalj,
+			@c3:=
+			ROUND(0,2) as serious_formalj,
+			ROUND(@a3+@b3+@c3,2) as total_formalj,
+			
+			<!-- #正式1 -->
+			sum(IF(WK_MODALITY_CN='总院正式1' or WK_MODALITY_CN='基层正式1' or null,1,0)) as size_formal1,
+			sum(IF(WK_MODALITY_CN='总院正式1' or WK_MODALITY_CN='基层正式1' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_formal1,
+			@a4:=
+			sum(IF(WK_MODALITY_CN='总院正式1' or WK_MODALITY_CN='基层正式1' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_formal1,
+			@b4:=
+			sum(IF(WK_MODALITY_CN='总院正式1' or WK_MODALITY_CN='基层正式1' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_formal1,
+			@c4:=
+			ROUND(0,2) as serious_formal1,
+			ROUND(@a4+@b4+@c4,2) as total_formal1,
+			
+			
+			<!-- #总院正式1 -->
+			sum(IF(WK_MODALITY_CN='总院正式1' or null,1,0)) as size_formal1z,
+			sum(IF(WK_MODALITY_CN='总院正式1' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_formal1z,
+			@a5:=
+			sum(IF(WK_MODALITY_CN='总院正式1' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_formal1z,
+			@b5:=
+			sum(IF(WK_MODALITY_CN='总院正式1' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_formal1z,
+			@c5:=
+			ROUND(0,2) as serious_formal1z,
+			ROUND(@a5+@b5+@c5,2) as total_formal1z,
+			
+			
+			<!-- #基层正式1 -->
+			sum(IF(WK_MODALITY_CN='基层正式1' or null,1,0)) as size_formal1j,
+			sum(IF(WK_MODALITY_CN='基层正式1' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_formal1j,
+			@a6:=
+			sum(IF(WK_MODALITY_CN='基层正式1' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_formal1j,
+			@b6:=
+			sum(IF(WK_MODALITY_CN='基层正式1' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_formal1j,
+			@c6:=
+			ROUND(0,2) as serious_formal1j,
+			ROUND(@a6+@b6+@c6,2) as total_formal1j,
+			
+			<!-- #启日合计（启日+启日1） -->
+			sum(IF(WK_MODALITY_CN='总院启日' or WK_MODALITY_CN='总院启日1' or WK_MODALITY_CN='基层启日' or WK_MODALITY_CN='基层启日1' or null,1,0)) as size_qiri,
+			sum(IF(WK_MODALITY_CN='总院启日' or WK_MODALITY_CN='总院启日1' or WK_MODALITY_CN='基层启日' or WK_MODALITY_CN='基层启日1' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_qiri,
+			@a7:=
+			sum(IF(WK_MODALITY_CN='总院启日' or WK_MODALITY_CN='总院启日1' or WK_MODALITY_CN='基层启日' or WK_MODALITY_CN='基层启日1' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_qiri,
+			@b7:=
+			sum(IF(WK_MODALITY_CN='总院启日' or WK_MODALITY_CN='总院启日1' or WK_MODALITY_CN='基层启日' or WK_MODALITY_CN='基层启日1' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_qiri,
+			@c7:=
+			ROUND(0,2) as serious_qiri,
+			ROUND(@a7+@b7+@c7,2) as total_qiri,
+			
+			<!-- #启日小计(总院启日+基层启日) -->
+			sum(IF(WK_MODALITY_CN='总院启日' or WK_MODALITY_CN='基层启日' or null,1,0)) as size_qirix,
+			sum(IF(WK_MODALITY_CN='总院启日' or WK_MODALITY_CN='基层启日' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_qirix,
+			@a8:=
+			sum(IF(WK_MODALITY_CN='总院启日' or WK_MODALITY_CN='基层启日' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_qirix,
+			@b8:=
+			sum(IF(WK_MODALITY_CN='总院启日' or WK_MODALITY_CN='基层启日' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_qirix,
+			@c8:=
+			ROUND(0,2) as serious_qirix,
+			ROUND(@a8+@b8+@c8,2) as total_qirix,
+			
+			<!-- #总院启日 -->
+			sum(IF(WK_MODALITY_CN='总院启日' or null,1,0)) as size_qiriz,
+			sum(IF(WK_MODALITY_CN='总院启日' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_qiriz,
+			@a9:=
+			sum(IF(WK_MODALITY_CN='总院启日' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_qiriz,
+			@b9:=
+			sum(IF(WK_MODALITY_CN='总院启日' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_qiriz,
+			@c9:=
+			ROUND(0,2) as serious_qiriz,
+			ROUND(@a9+@b9+@c9,2) as total_qiriz,
+			
+			<!-- #基层启日 -->
+			sum(IF(WK_MODALITY_CN='基层启日' or null,1,0)) as size_qirij,
+			sum(IF(WK_MODALITY_CN='基层启日' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_qirij,
+			@a10:=
+			sum(IF(WK_MODALITY_CN='基层启日' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_qirij,
+			@b10:=
+			sum(IF(WK_MODALITY_CN='基层启日' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_qirij,
+			@c10:=
+			ROUND(0,2) as serious_qirij,
+			ROUND(@a10+@b10+@c10,2) as total_qirij,
+			
+			<!-- #启日1小计(总院启日1+基层启日1) -->
+			sum(IF(WK_MODALITY_CN='总院启日1' or WK_MODALITY_CN='基层启日1' or null,1,0)) as size_qiri1x,
+			sum(IF(WK_MODALITY_CN='总院启日1' or WK_MODALITY_CN='基层启日1' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_qiri1x,
+			@a11:=
+			sum(IF(WK_MODALITY_CN='总院启日1' or WK_MODALITY_CN='基层启日1' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_qiri1x,
+			@b11:=
+			sum(IF(WK_MODALITY_CN='总院启日1' or WK_MODALITY_CN='基层启日1' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_qiri1x,
+			@c11:=
+			ROUND(0,2) as serious_qiri1x,
+			ROUND(@a11+@b11+@c11,2) as total_qiri1x,
+			
+			<!-- #总院启日1 -->
+			sum(IF(WK_MODALITY_CN='总院启日1' or null,1,0)) as size_qiri1z,
+			sum(IF(WK_MODALITY_CN='总院启日1' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_qiri1z,
+			@a12:=
+			sum(IF(WK_MODALITY_CN='总院启日1' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_qiri1z,
+			@b12:=
+			sum(IF(WK_MODALITY_CN='总院启日1' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_qiri1z,
+			@c12:=
+			ROUND(0,2) as serious_qiri1z,
+			ROUND(@a12+@b12+@c12,2) as total_qiri1z,
+			
+			<!-- #基层启日1 -->
+			sum(IF(WK_MODALITY_CN='基层启日1' or null,1,0)) as size_qiri1j,
+			sum(IF(WK_MODALITY_CN='基层启日1' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_qiri1j,
+			@a13:=
+			sum(IF(WK_MODALITY_CN='基层启日1' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_qiri1j,
+			@b13:=
+			sum(IF(WK_MODALITY_CN='基层启日1' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_qiri1j,
+			@c13:=
+			ROUND(0,2) as serious_qiri1j,
+			ROUND(@a13+@b13+@c13,2) as total_qiri1j,
+			
+			<!-- #众鑫合计(总院众鑫+基层众鑫) -->
+			sum(IF(WK_MODALITY_CN='总院众鑫' or WK_MODALITY_CN='基层众鑫' or null,1,0)) as size_zhongx,
+			sum(IF(WK_MODALITY_CN='总院众鑫' or WK_MODALITY_CN='基层众鑫' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_zhongx,
+			@a14:=
+			sum(IF(WK_MODALITY_CN='总院众鑫' or WK_MODALITY_CN='基层众鑫' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_zhongx,
+			@b14:=
+			sum(IF(WK_MODALITY_CN='总院众鑫' or WK_MODALITY_CN='基层众鑫' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_zhongx,
+			@c14:=
+			ROUND(0,2) as serious_zhongx,
+			ROUND(@a14+@b14+@c14,2) as total_zhongx,
+			
+			<!-- #总院众鑫 -->
+			sum(IF(WK_MODALITY_CN='总院众鑫' or null,1,0)) as size_zhongxz,
+			sum(IF(WK_MODALITY_CN='总院众鑫' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_zhongxz,
+			@a15:=
+			sum(IF(WK_MODALITY_CN='总院众鑫' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_zhongxz,
+			@b15:=
+			sum(IF(WK_MODALITY_CN='总院众鑫' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_zhongxz,
+			@c15:=
+			ROUND(0,2) as serious_zhongxz,
+			ROUND(@a15+@b15+@c15,2) as total_zhongxz,
+			
+			<!-- #基层众鑫 -->
+			sum(IF(WK_MODALITY_CN='基层众鑫' or null,1,0)) as size_zhongxj,
+			sum(IF(WK_MODALITY_CN='基层众鑫' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_zhongxj,
+			@a16:=
+			sum(IF(WK_MODALITY_CN='基层众鑫' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_zhongxj,
+			@b16:=
+			sum(IF(WK_MODALITY_CN='基层众鑫' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_zhongxj,
+			@c16:=
+			ROUND(0,2) as serious_zhongxj,
+			ROUND(@a16+@b16+@c16,2) as total_zhongxj,
+			
+			<!-- #基层合同(基层合同众鑫+基层合同启日) -->
+			sum(IF(WK_MODALITY_CN='基层合同众鑫' or WK_MODALITY_CN='基层合同启日' or null,1,0)) as size_jcht,
+			sum(IF(WK_MODALITY_CN='基层合同众鑫' or WK_MODALITY_CN='基层合同启日' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_jcht,
+			@a17:=
+			sum(IF(WK_MODALITY_CN='基层合同众鑫' or WK_MODALITY_CN='基层合同启日' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_jcht,
+			@b17:=
+			sum(IF(WK_MODALITY_CN='基层合同众鑫' or WK_MODALITY_CN='基层合同启日' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_jcht,
+			@c17:=
+			ROUND(0,2) as serious_jcht,
+			ROUND(@a17+@b17+@c17,2) as total_jcht,
+			
+			<!-- #基层合同众鑫 -->
+			sum(IF(WK_MODALITY_CN='基层合同众鑫' or null,1,0)) as size_jchtzx,
+			sum(IF(WK_MODALITY_CN='基层合同众鑫' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_jchtzx,
+			@a18:=
+			sum(IF(WK_MODALITY_CN='基层合同众鑫' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_jchtzx,
+			@b18:=
+			sum(IF(WK_MODALITY_CN='基层合同众鑫'  or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_jchtzx,
+			@c18:=
+			ROUND(0,2) as serious_jchtzx,
+			ROUND(@a18+@b18+@c18,2) as total_jchtzx,
+			
+			<!-- #基层合同启日 -->
+			sum(IF(WK_MODALITY_CN='基层合同启日' or null,1,0)) as size_jchtqr,
+			sum(IF(WK_MODALITY_CN='基层合同启日' or null,
+					IFNULL(S_PEN_BASE,0)+
+					IFNULL(S_MEDI_BASE,0)+
+					IFNULL(S_INJURY_BASE,0)+
+					IFNULL(S_UNEMP_BASE,0)+
+					IFNULL(S_ANNUITY_BASE,0)+
+					IFNULL(S_OVP_BASE,0)+
+					IFNULL(S_SP_MEDI_BASE,0)
+			,0)) as base_jchtqr,
+			@a19:=
+			sum(IF(WK_MODALITY_CN='基层合同启日' or null,
+					IFNULL(S_PEN_COMP_AMOUNT,0)+
+					IFNULL(S_MEDI_COMP_AMOUNT,0)+
+					IFNULL(S_INJURY_COMP_AMOUNT,0)+
+					IFNULL(S_UNEMP_COMP_AMOUNT,0)+
+					IFNULL(S_ANNUITY_COMP_AMOUNT,0)+
+					IFNULL(S_OVP_COMP_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_COMP_AMOUNT,0)
+			,0)) as comp_jchtqr,
+			@b19:=
+			sum(IF(WK_MODALITY_CN='基层合同启日' or null,
+					IFNULL(S_PEN_PERS_AMOUNT,0)+
+					IFNULL(S_MEDI_PERS_AMOUNT,0)+
+					IFNULL(S_INJURY_PERS_AMOUNT,0)+
+					IFNULL(S_UNEMP_PERS_AMOUNT,0)+
+					IFNULL(S_ANNUITY_PERS_AMOUNT,0)+
+					IFNULL(S_OVP_PERS_AMOUNT,0)+
+					IFNULL(S_SP_MEDI_PERS_AMOUNT,0)
+			,0)) as pers_jchtqr,
+			@c19:=
+			ROUND(0,2) as serious_jchtqr,
+			ROUND(@a19+@b19+@c19,2) as total_jchtqr
+			
+		from ch_social_info
+		where status= 0 
+			<if test = "model.startYear != null and model.startYear != ''">
+				<![CDATA[ and SOCIAL_YMONTH >= #{model.startMonth} and SOCIAL_YMONTH <= #{model.endMonth} ]]>
+			</if>
+			<if test = "model.wkModalityCns != null">
+				and WK_MODALITY_CN in 
+				<foreach collection="model.wkModalityCns" open="(" separator="," close=")" item="item">
+					#{item}
+				</foreach>
+			</if>
+		group by SOCIAL_YMONTH
+	</select>
+</mapper>

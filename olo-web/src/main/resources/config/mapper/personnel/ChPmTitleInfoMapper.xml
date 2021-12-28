@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmTitleInfoMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmTitleInfoMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmTitleInfoModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="workerId" column="WORKER_ID" jdbcType="BIGINT"/>
+		<result property="title" column="TITLE" jdbcType="INTEGER"/>
+		<result property="titleCn" column="TITLE_CN" jdbcType="VARCHAR"/>
+		<result property="titleLevel" column="TITLE_LEVEL" jdbcType="VARCHAR"/>
+		<result property="titleLevelCn" column="TITLE_LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="titleClass" column="TITLE_CLASS" jdbcType="INTEGER"/>
+		<result property="titleClassCn" column="TITLE_CLASS_CN" jdbcType="VARCHAR"/>
+		<result property="titleMax" column="TITLE_MAX" jdbcType="INTEGER"/>
+		<result property="titleOrder" column="TITLE_ORDER" jdbcType="INTEGER"/>
+		<result property="titleCertNo" column="TITLE_CERT_NO" jdbcType="VARCHAR"/>
+		<result property="titleOnitNo" column="TITLE_ONIT_NO" jdbcType="VARCHAR"/>
+		<result property="titleHireNo" column="TITLE_HIRE_NO" jdbcType="VARCHAR"/>
+		<result property="titleHStartTime" column="TITLE_H_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="titleHEndTime" column="TITLE_H_END_TIME" jdbcType="TIMESTAMP"/>
+		<result property="titleHCycle" column="TITLE_H_CYCLE" jdbcType="INTEGER"/>
+		<result property="titleOth" column="TITLE_OTH" jdbcType="INTEGER"/>
+		<result property="titleOthCn" column="TITLE_OTH_CN" jdbcType="VARCHAR"/>
+		<result property="titleOthGotTime" column="TITLE_OTH_GOT_TIME" jdbcType="TIMESTAMP"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmTitleInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_title_info record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_title_info record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 WORKER_ID, 
+				 TITLE, 
+				 TITLE_CN, 
+				 TITLE_LEVEL, 
+				 TITLE_LEVEL_CN, 
+				 TITLE_CLASS, 
+				 TITLE_CLASS_CN, 
+				 TITLE_MAX, 
+				 TITLE_ORDER, 
+				 TITLE_CERT_NO, 
+				 TITLE_ONIT_NO, 
+				 TITLE_HIRE_NO, 
+				 TITLE_H_START_TIME, 
+				 TITLE_H_END_TIME, 
+				 TITLE_H_CYCLE, 
+				 TITLE_OTH, 
+				 TITLE_OTH_CN, 
+				 TITLE_OTH_GOT_TIME, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null and entity.id != ''">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.workerId != null and entity.workerId != ''">
+					<![CDATA[ and record.WORKER_ID  = #{entity.workerId} ]]>
+				</if>
+				<if test = "entity.title != null and entity.title != ''">
+					<![CDATA[ and record.TITLE  = #{entity.title} ]]>
+				</if>
+				<if test = "entity.titleCn != null and entity.titleCn != ''">
+					<![CDATA[ and record.TITLE_CN  = #{entity.titleCn} ]]>
+				</if>
+				<if test = "entity.titleLevel != null and entity.titleLevel != ''">
+					<![CDATA[ and record.TITLE_LEVEL  = #{entity.titleLevel} ]]>
+				</if>
+				<if test = "entity.titleLevelCn != null and entity.titleLevelCn != ''">
+					<![CDATA[ and record.TITLE_LEVEL_CN  = #{entity.titleLevelCn} ]]>
+				</if>
+				<if test = "entity.titleClass != null and entity.titleClass != ''">
+					<![CDATA[ and record.TITLE_CLASS  = #{entity.titleClass} ]]>
+				</if>
+				<if test = "entity.titleClassCn != null and entity.titleClassCn != ''">
+					<![CDATA[ and record.TITLE_CLASS_CN  = #{entity.titleClassCn} ]]>
+				</if>
+				<if test = "entity.titleMax != null and entity.titleMax != ''">
+					<![CDATA[ and record.TITLE_MAX  = #{entity.titleMax} ]]>
+				</if>
+				<if test = "entity.titleOrder != null and entity.titleOrder != ''">
+					<![CDATA[ and record.TITLE_ORDER  = #{entity.titleOrder} ]]>
+				</if>
+				<if test = "entity.titleCertNo != null and entity.titleCertNo != ''">
+					<![CDATA[ and record.TITLE_CERT_NO  = #{entity.titleCertNo} ]]>
+				</if>
+				<if test = "entity.titleOnitNo != null and entity.titleOnitNo != ''">
+					<![CDATA[ and record.TITLE_ONIT_NO  = #{entity.titleOnitNo} ]]>
+				</if>
+				<if test = "entity.titleHireNo != null and entity.titleHireNo != ''">
+					<![CDATA[ and record.TITLE_HIRE_NO  = #{entity.titleHireNo} ]]>
+				</if>
+				<if test = "entity.titleHStartTime != null and entity.titleHStartTime != ''">
+					<![CDATA[ and record.TITLE_H_START_TIME  = #{entity.titleHStartTime} ]]>
+				</if>
+				<if test = "entity.titleHEndTime != null and entity.titleHEndTime != ''">
+					<![CDATA[ and record.TITLE_H_END_TIME  = #{entity.titleHEndTime} ]]>
+				</if>
+				<if test = "entity.titleHCycle != null and entity.titleHCycle != ''">
+					<![CDATA[ and record.TITLE_H_CYCLE  = #{entity.titleHCycle} ]]>
+				</if>
+				<if test = "entity.titleOth != null and entity.titleOth != ''">
+					<![CDATA[ and record.TITLE_OTH  = #{entity.titleOth} ]]>
+				</if>
+				<if test = "entity.titleOthCn != null and entity.titleOthCn != ''">
+					<![CDATA[ and record.TITLE_OTH_CN  = #{entity.titleOthCn} ]]>
+				</if>
+				<if test = "entity.titleOthGotTime != null and entity.titleOthGotTime != ''">
+					<![CDATA[ and record.TITLE_OTH_GOT_TIME  = #{entity.titleOthGotTime} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null and entity.createTime != ''">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null and entity.updateTime != ''">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmTitleInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_title_info record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmTitleInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_title_info record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="workerId != null">WORKER_ID,</if>
+			<if test="title != null">TITLE,</if>
+			<if test="titleCn != null">TITLE_CN,</if>
+			<if test="titleLevel != null">TITLE_LEVEL,</if>
+			<if test="titleLevelCn != null">TITLE_LEVEL_CN,</if>
+			<if test="titleClass != null">TITLE_CLASS,</if>
+			<if test="titleClassCn != null">TITLE_CLASS_CN,</if>
+			<if test="titleMax != null">TITLE_MAX,</if>
+			<if test="titleOrder != null">TITLE_ORDER,</if>
+			<if test="titleCertNo != null">TITLE_CERT_NO,</if>
+			<if test="titleOnitNo != null">TITLE_ONIT_NO,</if>
+			<if test="titleHireNo != null">TITLE_HIRE_NO,</if>
+			<if test="titleHStartTime != null">TITLE_H_START_TIME,</if>
+			<if test="titleHEndTime != null">TITLE_H_END_TIME,</if>
+			<if test="titleHCycle != null">TITLE_H_CYCLE,</if>
+			<if test="titleOth != null">TITLE_OTH,</if>
+			<if test="titleOthCn != null">TITLE_OTH_CN,</if>
+			<if test="titleOthGotTime != null">TITLE_OTH_GOT_TIME,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{workerId,jdbcType=BIGINT},</if>
+			<if test="title != null">#{title,jdbcType=INTEGER},</if>
+			<if test="titleCn != null">#{titleCn,jdbcType=VARCHAR},</if>
+			<if test="titleLevel != null">#{titleLevel,jdbcType=VARCHAR},</if>
+			<if test="titleLevelCn != null">#{titleLevelCn,jdbcType=VARCHAR},</if>
+			<if test="titleClass != null">#{titleClass,jdbcType=INTEGER},</if>
+			<if test="titleClassCn != null">#{titleClassCn,jdbcType=VARCHAR},</if>
+			<if test="titleMax != null">#{titleMax,jdbcType=INTEGER},</if>
+			<if test="titleOrder != null">#{titleOrder,jdbcType=INTEGER},</if>
+			<if test="titleCertNo != null">#{titleCertNo,jdbcType=VARCHAR},</if>
+			<if test="titleOnitNo != null">#{titleOnitNo,jdbcType=VARCHAR},</if>
+			<if test="titleHireNo != null">#{titleHireNo,jdbcType=VARCHAR},</if>
+			<if test="titleHStartTime != null">#{titleHStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="titleHEndTime != null">#{titleHEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="titleHCycle != null">#{titleHCycle,jdbcType=INTEGER},</if>
+			<if test="titleOth != null">#{titleOth,jdbcType=INTEGER},</if>
+			<if test="titleOthCn != null">#{titleOthCn,jdbcType=VARCHAR},</if>
+			<if test="titleOthGotTime != null">#{titleOthGotTime,jdbcType=TIMESTAMP},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{item.id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{item.workerId,jdbcType=BIGINT},</if>
+			<if test="title != null">#{item.title,jdbcType=INTEGER},</if>
+			<if test="titleCn != null">#{item.titleCn,jdbcType=VARCHAR},</if>
+			<if test="titleLevel != null">#{item.titleLevel,jdbcType=VARCHAR},</if>
+			<if test="titleLevelCn != null">#{item.titleLevelCn,jdbcType=VARCHAR},</if>
+			<if test="titleClass != null">#{item.titleClass,jdbcType=INTEGER},</if>
+			<if test="titleClassCn != null">#{item.titleClassCn,jdbcType=VARCHAR},</if>
+			<if test="titleMax != null">#{item.titleMax,jdbcType=INTEGER},</if>
+			<if test="titleOrder != null">#{item.titleOrder,jdbcType=INTEGER},</if>
+			<if test="titleCertNo != null">#{item.titleCertNo,jdbcType=VARCHAR},</if>
+			<if test="titleOnitNo != null">#{item.titleOnitNo,jdbcType=VARCHAR},</if>
+			<if test="titleHireNo != null">#{item.titleHireNo,jdbcType=VARCHAR},</if>
+			<if test="titleHStartTime != null">#{item.titleHStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="titleHEndTime != null">#{item.titleHEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="titleHCycle != null">#{item.titleHCycle,jdbcType=INTEGER},</if>
+			<if test="titleOth != null">#{item.titleOth,jdbcType=INTEGER},</if>
+			<if test="titleOthCn != null">#{item.titleOthCn,jdbcType=VARCHAR},</if>
+			<if test="titleOthGotTime != null">#{item.titleOthGotTime,jdbcType=TIMESTAMP},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmTitleInfoModel">
+		INSERT INTO ch_pm_title_info(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_pm_title_info
+        (
+        	WORKER_ID,
+			TITLE,
+			TITLE_CN,
+			TITLE_LEVEL,
+			TITLE_LEVEL_CN,
+			TITLE_CLASS,
+			TITLE_CLASS_CN,
+			TITLE_MAX,
+			TITLE_ORDER,
+			TITLE_CERT_NO,
+			TITLE_ONIT_NO,
+			TITLE_HIRE_NO,
+			TITLE_H_START_TIME,
+			TITLE_H_END_TIME,
+			TITLE_H_CYCLE,
+			TITLE_OTH,
+			TITLE_OTH_CN,
+			TITLE_OTH_GOT_TIME,
+			STATUS,
+			REMARK,
+			CREATE_TIME,
+			UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            #{item.workerId,jdbcType=BIGINT},
+			#{item.title,jdbcType=INTEGER},
+			#{item.titleCn,jdbcType=VARCHAR},
+			#{item.titleLevel,jdbcType=VARCHAR},
+			#{item.titleLevelCn,jdbcType=VARCHAR},
+			#{item.titleClass,jdbcType=INTEGER},
+			#{item.titleClassCn,jdbcType=VARCHAR},
+			#{item.titleMax,jdbcType=INTEGER},
+			#{item.titleOrder,jdbcType=INTEGER},
+			#{item.titleCertNo,jdbcType=VARCHAR},
+			#{item.titleOnitNo,jdbcType=VARCHAR},
+			#{item.titleHireNo,jdbcType=VARCHAR},
+			#{item.titleHStartTime,jdbcType=TIMESTAMP},
+			#{item.titleHEndTime,jdbcType=TIMESTAMP},
+			#{item.titleHCycle,jdbcType=INTEGER},
+			#{item.titleOth,jdbcType=INTEGER},
+			#{item.titleOthCn,jdbcType=VARCHAR},
+			#{item.titleOthGotTime,jdbcType=TIMESTAMP},
+			#{item.status,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmTitleInfoModel">
+		UPDATE ch_pm_title_info record 
+		<set>
+			<if test = "id != null ">
+				record.ID = #{id,jdbcType=BIGINT},
+			</if>
+			<if test = "workerId != null ">
+				record.WORKER_ID = #{workerId,jdbcType=BIGINT},
+			</if>
+			<if test = "title != null ">
+				record.TITLE = #{title,jdbcType=INTEGER},
+			</if>
+			<if test = "titleCn != null ">
+				record.TITLE_CN = #{titleCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "titleLevel != null ">
+				record.TITLE_LEVEL = #{titleLevel,jdbcType=VARCHAR},
+			</if>
+			<if test = "titleLevelCn != null ">
+				record.TITLE_LEVEL_CN = #{titleLevelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "titleClass != null ">
+				record.TITLE_CLASS = #{titleClass,jdbcType=INTEGER},
+			</if>
+			<if test = "titleClassCn != null ">
+				record.TITLE_CLASS_CN = #{titleClassCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "titleMax != null ">
+				record.TITLE_MAX = #{titleMax,jdbcType=INTEGER},
+			</if>
+			<if test = "titleOrder != null ">
+				record.TITLE_ORDER = #{titleOrder,jdbcType=INTEGER},
+			</if>
+			<if test = "titleCertNo != null ">
+				record.TITLE_CERT_NO = #{titleCertNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "titleOnitNo != null ">
+				record.TITLE_ONIT_NO = #{titleOnitNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "titleHireNo != null ">
+				record.TITLE_HIRE_NO = #{titleHireNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "titleHStartTime != null ">
+				record.TITLE_H_START_TIME = #{titleHStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "titleHEndTime != null ">
+				record.TITLE_H_END_TIME = #{titleHEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "titleHCycle != null ">
+				record.TITLE_H_CYCLE = #{titleHCycle,jdbcType=INTEGER},
+			</if>
+			<if test = "titleOth != null ">
+				record.TITLE_OTH = #{titleOth,jdbcType=INTEGER},
+			</if>
+			<if test = "titleOthCn != null ">
+				record.TITLE_OTH_CN = #{titleOthCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "titleOthGotTime != null ">
+				record.TITLE_OTH_GOT_TIME = #{titleOthGotTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+				record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_title_info 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_title_info 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_title_info  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_title_info  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	
+	<!-- 查询所有需要做排序的职工编号列表 -->
+	<select id="queryAllWkIds4NeedSort" resultType="java.lang.Long">
+		select distinct worker_id from ch_pm_title_info where status=0 and title_order is null
+	</select>
+	
+	<!-- 根据职工编号对该职工的职称信息进行排序 -->
+	<update id="synTitleInfoSortVal" parameterType="java.lang.Long">
+		update 
+		ch_pm_title_info e,
+		(
+			  SELECT
+					( @i := @i + 1 ) sort,
+					id,
+					TITLE_LEVEL
+			  FROM
+			  <!-- ( SELECT * FROM ch_pm_title_info where worker_id=#{wkId} ORDER BY EDU_LEV asc ) sort, -->
+			  ( SELECT * FROM ch_pm_title_info where worker_id=#{wkId} and status=0 ORDER BY TITLE_MAX desc,TITLE_LEVEL asc ) sort,
+			  ( SELECT @i := 0 ) AS i 
+		) t
+		set e.TITLE_ORDER = t.sort
+		WHERE e.id=t.id AND e.worker_id = #{wkId} and e.status=0
+	</update>
+</mapper>

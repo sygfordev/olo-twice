@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 常用标签使用方式 -->
+<!-- 
+1、trim 有四个属性
+2、prefix，suffix 表示在trim标签包裹的部分的前面或者后面添加内容（注意：是没有prefixOverrides，suffixOverrides的情况下）
+3、如果有prefixOverrides，suffixOverrides 表示**覆盖**Overrides中的内容。
+4、如果只有prefixOverrides，suffixOverrides 表示删除。
+ -->
+<mapper namespace="com.hdfs.olo.olo_web.central.mapper.ComTabLogMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="comTabLogMapper" type="com.hdfs.olo.olo_web.central.model.ComTabLogModel">
+		<id property="logId" column="LOG_ID" jdbcType="BIGINT"/>
+		<result property="branchId" column="BRANCH_ID" jdbcType="BIGINT"/>
+		<result property="branchName" column="BRANCH_NAME" jdbcType="VARCHAR"/>
+		<result property="userId" column="USER_ID" jdbcType="BIGINT"/>
+		<result property="userName" column="USER_NAME" jdbcType="VARCHAR"/>
+		<result property="logModuleId" column="LOG_MODULE_ID" jdbcType="VARCHAR"/>
+		<result property="logModuleName" column="LOG_MODULE_NAME" jdbcType="VARCHAR"/>
+		<result property="logIp" column="LOG_IP" jdbcType="VARCHAR"/>
+		<result property="logMac" column="LOG_MAC" jdbcType="VARCHAR"/>
+		<result property="logLevel" column="LOG_LEVEL" jdbcType="INTEGER"/>
+		<result property="status" column="STATUS" jdbcType="VARCHAR"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 查询数量公共sql -->
+	<sql id="count_Tail">
+		select count(1) from com_tab_log record
+	</sql>
+	
+	<!-- 分页公共sql -->
+	<sql id="pagination_tail">
+	  limit #{page.pageOffset} , #{page.pageSize}
+	</sql>
+
+	<!-- 查询字段公共sql -->
+	<sql id="selectAllColumns">
+	    SELECT 
+	    <if test="queryFields != null ">
+	 	     <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="item" index="index">
+		          ${item},
+		        </foreach>
+		      </trim> 	
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 LOG_ID, 
+				 BRANCH_ID, 
+				 BRANCH_NAME, 
+				 USER_ID, 
+				 USER_NAME, 
+				 LOG_MODULE_ID, 
+				 LOG_MODULE_NAME, 
+				 LOG_IP, 
+				 LOG_MAC, 
+				 LOG_LEVEL, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	     FROM com_tab_log record
+	</sql>
+	
+	<sql id="where_fragement">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.logId != null">
+					<![CDATA[ and record.LOG_ID  = #{entity.logId} ]]>
+				</if>
+				<if test = "entity.branchId != null">
+					<![CDATA[ and record.BRANCH_ID  = #{entity.branchId} ]]>
+				</if>
+				<if test = "entity.branchName != null and entity.branchName != ''">
+					<![CDATA[ and record.BRANCH_NAME  = #{entity.branchName} ]]>
+				</if>
+				<if test = "entity.userId != null">
+					<![CDATA[ and record.USER_ID  = #{entity.userId} ]]>
+				</if>
+				<if test = "entity.userName != null and entity.userName != ''">
+					<![CDATA[ and record.USER_NAME  = #{entity.userName} ]]>
+				</if>
+				<if test = "entity.logModuleId != null and entity.logModuleId != ''">
+					<![CDATA[ and record.LOG_MODULE_ID  = #{entity.logModuleId} ]]>
+				</if>
+				<if test = "entity.logModuleName != null and entity.logModuleName != ''">
+					<![CDATA[ and record.LOG_MODULE_NAME  = #{entity.logModuleName} ]]>
+				</if>
+				<if test = "entity.logIp != null and entity.logIp != ''">
+					<![CDATA[ and record.LOG_IP  = #{entity.logIp} ]]>
+				</if>
+				<if test = "entity.logMac != null and entity.logMac != ''">
+					<![CDATA[ and record.LOG_MAC  = #{entity.logMac} ]]>
+				</if>
+				<if test = "entity.logLevel != null">
+					<![CDATA[ and record.LOG_LEVEL  = #{entity.logLevel} ]]>
+				</if>
+				<if test = "entity.status != null and entity.status != ''">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="time_sort">
+		order by create_time desc
+	</sql>
+
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="comTabLogMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+		<if test="page!=null">
+			<include refid="pagination_tail" />
+		</if>
+		
+	</select>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="comTabLogMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="count_Tail"></include>
+		<include refid="where_fragement"></include>
+	</select>
+
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="comTabLogMapper" >
+		<include refid="selectAllColumns"/>
+		 where 
+		 record.LOG_ID = #{id}
+	</select>
+	
+	<!-- 新增列处理 -->
+	<sql id="sql_insert_columns">
+		<trim suffixOverrides=",">
+			<if test="branchId != null">BRANCH_ID,</if>
+			<if test="branchName != null and branchName != ''">BRANCH_NAME,</if>
+			<if test="userId != null">USER_ID,</if>
+			<if test="userName != null and userName != ''">USER_NAME,</if>
+			<if test="logModuleId != null and logModuleId != ''">LOG_MODULE_ID,</if>
+			<if test="logModuleName != null and logModuleName != ''">LOG_MODULE_NAME,</if>
+			<if test="logIp != null and logIp != ''">LOG_IP,</if>
+			<if test="logMac != null and logMac != ''">LOG_MAC,</if>
+			<if test="logLevel != null">LOG_LEVEL,</if>
+			<if test="status != null and status != ''">STATUS,</if>
+			<if test="remark != null and remark != ''">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+
+	<sql id="sql_insert_properties">
+		<trim suffixOverrides=",">
+			<if test="branchId != null">#{branchId,jdbcType=BIGINT},</if>
+			<if test="branchName != null and branchName != ''">#{branchName,jdbcType=VARCHAR},</if>
+			<if test="userId != null">#{userId,jdbcType=BIGINT},</if>
+			<if test="userName != null and userName != ''">#{userName,jdbcType=VARCHAR},</if>
+			<if test="logModuleId != null and logModuleId != ''">#{logModuleId,jdbcType=VARCHAR},</if>
+			<if test="logModuleName != null and logModuleName != ''">#{logModuleName,jdbcType=VARCHAR},</if>
+			<if test="logIp != null and logIp != ''">#{logIp,jdbcType=VARCHAR},</if>
+			<if test="logMac != null and logMac != ''">#{logMac,jdbcType=VARCHAR},</if>
+			<if test="logLevel != null">#{logLevel,jdbcType=INTEGER},</if>
+			<if test="status != null and status != ''">#{status,jdbcType=VARCHAR},</if>
+			<if test="remark != null and remark != ''">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增 -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.central.model.ComTabLogModel" useGeneratedKeys="true" keyProperty="logId" keyColumn="LOG_ID">
+		insert into com_tab_log(
+			<include refid="sql_insert_columns"/>
+		)values(
+			<include refid="sql_insert_properties"/>
+		)
+	</insert>
+	
+	<!-- 批量添加数据，并返回主键字段 -->
+	<insert id="insertBatch" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
+        insert into com_tab_log
+        (
+        	<trim suffixOverrides=",">
+				BRANCH_ID,
+				BRANCH_NAME,
+				USER_ID,
+				USER_NAME,
+				LOG_MODULE_ID,
+				LOG_MODULE_NAME,
+				LOG_IP,
+				LOG_MAC,
+				LOG_LEVEL,
+				STATUS,
+				REMARK,
+				CREATE_TIME,
+				UPDATE_TIME
+			</trim>
+        ) 
+        values
+        <foreach collection="list" separator="," item="item">
+        (
+           	<trim suffixOverrides=",">
+				#{item.branchId,jdbcType=BIGINT},
+				#{item.branchName,jdbcType=VARCHAR},
+				#{item.userId,jdbcType=BIGINT},
+				#{item.userName,jdbcType=VARCHAR},
+				#{item.logModuleId,jdbcType=VARCHAR},
+				#{item.logModuleName,jdbcType=VARCHAR},
+				#{item.logIp,jdbcType=VARCHAR},
+				#{item.logMac,jdbcType=VARCHAR},
+				#{item.logLevel,jdbcType=INTEGER},
+				#{item.status,jdbcType=VARCHAR},
+				#{item.remark,jdbcType=VARCHAR},
+				now(),
+				now(),
+			</trim>	
+        )
+        </foreach>
+	</insert>
+
+	<!-- 编辑 -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.central.model.ComTabLogModel">
+		update com_tab_log record 
+		<set>
+			<if test="branchId != null">
+				record.BRANCH_ID = #{branchId,jdbcType=BIGINT},
+			</if>
+			<if test="branchName != null and branchName != ''">
+				record.BRANCH_NAME = #{branchName,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				record.USER_ID = #{userId,jdbcType=BIGINT},
+			</if>
+			<if test="userName != null and userName != ''">
+				record.USER_NAME = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="logModuleId != null and logModuleId != ''">
+				record.LOG_MODULE_ID = #{logModuleId,jdbcType=VARCHAR},
+			</if>
+			<if test="logModuleName != null and logModuleName != ''">
+				record.LOG_MODULE_NAME = #{logModuleName,jdbcType=VARCHAR},
+			</if>
+			<if test="logIp != null and logIp != ''">
+				record.LOG_IP = #{logIp,jdbcType=VARCHAR},
+			</if>
+			<if test="logMac != null and logMac != ''">
+				record.LOG_MAC = #{logMac,jdbcType=VARCHAR},
+			</if>
+			<if test="logLevel != null">
+				record.LOG_LEVEL = #{logLevel,jdbcType=INTEGER},
+			</if>
+			<if test="status != null and status != ''">
+				record.STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null and remark != ''">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				record.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+				record.UPDATE_TIME = now()
+		</set>
+		where LOG_ID = #{logId}
+	</update>
+	
+	<!-- 单项删除 -->
+	<delete id="delById">
+		delete from com_tab_log 
+		where LOG_ID = #{id}
+	</delete>
+	
+	<delete id="delById4Logic">
+		update com_tab_log 
+		set status = '0',
+			update_time = now()
+		where LOG_ID = #{id}
+	</delete>
+	
+	<!-- 批量删除 -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		delete from com_tab_log 
+		where LOG_ID in
+		<foreach collection="list" open="(" separator="," close=")" item="ids">
+			#{ids}
+		</foreach>
+	</delete>
+
+	<delete id="delBatchByIds4Logic" parameterType="java.util.List">
+		update com_tab_log 
+		set status = '0',
+			update_time = now()
+		where LOG_ID in
+		<foreach collection="list" open="(" separator="," close=")" item="ids">
+			#{ids}
+		</foreach>
+	</delete>
+</mapper>

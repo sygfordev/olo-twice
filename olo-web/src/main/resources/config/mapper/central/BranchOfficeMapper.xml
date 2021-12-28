@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 常用标签使用方式 -->
+<!-- 
+1、trim 有四个属性
+2、prefix，suffix 表示在trim标签包裹的部分的前面或者后面添加内容（注意：是没有prefixOverrides，suffixOverrides的情况下）
+3、如果有prefixOverrides，suffixOverrides 表示**覆盖**Overrides中的内容。
+4、如果只有prefixOverrides，suffixOverrides 表示删除。
+ -->
+<mapper namespace="com.hdfs.olo.olo_web.central.mapper.BranchOfficeMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="branchOfficeMapper" type="com.hdfs.olo.olo_web.central.model.BranchOfficeModel">
+		<id property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="branchName" column="BRANCH_NAME" jdbcType="VARCHAR"/>
+		<result property="cityNo" column="CITY_NO" jdbcType="VARCHAR"/>
+		<result property="parentId" column="PARENT_ID" jdbcType="BIGINT"/>
+		<result property="contact" column="CONTACT" jdbcType="VARCHAR"/>
+		<result property="phone" column="PHONE" jdbcType="VARCHAR"/>
+		<result property="fax" column="FAX" jdbcType="VARCHAR"/>
+		<result property="email" column="EMAIL" jdbcType="VARCHAR"/>
+		<result property="address" column="ADDRESS" jdbcType="VARCHAR"/>
+		<result property="zip" column="ZIP" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="VARCHAR"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 查询数量公共sql -->
+	<sql id="count_Tail">
+		select count(1) from branch_office record
+	</sql>
+	
+	<!-- 分页公共sql -->
+	<sql id="pagination_tail">
+	  limit #{page.pageOffset} , #{page.pageSize}
+	</sql>
+
+	<!-- 查询字段公共sql -->
+	<sql id="selectAllColumns">
+	    SELECT 
+	    <if test="queryFields != null ">
+	 	     <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		      </trim> 	
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 BRANCH_NAME, 
+				 CITY_NO, 
+				 PARENT_ID, 
+				 CONTACT, 
+				 PHONE, 
+				 FAX, 
+				 EMAIL, 
+				 ADDRESS, 
+				 ZIP, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	     FROM branch_office record
+	</sql>
+	
+	<sql id="where_fragement">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.branchName != null and entity.branchName != ''">
+					<![CDATA[ and record.BRANCH_NAME  = #{entity.branchName} ]]>
+				</if>
+				<if test = "entity.cityNo != null and entity.cityNo != ''">
+					<![CDATA[ and record.CITY_NO  = #{entity.cityNo} ]]>
+				</if>
+				<if test = "entity.parentId != null">
+					<![CDATA[ and record.PARENT_ID  = #{entity.parentId} ]]>
+				</if>
+				<if test = "entity.contact != null and entity.contact != ''">
+					<![CDATA[ and record.CONTACT  = #{entity.contact} ]]>
+				</if>
+				<if test = "entity.phone != null and entity.phone != ''">
+					<![CDATA[ and record.PHONE  = #{entity.phone} ]]>
+				</if>
+				<if test = "entity.fax != null and entity.fax != ''">
+					<![CDATA[ and record.FAX  = #{entity.fax} ]]>
+				</if>
+				<if test = "entity.email != null and entity.email != ''">
+					<![CDATA[ and record.EMAIL  = #{entity.email} ]]>
+				</if>
+				<if test = "entity.address != null and entity.address != ''">
+					<![CDATA[ and record.ADDRESS  = #{entity.address} ]]>
+				</if>
+				<if test = "entity.zip != null and entity.zip != ''">
+					<![CDATA[ and record.ZIP  = #{entity.zip} ]]>
+				</if>
+				<if test = "entity.status != null and entity.status != ''">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+				<!-- <![CDATA[ and parent_id != -1 ]]> -->
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="sort4OrderBy">
+		order by id asc
+	</sql>
+
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="branchOfficeMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="sort4OrderBy" />
+		<if test="page!=null">
+			<include refid="pagination_tail" />
+		</if>
+	</select>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="branchOfficeMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="sort4OrderBy" />
+	</select>
+	
+	<!-- 根据parentIds查询组织机构-->
+	<select id="queryListByParentIds" resultMap="branchOfficeMapper" parameterType="java.util.List">
+		<include refid="selectAllColumns"/>
+		where id in 
+		<foreach collection="list" open="(" separator="," close=")" item="parentIds">
+			#{parentIds}
+		</foreach>
+		<include refid="sort4OrderBy" />
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="count_Tail"></include>
+		<include refid="where_fragement"></include>
+	</select>
+
+	<!-- 查询单个实体 -->
+	<select id="queryById" parameterType="java.util.Map" resultMap="branchOfficeMapper">
+		<include refid="selectAllColumns"/>
+		 where 
+		 record.ID = #{id}
+	</select>
+	
+	<!-- 查询单个实体-为了避免使用queryFields -->
+	<select id="queryBranchById" parameterType="java.util.Map" resultMap="branchOfficeMapper">
+		select
+			 ID, 
+			 BRANCH_NAME, 
+			 CITY_NO, 
+			 PARENT_ID, 
+			 CONTACT, 
+			 PHONE, 
+			 FAX, 
+			 EMAIL, 
+			 ADDRESS, 
+			 ZIP, 
+			 STATUS, 
+			 REMARK, 
+			 CREATE_TIME, 
+			 UPDATE_TIME 
+		from branch_office record
+		where 
+		record.ID = #{id}
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryByBranchId" resultMap="branchOfficeMapper">
+		select * from branch_office record
+		 where 
+		 record.ID = #{id}
+	</select>
+	
+	<!-- 根据组织机构id向上查找 -->
+	<select id="queryListUpById" resultMap="branchOfficeMapper">
+		SELECT T2.*
+		FROM (
+				SELECT
+					<![CDATA[@r]]> AS _id,
+					( SELECT <![CDATA[@r]]> := parent_id FROM branch_office WHERE id =_id ) AS parent_id,
+					<![CDATA[@l]]> := <![CDATA[@l]]> + 1 AS lvl
+				FROM
+					( SELECT <![CDATA[@r]]> := #{id}, <![CDATA[@l]]> := 0) vars,
+					branch_office h
+				WHERE <![CDATA[@r<>]]> 0) T1
+		JOIN branch_office T2 ON T1._id = T2.id
+		WHERE T2.id != #{id}
+		ORDER BY T1.lvl DESC
+	</select>
+	
+	<!-- 根据组织机构id向下查找 -->
+	<select id="queryListDownById" resultMap="branchOfficeMapper">
+		SELECT
+			T1.LEVEL, T2.*
+		FROM
+			(
+				SELECT
+					<![CDATA[@r]]> AS _ids,
+					(
+						SELECT
+							<![CDATA[@r]]> := GROUP_CONCAT(id)
+						FROM
+							branch_office
+						WHERE
+							FIND_IN_SET(parent_id, <![CDATA[@r]]>)
+					) AS cids,
+					<![CDATA[@l]]> := <![CDATA[@l]]> + 1 AS LEVEL
+				FROM
+					branch_office,
+					(SELECT <![CDATA[@r]]> := #{id}, <![CDATA[@l]]> := 0) b
+				WHERE
+					<![CDATA[@r]]> IS NOT NULL
+			) T1,
+			branch_office T2
+		WHERE
+			FIND_IN_SET(T2.id, T1._ids)
+			AND T2.id != #{id}
+		ORDER BY LEVEL, id
+	</select>
+	
+	<!-- 新增列处理 -->
+	<sql id="sql_add_columns">
+		<trim suffixOverrides=",">
+			<if test="branchName != null and branchName != ''">BRANCH_NAME,</if>
+			<if test="cityNo != null and cityNo != ''">CITY_NO,</if>
+			<if test="parentId != null">PARENT_ID,</if>
+			<if test="contact != null and contact != ''">CONTACT,</if>
+			<if test="phone != null and phone != ''">PHONE,</if>
+			<if test="fax != null and fax != ''">FAX,</if>
+			<if test="email != null and email != ''">EMAIL,</if>
+			<if test="address != null and address != ''">ADDRESS,</if>
+			<if test="zip != null and zip != ''">ZIP,</if>
+			<if test="status != null and status != ''">STATUS,</if>
+			<if test="remark != null and remark != ''">REMARK,</if>
+			<if test="createTime != null">CREATE_TIME,</if>
+			<if test="updateTime != null">UPDATE_TIME,</if>
+		</trim>
+	</sql>
+
+	<sql id="sql_add_properties">
+		<trim suffixOverrides=",">
+			<if test="branchName != null and branchName != ''">#{branchName,jdbcType=VARCHAR},</if>
+			<if test="cityNo != null and cityNo != ''">#{cityNo,jdbcType=VARCHAR},</if>
+			<if test="parentId != null">#{parentId,jdbcType=BIGINT},</if>
+			<if test="contact != null and contact != ''">#{contact,jdbcType=VARCHAR},</if>
+			<if test="phone != null and phone != ''">#{phone,jdbcType=VARCHAR},</if>
+			<if test="fax != null and fax != ''">#{fax,jdbcType=VARCHAR},</if>
+			<if test="email != null and email != ''">#{email,jdbcType=VARCHAR},</if>
+			<if test="address != null and address != ''">#{address,jdbcType=VARCHAR},</if>
+			<if test="zip != null and zip != ''">#{zip,jdbcType=VARCHAR},</if>
+			<if test="status != null and status != ''">#{status,jdbcType=VARCHAR},</if>
+			<if test="remark != null and remark != ''">#{remark,jdbcType=VARCHAR},</if>
+			<if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+			<if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
+		</trim>		
+	</sql>
+	
+	<!-- 新增 -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.central.model.BranchOfficeModel" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+		insert into branch_office(
+			<include refid="sql_add_columns"/>
+		)values(
+			<include refid="sql_add_properties"/>
+		)
+	</insert>
+	
+	<!-- 批量添加数据，并返回主键字段 -->
+	<insert id="insertBatch" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
+        insert into branch_office
+        (
+        	<trim suffixOverrides=",">
+				ID,
+				BRANCH_NAME,
+				CITY_NO,
+				PARENT_ID,
+				CONTACT,
+				PHONE,
+				FAX,
+				EMAIL,
+				ADDRESS,
+				ZIP,
+				STATUS,
+				REMARK,
+				CREATE_TIME,
+				UPDATE_TIME
+			</trim>
+        ) 
+        values
+        <foreach collection="list" separator="," item="item">
+            (
+            	<trim suffixOverrides=",">
+					#{item.id,jdbcType=BIGINT},
+					#{item.branchName,jdbcType=VARCHAR},
+					#{item.cityNo,jdbcType=VARCHAR},
+					#{item.parentId,jdbcType=BIGINT},
+					#{item.contact,jdbcType=VARCHAR},
+					#{item.phone,jdbcType=VARCHAR},
+					#{item.fax,jdbcType=VARCHAR},
+					#{item.email,jdbcType=VARCHAR},
+					#{item.address,jdbcType=VARCHAR},
+					#{item.zip,jdbcType=VARCHAR},
+					#{item.status,jdbcType=VARCHAR},
+					#{item.remark,jdbcType=VARCHAR},
+					#{item.createTime,jdbcType=TIMESTAMP},
+					#{item.updateTime,jdbcType=TIMESTAMP},
+				</trim>	
+            )
+        </foreach>
+	</insert>
+
+	<!-- 编辑 -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.central.model.BranchOfficeModel">
+		update branch_office record 
+		<set>
+			<if test="branchName != null and branchName != ''">
+				record.BRANCH_NAME = #{branchName,jdbcType=VARCHAR},
+			</if>
+			<if test="cityNo != null and cityNo != ''">
+				record.CITY_NO = #{cityNo,jdbcType=VARCHAR},
+			</if>
+			<if test="parentId != null">
+				record.PARENT_ID = #{parentId,jdbcType=BIGINT},
+			</if>
+			<if test="contact != null and contact != ''">
+				record.CONTACT = #{contact,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null and phone != ''">
+				record.PHONE = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="fax != null and fax != ''">
+				record.FAX = #{fax,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null and email != ''">
+				record.EMAIL = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null and address != ''">
+				record.ADDRESS = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="zip != null and zip != ''">
+				record.ZIP = #{zip,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null and status != ''">
+				record.STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null and remark != ''">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				record.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				record.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where ID = #{id}
+	</update>
+	
+	<!-- 单项删除 -->
+	<delete id="delById">
+		delete from branch_office 
+		where ID = #{id}
+	</delete>
+	
+	<delete id="delById4Logic">
+		update branch_office 
+		set status = '0'
+		where ID = #{id}
+	</delete>
+	
+	<!-- 批量删除 -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		delete from branch_office 
+		where ID in
+		<foreach collection="list" open="(" separator="," close=")" item="ids">
+			#{ids}
+		</foreach>
+	</delete>
+
+	<delete id="delBatchByIds4Logic" parameterType="java.util.List">
+		update branch_office 
+			set status = '0'
+		where ID in
+		<foreach collection="list" open="(" separator="," close=")" item="ids">
+			#{ids}
+		</foreach>
+	</delete>
+</mapper>

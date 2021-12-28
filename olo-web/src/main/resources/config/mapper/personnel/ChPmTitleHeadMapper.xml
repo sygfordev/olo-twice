@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmTitleHeadMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmTitleHeadMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmTitleHeadModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="workerId" column="WORKER_ID" jdbcType="BIGINT"/>
+		<result property="title4now" column="TITLE_4NOW" jdbcType="INTEGER"/>
+		<result property="title4nowCn" column="TITLE_4NOW_CN" jdbcType="VARCHAR"/>
+		<result property="title4nowGotTime" column="TITLE_4NOW_GOT_TIME" jdbcType="TIMESTAMP"/>
+		<result property="title4nowGotYears" column="TITLE_4NOW_GOT_YEARS" jdbcType="INTEGER"/>
+		<result property="titleClass4now" column="TITLE_CLASS_4NOW" jdbcType="INTEGER"/>
+		<result property="titleClass4nowCn" column="TITLE_CLASS_4NOW_CN" jdbcType="VARCHAR"/>
+		<result property="titleLevel4now" column="TITLE_LEVEL_4NOW" jdbcType="VARCHAR"/>
+		<result property="titleLevel4nowCn" column="TITLE_LEVEL_4NOW_CN" jdbcType="VARCHAR"/>
+		<result property="treatLevel4now" column="TREAT_LEVEL_4NOW" jdbcType="VARCHAR"/>
+		<result property="treatLevel4nowCn" column="TREAT_LEVEL_4NOW_CN" jdbcType="VARCHAR"/>
+		<result property="title4nowHStartTime" column="TITLE_4NOW_H_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="title4nowHEndTime" column="TITLE_4NOW_H_END_TIME" jdbcType="TIMESTAMP"/>
+		<result property="titleMax4now" column="TITLE_MAX_4NOW" jdbcType="INTEGER"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmTitleHeadMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_title_head record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_title_head record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 WORKER_ID, 
+				 TITLE_4NOW, 
+				 TITLE_4NOW_CN, 
+				 TITLE_4NOW_GOT_TIME, 
+				 TITLE_4NOW_GOT_YEARS, 
+				 TITLE_CLASS_4NOW, 
+				 TITLE_CLASS_4NOW_CN, 
+				 TITLE_LEVEL_4NOW, 
+				 TITLE_LEVEL_4NOW_CN, 
+				 TREAT_LEVEL_4NOW, 
+				 TREAT_LEVEL_4NOW_CN, 
+				 TITLE_4NOW_H_START_TIME, 
+				 TITLE_4NOW_H_END_TIME, 
+				 TITLE_MAX_4NOW, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null and entity.id != ''">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.workerId != null and entity.workerId != ''">
+					<![CDATA[ and record.WORKER_ID  = #{entity.workerId} ]]>
+				</if>
+				<if test = "entity.title4now != null and entity.title4now != ''">
+					<![CDATA[ and record.TITLE_4NOW  = #{entity.title4now} ]]>
+				</if>
+				<if test = "entity.title4nowCn != null and entity.title4nowCn != ''">
+					<![CDATA[ and record.TITLE_4NOW_CN  = #{entity.title4nowCn} ]]>
+				</if>
+				<if test = "entity.title4nowGotTime != null and entity.title4nowGotTime != ''">
+					<![CDATA[ and record.TITLE_4NOW_GOT_TIME  = #{entity.title4nowGotTime} ]]>
+				</if>
+				<if test = "entity.title4nowGotYears != null and entity.title4nowGotYears != ''">
+					<![CDATA[ and record.TITLE_4NOW_GOT_YEARS  = #{entity.title4nowGotYears} ]]>
+				</if>
+				<if test = "entity.titleClass4now != null and entity.titleClass4now != ''">
+					<![CDATA[ and record.TITLE_CLASS_4NOW  = #{entity.titleClass4now} ]]>
+				</if>
+				<if test = "entity.titleClass4nowCn != null and entity.titleClass4nowCn != ''">
+					<![CDATA[ and record.TITLE_CLASS_4NOW_CN  = #{entity.titleClass4nowCn} ]]>
+				</if>
+				<if test = "entity.titleLevel4now != null and entity.titleLevel4now != ''">
+					<![CDATA[ and record.TITLE_LEVEL_4NOW  = #{entity.titleLevel4now} ]]>
+				</if>
+				<if test = "entity.titleLevel4nowCn != null and entity.titleLevel4nowCn != ''">
+					<![CDATA[ and record.TITLE_LEVEL_4NOW_CN  = #{entity.titleLevel4nowCn} ]]>
+				</if>
+				<if test = "entity.treatLevel4now != null and entity.treatLevel4now != ''">
+					<![CDATA[ and record.TREAT_LEVEL_4NOW  = #{entity.treatLevel4now} ]]>
+				</if>
+				<if test = "entity.treatLevel4nowCn != null and entity.treatLevel4nowCn != ''">
+					<![CDATA[ and record.TREAT_LEVEL_4NOW_CN  = #{entity.treatLevel4nowCn} ]]>
+				</if>
+				<if test = "entity.title4nowHStartTime != null and entity.title4nowHStartTime != ''">
+					<![CDATA[ and record.TITLE_4NOW_H_START_TIME  = #{entity.title4nowHStartTime} ]]>
+				</if>
+				<if test = "entity.title4nowHEndTime != null and entity.title4nowHEndTime != ''">
+					<![CDATA[ and record.TITLE_4NOW_H_END_TIME  = #{entity.title4nowHEndTime} ]]>
+				</if>
+				<if test = "entity.titleMax4now != null and entity.titleMax4now != ''">
+					<![CDATA[ and record.TITLE_MAX_4NOW  = #{entity.titleMax4now} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null and entity.createTime != ''">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null and entity.updateTime != ''">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmTitleHeadMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_title_head record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmTitleHeadMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_title_head record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryByWkId" resultMap="chPmTitleHeadMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_title_head record
+		WHERE 
+		 record.WORKER_ID = #{wkId}
+		 and record.status =0
+		 limit 1
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="workerId != null">WORKER_ID,</if>
+			<if test="title4now != null">TITLE_4NOW,</if>
+			<if test="title4nowCn != null">TITLE_4NOW_CN,</if>
+			<if test="title4nowGotTime != null">TITLE_4NOW_GOT_TIME,</if>
+			<if test="title4nowGotYears != null">TITLE_4NOW_GOT_YEARS,</if>
+			<if test="titleClass4now != null">TITLE_CLASS_4NOW,</if>
+			<if test="titleClass4nowCn != null">TITLE_CLASS_4NOW_CN,</if>
+			<if test="titleLevel4now != null">TITLE_LEVEL_4NOW,</if>
+			<if test="titleLevel4nowCn != null">TITLE_LEVEL_4NOW_CN,</if>
+			<if test="treatLevel4now != null">TREAT_LEVEL_4NOW,</if>
+			<if test="treatLevel4nowCn != null">TREAT_LEVEL_4NOW_CN,</if>
+			<if test="title4nowHStartTime != null">TITLE_4NOW_H_START_TIME,</if>
+			<if test="title4nowHEndTime != null">TITLE_4NOW_H_END_TIME,</if>
+			<if test="titleMax4now != null">TITLE_MAX_4NOW,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{workerId,jdbcType=BIGINT},</if>
+			<if test="title4now != null">#{title4now,jdbcType=INTEGER},</if>
+			<if test="title4nowCn != null">#{title4nowCn,jdbcType=VARCHAR},</if>
+			<if test="title4nowGotTime != null">#{title4nowGotTime,jdbcType=TIMESTAMP},</if>
+			<if test="title4nowGotYears != null">#{title4nowGotYears,jdbcType=INTEGER},</if>
+			<if test="titleClass4now != null">#{titleClass4now,jdbcType=INTEGER},</if>
+			<if test="titleClass4nowCn != null">#{titleClass4nowCn,jdbcType=VARCHAR},</if>
+			<if test="titleLevel4now != null">#{titleLevel4now,jdbcType=VARCHAR},</if>
+			<if test="titleLevel4nowCn != null">#{titleLevel4nowCn,jdbcType=VARCHAR},</if>
+			<if test="treatLevel4now != null">#{treatLevel4now,jdbcType=VARCHAR},</if>
+			<if test="treatLevel4nowCn != null">#{treatLevel4nowCn,jdbcType=VARCHAR},</if>
+			<if test="title4nowHStartTime != null">#{title4nowHStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="title4nowHEndTime != null">#{title4nowHEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="titleMax4now != null">#{titleMax4now,jdbcType=INTEGER},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{item.id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{item.workerId,jdbcType=BIGINT},</if>
+			<if test="title4now != null">#{item.title4now,jdbcType=INTEGER},</if>
+			<if test="title4nowCn != null">#{item.title4nowCn,jdbcType=VARCHAR},</if>
+			<if test="title4nowGotTime != null">#{item.title4nowGotTime,jdbcType=TIMESTAMP},</if>
+			<if test="title4nowGotYears != null">#{item.title4nowGotYears,jdbcType=INTEGER},</if>
+			<if test="titleClass4now != null">#{item.titleClass4now,jdbcType=INTEGER},</if>
+			<if test="titleClass4nowCn != null">#{item.titleClass4nowCn,jdbcType=VARCHAR},</if>
+			<if test="titleLevel4now != null">#{item.titleLevel4now,jdbcType=VARCHAR},</if>
+			<if test="titleLevel4nowCn != null">#{item.titleLevel4nowCn,jdbcType=VARCHAR},</if>
+			<if test="treatLevel4now != null">#{item.treatLevel4now,jdbcType=VARCHAR},</if>
+			<if test="treatLevel4nowCn != null">#{item.treatLevel4nowCn,jdbcType=VARCHAR},</if>
+			<if test="title4nowHStartTime != null">#{item.title4nowHStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="title4nowHEndTime != null">#{item.title4nowHEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="titleMax4now != null">#{item.titleMax4now,jdbcType=INTEGER},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmTitleHeadModel">
+		INSERT INTO ch_pm_title_head(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_pm_title_head
+        (
+        	 WORKER_ID, 
+			 TITLE_4NOW, 
+			 TITLE_4NOW_CN, 
+			 TITLE_4NOW_GOT_TIME, 
+			 TITLE_4NOW_GOT_YEARS, 
+			 TITLE_CLASS_4NOW, 
+			 TITLE_CLASS_4NOW_CN, 
+			 TITLE_LEVEL_4NOW, 
+			 TITLE_LEVEL_4NOW_CN, 
+			 TREAT_LEVEL_4NOW, 
+			 TREAT_LEVEL_4NOW_CN, 
+			 TITLE_4NOW_H_START_TIME, 
+			 TITLE_4NOW_H_END_TIME, 
+			 TITLE_MAX_4NOW, 
+			 STATUS, 
+			 REMARK, 
+			 CREATE_TIME, 
+			 UPDATE_TIME 
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            #{item.workerId,jdbcType=BIGINT},
+			#{item.title4now,jdbcType=INTEGER},
+			#{item.title4nowCn,jdbcType=VARCHAR},
+			#{item.title4nowGotTime,jdbcType=TIMESTAMP},
+			#{item.title4nowGotYears,jdbcType=INTEGER},
+			#{item.titleClass4now,jdbcType=INTEGER},
+			#{item.titleClass4nowCn,jdbcType=VARCHAR},
+			#{item.titleLevel4now,jdbcType=VARCHAR},
+			#{item.titleLevel4nowCn,jdbcType=VARCHAR},
+			#{item.treatLevel4now,jdbcType=VARCHAR},
+			#{item.treatLevel4nowCn,jdbcType=VARCHAR},
+			#{item.title4nowHStartTime,jdbcType=TIMESTAMP},
+			#{item.title4nowHEndTime,jdbcType=TIMESTAMP},
+			#{item.titleMax4now,jdbcType=INTEGER},
+			#{item.status,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmTitleHeadModel">
+		UPDATE ch_pm_title_head record 
+		<set>
+			<if test = "id != null ">
+				record.ID = #{id,jdbcType=BIGINT},
+			</if>
+			<if test = "workerId != null ">
+				record.WORKER_ID = #{workerId,jdbcType=BIGINT},
+			</if>
+			<if test = "title4now != null ">
+				record.TITLE_4NOW = #{title4now,jdbcType=INTEGER},
+			</if>
+			<if test = "title4nowCn != null ">
+				record.TITLE_4NOW_CN = #{title4nowCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "title4nowGotTime != null ">
+				record.TITLE_4NOW_GOT_TIME = #{title4nowGotTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "title4nowGotYears != null ">
+				record.TITLE_4NOW_GOT_YEARS = #{title4nowGotYears,jdbcType=INTEGER},
+			</if>
+			<if test = "titleClass4now != null ">
+				record.TITLE_CLASS_4NOW = #{titleClass4now,jdbcType=INTEGER},
+			</if>
+			<if test = "titleClass4nowCn != null ">
+				record.TITLE_CLASS_4NOW_CN = #{titleClass4nowCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "titleLevel4now != null ">
+				record.TITLE_LEVEL_4NOW = #{titleLevel4now,jdbcType=VARCHAR},
+			</if>
+			<if test = "titleLevel4nowCn != null ">
+				record.TITLE_LEVEL_4NOW_CN = #{titleLevel4nowCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "treatLevel4now != null ">
+				record.TREAT_LEVEL_4NOW = #{treatLevel4now,jdbcType=VARCHAR},
+			</if>
+			<if test = "treatLevel4nowCn != null ">
+				record.TREAT_LEVEL_4NOW_CN = #{treatLevel4nowCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "title4nowHStartTime != null ">
+				record.TITLE_4NOW_H_START_TIME = #{title4nowHStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "title4nowHEndTime != null ">
+				record.TITLE_4NOW_H_END_TIME = #{title4nowHEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "titleMax4now != null ">
+				record.TITLE_MAX_4NOW = #{titleMax4now,jdbcType=INTEGER},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+				record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_title_head 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_title_head 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_title_head  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_title_head  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	
+	<!-- 根据身份证号批量查询职工是否存在 -->
+	<select id="queryExistByCardNos" parameterType="java.util.List" resultType="java.util.Map">
+        select 
+        	w.id,
+        	w.card_no,
+			IF(IFNULL(h.WORKER_ID,-1)>=0,1,0) as head_exist
+		from ch_pm_worker w 
+		left join ch_pm_title_head h on w.id = h.WORKER_ID and h.status=0
+		where w.CARD_NO in 
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+					#{item}
+		</foreach>
+		and w.status=0
+	</select>
+</mapper>

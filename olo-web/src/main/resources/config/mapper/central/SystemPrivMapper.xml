@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 常用标签使用方式 -->
+<!-- 
+1、trim 有四个属性
+2、prefix，suffix 表示在trim标签包裹的部分的前面或者后面添加内容（注意：是没有prefixOverrides，suffixOverrides的情况下）
+3、如果有prefixOverrides，suffixOverrides 表示**覆盖**Overrides中的内容。
+4、如果只有prefixOverrides，suffixOverrides 表示删除。
+ -->
+<mapper namespace="com.hdfs.olo.olo_web.central.mapper.SystemPrivMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="systemPrivMapper" type="com.hdfs.olo.olo_web.central.model.SystemPrivModel">
+		<id property="privId" column="PRIV_ID" jdbcType="BIGINT"/>
+		<result property="privCnName" column="PRIV_CN_NAME" jdbcType="VARCHAR"/>
+		<result property="privEnName" column="PRIV_EN_NAME" jdbcType="VARCHAR"/>
+		<result property="privTarget" column="PRIV_TARGET" jdbcType="VARCHAR"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="privType" column="PRIV_TYPE" jdbcType="INTEGER"/>
+		<result property="menuLevel" column="MENU_LEVEL" jdbcType="INTEGER"/>
+		<result property="privMethod" column="PRIV_METHOD" jdbcType="VARCHAR"/>
+		<result property="privPermissioin" column="PRIV_PERMISSIOIN" jdbcType="VARCHAR"/>
+		<result property="privAction" column="PRIV_ACTION" jdbcType="VARCHAR"/>
+		<result property="privIcon" column="PRIV_ICON" jdbcType="VARCHAR"/>
+		<result property="privSuper" column="PRIV_SUPER" jdbcType="BIGINT"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 查询数量公共sql -->
+	<sql id="count_Tail">
+		select count(1) from system_priv record
+	</sql>
+	
+	<!-- 分页公共sql -->
+	<sql id="pagination_tail">
+	  limit #{page.pageOffset} , #{page.pageSize}
+	</sql>
+
+	<!-- 查询字段公共sql -->
+	<sql id="selectAllColumns">
+	    SELECT 
+	    <if test="queryFields != null ">
+	 	     <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="item" index="index">
+		          ${item},
+		        </foreach>
+		      </trim> 	
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 PRIV_ID, 
+				 PRIV_CN_NAME, 
+				 PRIV_EN_NAME, 
+				 PRIV_TARGET, 
+				 REMARK, 
+				 PRIV_TYPE,
+				 MENU_LEVEL, 
+				 PRIV_METHOD, 
+				 PRIV_PERMISSIOIN, 
+				 PRIV_ACTION, 
+				 PRIV_ICON, 
+				 PRIV_SUPER, 
+				 STATUS, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	     FROM system_priv record
+	</sql>
+	
+	<sql id="where_fragement">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.privId != null">
+					<![CDATA[ and record.PRIV_ID  = #{entity.privId} ]]>
+				</if>
+				<if test = "entity.privCnName != null and entity.privCnName != ''">
+					<![CDATA[ and record.PRIV_CN_NAME  = #{entity.privCnName} ]]>
+				</if>
+				<if test = "entity.privEnName != null and entity.privEnName != ''">
+					<![CDATA[ and record.PRIV_EN_NAME  = #{entity.privEnName} ]]>
+				</if>
+				<if test = "entity.privTarget != null and entity.privTarget != ''">
+					<![CDATA[ and record.PRIV_TARGET  = #{entity.privTarget} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.privType != null and entity.privType != ''">
+					<![CDATA[ and record.PRIV_TYPE  = #{entity.privType} ]]>
+				</if>
+				<if test = "entity.menuLevel != null">
+					<![CDATA[ and record.MENU_LEVEL  = #{entity.menuLevel} ]]>
+				</if>
+				<if test = "entity.privMethod != null and entity.privMethod != ''">
+					<![CDATA[ and record.PRIV_METHOD  = #{entity.privMethod} ]]>
+				</if>
+				<if test = "entity.privPermissioin != null and entity.privPermissioin != ''">
+					<![CDATA[ and record.PRIV_PERMISSIOIN  = #{entity.privPermissioin} ]]>
+				</if>
+				<if test = "entity.privAction != null and entity.privAction != ''">
+					<![CDATA[ and record.PRIV_ACTION  = #{entity.privAction} ]]>
+				</if>
+				<if test = "entity.privIcon != null and entity.privIcon != ''">
+					<![CDATA[ and record.PRIV_ICON  = #{entity.privIcon} ]]>
+				</if>
+				<if test = "entity.privSuper != null">
+					<![CDATA[ and record.PRIV_SUPER  = #{entity.privSuper} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="order_sort">
+		order by PRIV_ID,SORT_VAL asc
+	</sql>
+
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="systemPrivMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		 group by PRIV_SUPER,PRIV_ID
+		<include refid="order_sort" />
+		<if test="page!=null">
+			<include refid="pagination_tail" />
+		</if>
+		
+	</select>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="systemPrivMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="order_sort" />
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="count_Tail"></include>
+		<include refid="where_fragement"></include>
+	</select>
+
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="systemPrivMapper" >
+		<include refid="selectAllColumns"/>
+		 where 
+		 record.PRIV_ID = #{id}
+	</select>
+	
+	<!-- 根据上级编号查找系统权限列表 -->
+	<select id="queryBySuperId" resultMap="systemPrivMapper" >
+		select * from system_priv
+		where 
+		PRIV_SUPER = #{superId}
+		order by SORT_VAL
+	</select>
+	
+	<!-- 新增列处理 -->
+	<sql id="sql_insert_columns">
+		<trim suffixOverrides=",">
+			<if test="privCnName != null and privCnName != ''">PRIV_CN_NAME,</if>
+			<if test="privEnName != null and privEnName != ''">PRIV_EN_NAME,</if>
+			<if test="privTarget != null and privTarget != ''">PRIV_TARGET,</if>
+			<if test="remark != null and remark != ''">REMARK,</if>
+			<if test="privType != null">PRIV_TYPE,</if>
+			<if test="menuLevel != null">MENU_LEVEL,</if>
+			<if test="privMethod != null and privMethod != ''">PRIV_METHOD,</if>
+			<if test="privPermissioin != null and privPermissioin != ''">PRIV_PERMISSIOIN,</if>
+			<if test="privAction != null and privAction != ''">PRIV_ACTION,</if>
+			<if test="privIcon != null and privIcon != ''">PRIV_ICON,</if>
+			<if test="privSuper != null">PRIV_SUPER,</if>
+			<if test="status != null">STATUS,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+
+	<sql id="sql_insert_properties">
+		<trim suffixOverrides=",">
+			<if test="privCnName != null and privCnName != ''">#{privCnName,jdbcType=VARCHAR},</if>
+			<if test="privEnName != null and privEnName != ''">#{privEnName,jdbcType=VARCHAR},</if>
+			<if test="privTarget != null and privTarget != ''">#{privTarget,jdbcType=VARCHAR},</if>
+			<if test="remark != null and remark != ''">#{remark,jdbcType=VARCHAR},</if>
+			<if test="privType != null">#{privType,jdbcType=INTEGER},</if>
+			<if test="menuLevel != null">#{menuLevel,jdbcType=INTEGER},</if>
+			<if test="privMethod != null and privMethod != ''">#{privMethod,jdbcType=VARCHAR},</if>
+			<if test="privPermissioin != null and privPermissioin != ''">#{privPermissioin,jdbcType=VARCHAR},</if>
+			<if test="privAction != null and privAction != ''">#{privAction,jdbcType=VARCHAR},</if>
+			<if test="privIcon != null and privIcon != ''">#{privIcon,jdbcType=VARCHAR},</if>
+			<if test="privSuper != null">#{privSuper,jdbcType=BIGINT},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增 -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.central.model.SystemPrivModel" useGeneratedKeys="true" keyProperty="privId" keyColumn="PRIV_ID">
+		insert into system_priv(
+			<include refid="sql_insert_columns"/>
+		)values(
+			<include refid="sql_insert_properties"/>
+		)
+	</insert>
+	
+	<!-- 批量添加数据，并返回主键字段 -->
+	<insert id="insertBatch" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
+        insert into system_priv
+        (
+        	<trim suffixOverrides=",">
+				PRIV_CN_NAME,
+				PRIV_EN_NAME,
+				PRIV_TARGET,
+				REMARK,
+				PRIV_TYPE,
+				MENU_LEVEL,
+				PRIV_METHOD,
+				PRIV_PERMISSIOIN,
+				PRIV_ACTION,
+				PRIV_ICON,
+				PRIV_SUPER,
+				STATUS,
+				CREATE_TIME,
+				UPDATE_TIME
+			</trim>
+        ) 
+        values
+        <foreach collection="list" separator="," item="item">
+        (
+           	<trim suffixOverrides=",">
+				#{item.privCnName,jdbcType=VARCHAR},
+				#{item.privEnName,jdbcType=VARCHAR},
+				#{item.privTarget,jdbcType=VARCHAR},
+				#{item.remark,jdbcType=VARCHAR},
+				#{item.privType,jdbcType=INTEGER},
+				#{item.menuLevel,jdbcType=INTEGER},
+				#{item.privMethod,jdbcType=VARCHAR},
+				#{item.privPermissioin,jdbcType=VARCHAR},
+				#{item.privAction,jdbcType=VARCHAR},
+				#{item.privIcon,jdbcType=VARCHAR},
+				#{item.privSuper,jdbcType=BIGINT},
+				#{item.status,jdbcType=INTEGER},
+				now(),
+				now(),
+			</trim>	
+        )
+        </foreach>
+	</insert>
+
+	<!-- 编辑 -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.central.model.SystemPrivModel">
+		update system_priv record 
+		<set>
+			<if test="privCnName != null and privCnName != ''">
+				record.PRIV_CN_NAME = #{privCnName,jdbcType=VARCHAR},
+			</if>
+			<if test="privEnName != null and privEnName != ''">
+				record.PRIV_EN_NAME = #{privEnName,jdbcType=VARCHAR},
+			</if>
+			<if test="privTarget != null and privTarget != ''">
+				record.PRIV_TARGET = #{privTarget,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null and remark != ''">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="privType != null and privType != ''">
+				record.PRIV_TYPE = #{privType,jdbcType=INTEGER},
+			</if>
+			<if test="menuLevel != null">
+				record.MENU_LEVEL = #{menuLevel,jdbcType=INTEGER},
+			</if>
+			<if test="privMethod != null and privMethod != ''">
+				record.PRIV_METHOD = #{privMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="privPermissioin != null and privPermissioin != ''">
+				record.PRIV_PERMISSIOIN = #{privPermissioin,jdbcType=VARCHAR},
+			</if>
+			<if test="privAction != null and privAction != ''">
+				record.PRIV_ACTION = #{privAction,jdbcType=VARCHAR},
+			</if>
+			<if test="privIcon != null and privIcon != ''">
+				record.PRIV_ICON = #{privIcon,jdbcType=VARCHAR},
+			</if>
+			<if test="privSuper != null">
+				record.PRIV_SUPER = #{privSuper,jdbcType=BIGINT},
+			</if>
+			<if test="status != null">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				record.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+				record.UPDATE_TIME = now()
+		</set>
+		where PRIV_ID = #{privId}
+	</update>
+	
+	<!-- 单项删除 -->
+	<delete id="delById">
+		delete from system_priv 
+		where PRIV_ID = #{id}
+	</delete>
+	
+	<delete id="delById4Logic">
+		update system_priv 
+		set status = 0,
+			update_time = now()
+		where PRIV_ID = #{id}
+	</delete>
+	
+	<!-- 批量删除 -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		delete from system_priv 
+		where PRIV_ID in
+		<foreach collection="list" open="(" separator="," close=")" item="ids">
+			#{ids}
+		</foreach>
+	</delete>
+
+	<delete id="delBatchByIds4Logic" parameterType="java.util.List">
+		update system_priv 
+		set status = 0,
+			update_time = now()
+		where PRIV_ID in
+		<foreach collection="list" open="(" separator="," close=")" item="ids">
+			#{ids}
+		</foreach>
+	</delete>
+</mapper>

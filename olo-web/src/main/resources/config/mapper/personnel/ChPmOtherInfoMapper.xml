@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmOtherInfoMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmOtherInfoMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmOtherInfoModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="workerId" column="WORKER_ID" jdbcType="BIGINT"/>
+		<result property="epidsPrecFlHcStaff" column="EPIDS_PREC_FL_HC_STAFF" jdbcType="INTEGER"/>
+		<result property="honMoneyGotTime" column="HON_MONEY_GOT_TIME" jdbcType="TIMESTAMP"/>
+		<result property="caeWkYears" column="CAE_WK_YEARS" jdbcType="INTEGER"/>
+		<result property="isDisability" column="IS_DISABILITY" jdbcType="INTEGER"/>
+		<result property="disabilityLev" column="DISABILITY_LEV" jdbcType="VARCHAR"/>
+		<result property="isInjryOnJob" column="IS_INJURY_ONJOB" jdbcType="INTEGER"/>
+		<result property="injryLev" column="INJURY_LEV" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="remark2" column="REMARK2" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmOtherInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_other_info record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_other_info record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 WORKER_ID, 
+				 EPIDS_PREC_FL_HC_STAFF, 
+				 HON_MONEY_GOT_TIME, 
+				 CAE_WK_YEARS, 
+				 IS_DISABILITY,
+				 DISABILITY_LEV,
+				 IS_INJURY_ONJOB,
+				 INJURY_LEV,
+				 STATUS, 
+				 REMARK, 
+				 REMARK2, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null and entity.id != ''">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.workerId != null and entity.workerId != ''">
+					<![CDATA[ and record.WORKER_ID  = #{entity.workerId} ]]>
+				</if>
+				<if test = "entity.epidsPrecFlHcStaff != null and entity.epidsPrecFlHcStaff != ''">
+					<![CDATA[ and record.EPIDS_PREC_FL_HC_STAFF  = #{entity.epidsPrecFlHcStaff} ]]>
+				</if>
+				<if test = "entity.honMoneyGotTime != null and entity.honMoneyGotTime != ''">
+					<![CDATA[ and record.HON_MONEY_GOT_TIME  = #{entity.honMoneyGotTime} ]]>
+				</if>
+				<if test = "entity.caeWkYears != null and entity.caeWkYears != ''">
+					<![CDATA[ and record.CAE_WK_YEARS  = #{entity.caeWkYears} ]]>
+				</if>
+				<if test = "entity.isDisability != null">
+					<![CDATA[ and record.IS_DISABILITY  = #{entity.isDisability} ]]>
+				</if>
+				<if test = "entity.disabilityLev != null and entity.disabilityLev != ''">
+					<![CDATA[ and record.DISABILITY_LEV  = #{entity.disabilityLev} ]]>
+				</if>
+				<if test = "entity.isInjryOnJob != null">
+					<![CDATA[ and record.IS_INJURY_ONJOB  = #{entity.isInjryOnJob} ]]>
+				</if>
+				<if test = "entity.injryLev != null and entity.injryLev != ''">
+					<![CDATA[ and record.INJURY_LEV  = #{entity.injryLev} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.remark2 != null and entity.remark2 != ''">
+					<![CDATA[ and record.REMARK2  = #{entity.remark2} ]]>
+				</if>
+				<if test = "entity.createTime != null and entity.createTime != ''">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null and entity.updateTime != ''">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmOtherInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_other_info record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmOtherInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_other_info record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryByWkId" resultMap="chPmOtherInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_other_info record
+		WHERE 
+		 record.WORKER_ID = #{wkId}
+		 and record.status =0
+		 limit 1
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="workerId != null">WORKER_ID,</if>
+			<if test="epidsPrecFlHcStaff != null">EPIDS_PREC_FL_HC_STAFF,</if>
+			<if test="honMoneyGotTime != null">HON_MONEY_GOT_TIME,</if>
+			<if test="caeWkYears != null">CAE_WK_YEARS,</if>
+			<if test="isDisability != null">IS_DISABILITY,</if>
+			<if test="disabilityLev != null">DISABILITY_LEV,</if>
+			<if test="isInjryOnJob != null">IS_INJURY_ONJOB,</if>
+			<if test="injryLev != null">INJURY_LEV,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			<if test="remark2 != null">REMARK2,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{workerId,jdbcType=BIGINT},</if>
+			<if test="epidsPrecFlHcStaff != null">#{epidsPrecFlHcStaff,jdbcType=INTEGER},</if>
+			<if test="honMoneyGotTime != null">#{honMoneyGotTime,jdbcType=TIMESTAMP},</if>
+			<if test="caeWkYears != null">#{caeWkYears,jdbcType=INTEGER},</if>
+			<if test="isDisability != null">#{isDisability,jdbcType=INTEGER},</if>
+			<if test="disabilityLev != null">#{disabilityLev,jdbcType=VARCHAR},</if>
+			<if test="isInjryOnJob != null">#{isInjryOnJob,jdbcType=INTEGER},</if>
+			<if test="injryLev != null">#{injryLev,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			<if test="remark2 != null">#{remark2,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{item.id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{item.workerId,jdbcType=BIGINT},</if>
+			<if test="epidsPrecFlHcStaff != null">#{item.epidsPrecFlHcStaff,jdbcType=INTEGER},</if>
+			<if test="honMoneyGotTime != null">#{item.honMoneyGotTime,jdbcType=TIMESTAMP},</if>
+			<if test="caeWkYears != null">#{item.caeWkYears,jdbcType=INTEGER},</if>
+			<if test="isDisability != null">#{item.isDisability,jdbcType=INTEGER},</if>
+			<if test="disabilityLev != null">#{item.disabilityLev,jdbcType=VARCHAR},</if>
+			<if test="isInjryOnJob != null">#{item.isInjryOnJob,jdbcType=INTEGER},</if>
+			<if test="injryLev != null">#{item.injryLev,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			<if test="remark2 != null">#{item.remark2,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmOtherInfoModel"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+		INSERT INTO ch_pm_other_info(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_pm_other_info
+        (
+			 WORKER_ID, 
+			 EPIDS_PREC_FL_HC_STAFF, 
+			 HON_MONEY_GOT_TIME, 
+			 CAE_WK_YEARS, 
+			 IS_DISABILITY,
+			 DISABILITY_LEV,
+			 IS_INJURY_ONJOB,
+			 INJURY_LEV,
+			 STATUS, 
+			 REMARK, 
+			 REMARK2, 
+			 CREATE_TIME, 
+			 UPDATE_TIME 
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            #{item.workerId,jdbcType=BIGINT},
+			#{item.epidsPrecFlHcStaff,jdbcType=INTEGER},
+			#{item.honMoneyGotTime,jdbcType=TIMESTAMP},
+			#{item.caeWkYears,jdbcType=INTEGER},
+			#{item.isDisability,jdbcType=INTEGER},
+			#{item.disabilityLev,jdbcType=VARCHAR},
+			#{item.isInjryOnJob,jdbcType=INTEGER},
+			#{item.injryLev,jdbcType=VARCHAR},
+			#{item.status,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR},
+			#{item.remark2,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmOtherInfoModel">
+		UPDATE ch_pm_other_info record 
+		<set>
+			<if test = "workerId != null ">
+				record.WORKER_ID = #{workerId,jdbcType=BIGINT},
+			</if>
+			<if test = "epidsPrecFlHcStaff != null ">
+				record.EPIDS_PREC_FL_HC_STAFF = #{epidsPrecFlHcStaff,jdbcType=INTEGER},
+			</if>
+			<if test = "honMoneyGotTime != null ">
+				record.HON_MONEY_GOT_TIME = #{honMoneyGotTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "caeWkYears != null ">
+				record.CAE_WK_YEARS = #{caeWkYears,jdbcType=INTEGER},
+			</if>
+			<if test = "isDisability != null ">
+				record.IS_DISABILITY = #{isDisability,jdbcType=INTEGER},
+			</if>
+			<if test = "disabilityLev != null ">
+				record.DISABILITY_LEV = #{disabilityLev,jdbcType=VARCHAR},
+			</if>
+			<if test = "isInjryOnJob != null ">
+				record.IS_INJURY_ONJOB = #{isInjryOnJob,jdbcType=INTEGER},
+			</if>
+			<if test = "injryLev != null ">
+				record.INJURY_LEV = #{injryLev,jdbcType=VARCHAR},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test = "remark2 != null ">
+				record.REMARK2 = #{remark2,jdbcType=VARCHAR},
+			</if>
+			<if test = "createTime != null ">
+				record.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "updateTime != null ">
+				record.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_other_info 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_other_info 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_other_info  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_other_info  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+</mapper>

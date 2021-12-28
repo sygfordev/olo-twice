@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hdfs.olo.olo_web.central.mapper.AuthorityMapper">
+	<resultMap id="systemPrivMapper" type="com.hdfs.olo.olo_web.central.model.SystemPrivModel">
+		<id property="privId" column="PRIV_ID" jdbcType="BIGINT"/>
+		<result property="privCnName" column="PRIV_CN_NAME" jdbcType="VARCHAR"/>
+		<result property="privEnName" column="PRIV_EN_NAME" jdbcType="VARCHAR"/>
+		<result property="privTarget" column="PRIV_TARGET" jdbcType="VARCHAR"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="privType" column="PRIV_TYPE" jdbcType="VARCHAR"/>
+		<result property="privMethod" column="PRIV_METHOD" jdbcType="VARCHAR"/>
+		<result property="privPermissioin" column="PRIV_PERMISSIOIN" jdbcType="VARCHAR"/>
+		<result property="privAction" column="PRIV_ACTION" jdbcType="VARCHAR"/>
+		<result property="privIcon" column="PRIV_ICON" jdbcType="VARCHAR"/>
+		<result property="privSuper" column="PRIV_SUPER" jdbcType="BIGINT"/>
+		<result property="status" column="STATUS" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	<resultMap id="systemRoleMapper" type="com.hdfs.olo.olo_web.central.model.SystemRoleModel">
+		<id property="roleId" column="ROLE_ID" jdbcType="BIGINT"/>
+		<result property="roleName" column="ROLE_NAME" jdbcType="VARCHAR"/>
+		<result property="roleLevel" column="ROLE_LEVEL" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="VARCHAR"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	<resultMap id="userInfoMapper" type="com.hdfs.olo.olo_web.central.model.UserInfoModel">
+		<id property="userId" column="USER_ID" jdbcType="BIGINT"/>
+		<result property="account" column="ACCOUNT" jdbcType="VARCHAR"/>
+		<result property="userPassword" column="USER_PASSWORD" jdbcType="VARCHAR"/>
+		<result property="userRealName" column="USER_REAL_NAME" jdbcType="VARCHAR"/>
+		<result property="userSex" column="USER_SEX" jdbcType="VARCHAR"/>
+		<result property="userJob" column="USER_JOB" jdbcType="VARCHAR"/>
+		<result property="userTelPhone" column="USER_TEL_PHONE" jdbcType="VARCHAR"/>
+		<result property="userFax" column="USER_FAX" jdbcType="VARCHAR"/>
+		<result property="userMobile" column="USER_MOBILE" jdbcType="VARCHAR"/>
+		<result property="userAddress" column="USER_ADDRESS" jdbcType="VARCHAR"/>
+		<result property="userZip" column="USER_ZIP" jdbcType="VARCHAR"/>
+		<result property="userHomeAddress" column="USER_HOME_ADDRESS" jdbcType="VARCHAR"/>
+		<result property="userHomeZip" column="USER_HOME_ZIP" jdbcType="VARCHAR"/>
+		<result property="userEmail" column="USER_EMAIL" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="VARCHAR"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="userExpireDate" column="USER_EXPIRE_DATE" jdbcType="TIMESTAMP"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+		<association property="branch" column="BRANCH" select="com.hdfs.olo.olo_web.central.mapper.BranchOfficeMapper.queryBranchById"/>
+	</resultMap>
+	<resultMap id="userRoleMapper" type="com.hdfs.olo.olo_web.central.model.UserRoleModel">
+		<result property="userId" column="USER_ID" jdbcType="BIGINT" />
+		<result property="roleId" column="ROLE_ID" jdbcType="BIGINT" />
+	</resultMap>
+	
+	<insert id="saveRolePrivList" parameterType="java.util.List">
+		insert into ROLE_PRIV
+	    		(
+	    			ROLE_ID,
+	    			PRIV_ID
+	    		)
+	    	values
+	    	<foreach collection="list" item="item" index="index" separator="," > 
+	    		(
+		      		#{item.roleId,jdbcType=BIGINT},
+		      		#{item.privId,jdbcType=BIGINT}
+	      		)
+	      	</foreach>
+	</insert>
+	
+	<insert id="saveUserPrivList" parameterType="java.util.List">
+		insert into USER_PRIV
+	    		(
+	    			USER_ID,
+	    			ROLE_ID,
+	    			PRIV_ID
+	    		)
+	    	values
+	    	<foreach collection="list" item="item" index="index" separator="," > 
+	    		(
+	    			#{item.userId,jdbcType=BIGINT}, 
+		      		#{item.roleId,jdbcType=BIGINT},
+		      		#{item.privId,jdbcType=BIGINT}
+	      		)
+	      	</foreach>
+	</insert>
+	
+	
+	<insert id="saveUserRole" parameterType="com.hdfs.olo.olo_web.central.model.UserRoleModel">
+		insert into USER_ROLE
+	    		(
+	    			USER_ID,
+	    			ROLE_ID
+	    		)
+	    	values
+	    		(
+	    			#{userId,jdbcType=BIGINT}, 
+		      		#{roleId,jdbcType=BIGINT}
+	      		)
+	</insert>
+	
+	<insert id="saveUserRoleList" parameterType="java.util.List">
+		insert into USER_ROLE
+	    		(
+	    			USER_ID,
+	    			ROLE_ID
+	    		)
+	    	values
+	    	<foreach collection="list" item="item" index="index" separator="," > 
+	    		(
+	    			#{item.userId,jdbcType=BIGINT}, 
+		      		#{item.roleId,jdbcType=BIGINT}
+	      		)
+	      	</foreach>
+	</insert>
+	
+	<!-- 通过角色编号获取该角色下的用户角色关系 -->
+	<select id="findUserRoleByRoleId" parameterType="java.lang.Long" resultMap="userRoleMapper">
+		select
+			t1.USER_ID,
+			t1.ROLE_ID
+		from USER_ROLE t1
+		where 
+		t1.ROLE_ID =#{roleId}
+	</select>
+	
+	<!-- 通过用户编号获取系统权限列表 -->
+	<select id="findUserPrivDistinctByUserId" parameterType="java.lang.Long" resultMap="systemPrivMapper">
+		select
+			t1.PRIV_ID,
+			t1.PRIV_CN_NAME,
+			t1.PRIV_EN_NAME,
+			t1.PRIV_TARGET,
+			t1.REMARK,
+			t1.PRIV_TYPE,
+			t1.PRIV_METHOD,
+			t1.PRIV_PERMISSIOIN,
+			t1.PRIV_ACTION,
+			t1.PRIV_ICON,
+			t1.PRIV_SUPER,
+			t1.STATUS,
+			t1.CREATE_TIME,
+			t1.UPDATE_TIME
+		from SYSTEM_PRIV t1
+		where 
+		t1.PRIV_ID in (select distinct t2.PRIV_ID from USER_PRIV t2 where t2.USER_ID=#{userId})
+	</select>
+	
+	<!-- 通过角色编号获取系统权限 -->
+	<select id="findAllSystemPrivByRoleId" parameterType="java.lang.Long" resultMap="systemPrivMapper">
+		select
+			t1.PRIV_ID,
+			t1.PRIV_CN_NAME,
+			t1.PRIV_EN_NAME,
+			t1.PRIV_TARGET,
+			t1.REMARK,
+			t1.PRIV_TYPE,
+			t1.PRIV_METHOD,
+			t1.PRIV_PERMISSIOIN,
+			t1.PRIV_ACTION,
+			t1.PRIV_ICON,
+			t1.PRIV_SUPER,
+			t1.STATUS,
+			t1.CREATE_TIME,
+			t1.UPDATE_TIME
+		from SYSTEM_PRIV t1
+		where 
+		t1.PRIV_ID in (select distinct t2.PRIV_ID from ROLE_PRIV t2 where t2.ROLE_ID=#{roleId})
+	</select>
+	
+	
+	<!-- 通过用户编号获取该用户的角色信息 -->
+	<select id="findSystemRoleByUserId" parameterType="java.lang.Long" resultMap="systemRoleMapper">
+		select
+			t1.ROLE_ID,
+			t1.ROLE_NAME,
+			t1.ROLE_LEVEL,
+			t1.STATUS,
+			t1.REMARK,
+			t1.CREATE_TIME,
+			t1.UPDATE_TIME
+		from SYSTEM_ROLE t1
+		where t1.ROLE_ID in 
+		(select distinct t2.ROLE_ID from USER_ROLE t2 where t2.USER_ID = #{userId})
+	</select>
+	
+	<!-- 通过用户编号和角色编号获取该用户的权限信息 -->
+	<select id="findUserPrivByUserIdAndRoleId" parameterType="java.lang.Long" resultMap="systemPrivMapper">
+		select
+			t1.PRIV_ID,
+			t1.PRIV_CN_NAME,
+			t1.PRIV_EN_NAME,
+			t1.PRIV_TARGET,
+			t1.REMARK,
+			t1.PRIV_TYPE,
+			t1.PRIV_METHOD,
+			t1.PRIV_PERMISSIOIN,
+			t1.PRIV_ACTION,
+			t1.PRIV_ICON,
+			t1.PRIV_SUPER,
+			t1.STATUS,
+			t1.CREATE_TIME,
+			t1.UPDATE_TIME
+		from SYSTEM_PRIV t1
+		where 
+		t1.PRIV_ID in (select distinct t2.PRIV_ID from USER_PRIV t2 where t2.USER_ID=#{arg0} and t2.ROLE_ID=#{arg1})
+	</select>
+	
+	<select id="findUserPrivByUserAndRoleIds" parameterType="java.lang.Long" resultMap="systemPrivMapper">
+		select
+			t1.PRIV_ID,
+			t1.PRIV_CN_NAME,
+			t1.PRIV_EN_NAME,
+			t1.PRIV_TARGET,
+			t1.REMARK,
+			t1.PRIV_TYPE,
+			t1.PRIV_METHOD,
+			t1.PRIV_PERMISSIOIN,
+			t1.PRIV_ACTION,
+			t1.PRIV_ICON,
+			t1.PRIV_SUPER,
+			t1.STATUS,
+			t1.CREATE_TIME,
+			t1.UPDATE_TIME
+		from SYSTEM_PRIV t1
+		where 
+		t1.PRIV_ID in (select distinct t2.PRIV_ID from USER_PRIV t2 where t2.USER_ID=#{param1} and t2.ROLE_ID in 
+		<foreach collection="param2" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		) order by t1.PRIV_ID asc
+	</select>
+	
+	<!-- 通过角色编号获取，其已选用户列表和可选用户列表 -->
+	<select id="findUserInfoListByRoleId" parameterType="java.lang.Long" resultMap="userInfoMapper">
+		select
+			t1.USER_ID,
+			t1.USER_PASSWORD,
+			t1.USER_REAL_NAME,
+			t1.USER_SEX,
+			t1.BRANCH,
+			t1.USER_JOB,
+			t1.USER_TEL_PHONE,
+			t1.USER_FAX,
+			t1.USER_MOBILE,
+			t1.USER_ADDRESS,
+			t1.USER_ZIP,
+			t1.USER_HOME_ADDRESS,
+			t1.USER_HOME_ZIP,
+			t1.USER_EMAIL,
+			t1.STATUS,
+			t1.REMARK,
+			t1.USER_EXPIRE_DATE,
+			t1.CREATE_TIME,
+			t1.UPDATE_TIME
+		from USER_INFO t1 
+		where t1.USER_ID in (select t2.USER_ID from USER_ROLE t2 where t2.ROLE_ID=#{roleId})
+	</select>
+	
+	<!-- 通过角色编号获取，其已选用户列表和可选用户列表 -->
+	<select id="findUserInfoListByRoleIdNotIn" parameterType="java.lang.Long" resultMap="userInfoMapper">
+		select
+			t1.USER_ID,
+			t1.USER_PASSWORD,
+			t1.USER_REAL_NAME,
+			t1.USER_SEX,
+			t1.BRANCH,
+			t1.USER_JOB,
+			t1.USER_TEL_PHONE,
+			t1.USER_FAX,
+			t1.USER_MOBILE,
+			t1.USER_ADDRESS,
+			t1.USER_ZIP,
+			t1.USER_HOME_ADDRESS,
+			t1.USER_HOME_ZIP,
+			t1.USER_EMAIL,
+			t1.STATUS,
+			t1.REMARK,
+			t1.USER_EXPIRE_DATE,
+			t1.CREATE_TIME,
+			t1.UPDATE_TIME
+		from USER_INFO t1 
+		where t1.USER_ID not in (select t2.USER_ID from USER_ROLE t2 where t2.ROLE_ID=#{roleId})
+	</select>
+	
+	<!-- 通过角色编号删除 用户-权限信息 -->
+	<delete id="deleteUserPrivByRoleId" parameterType="java.lang.Long">
+		delete from USER_PRIV
+		where
+		ROLE_ID = #{roleId}
+	</delete>
+	
+	<!-- 通过角色编号 删除 角色-权限信息-->
+	<delete id="deleteRolePrivByRoleId" parameterType="java.lang.Long">
+		delete from ROLE_PRIV
+		where
+		ROLE_ID = #{roleId}
+	</delete>
+	
+	<!-- 根据用户编号列表和角色编号删除用户-角色-权限配置 -->
+	<delete id="deleteUserRoleByRoleIdAndUserList">
+		delete from USER_ROLE
+		where
+		ROLE_ID = #{param1}
+		and USER_ID in 
+		<foreach collection="param2" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	
+	<delete id="deleteUserRole" parameterType="com.hdfs.olo.olo_web.central.model.UserRoleModel">
+		delete from USER_ROLE
+		where
+		USER_ID = #{userId}
+		and ROLE_ID = #{roleId}
+	</delete>
+	<delete id="deleteUserPrivByUserIdAndRoleId">
+		delete from USER_PRIV
+		where
+		USER_ID = #{param1}
+		and ROLE_ID = #{param2}
+	</delete>
+	
+	
+	<!-- 根据用户编号和角色编号列表删除用户-角色-权限配置 -->
+	<delete id="deleteUserRoleByUserIdAndRoleList">
+		delete from USER_ROLE
+		where
+		USER_ID = #{param1}
+		and ROLE_ID in 
+		<foreach collection="param2" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 根据用户编号列表和角色编号删除用户-角色-权限配置 -->
+	<delete id="deleteUserPrivByRoleIdAndUserList">
+		delete from USER_PRIV
+		where
+		ROLE_ID = #{param1}
+		and USER_ID in 
+		<foreach collection="param2" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<!-- 通过角色编号和权限字符串删除 角色-权限 数据 -->
+	<delete id="deleteRolePrivByRoleIdAndPrivList">
+		delete from ROLE_PRIV
+		where
+		ROLE_ID = #{param1}
+		and PRIV_ID in 
+		<foreach collection="param2" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<!-- 通过角色编号和权限字符串删除 用户-权限 数据 -->
+	<delete id="deleteUserPrivByRoleIdAndPrivList">
+		delete from USER_PRIV
+		where
+		ROLE_ID = #{param1}
+		and PRIV_ID in 
+		<foreach collection="param2" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<!-- 根据用户编号删除用户-权限配置 -->
+	<delete id="deleteUserPrivByUserId" parameterType="java.lang.Long">
+		delete from USER_PRIV
+		where
+		USER_ID = #{userId}
+	</delete>
+	<!-- 根据用户编号删除用户-角色配置 -->
+	<delete id="deleteUserRoleByUserId" parameterType="java.lang.Long">
+		delete from USER_ROLE
+		where
+		USER_ID = #{userId}
+	</delete>
+	
+	<!-- 根据权限编号删除用户-权限配置 -->
+	<delete id="deleteUserPrivByPrivId" parameterType="java.lang.Long">
+		delete from USER_PRIV
+		where
+		PRIV_ID = #{privId}
+	</delete>
+	<!-- 根据权限编号删除角色-权限配置 -->
+	<delete id="deleteRolePrivByPrivId" parameterType="java.lang.Long">
+		delete from ROLE_PRIV
+		where
+		PRIV_ID = #{privId}
+	</delete>
+</mapper>

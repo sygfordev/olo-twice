@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmFamilyMemberInfoMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmFamilyMemberInfoMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmFamilyMemberInfoModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="workerId" column="WORKER_ID" jdbcType="BIGINT"/>
+		<result property="memRelation" column="MEM_RELATION" jdbcType="VARCHAR"/>
+		<result property="memRelationCn" column="MEM_RELATION_CN" jdbcType="VARCHAR"/>
+		<result property="memName" column="MEM_NAME" jdbcType="VARCHAR"/>
+		<result property="memWkCom" column="MEM_WK_COM" jdbcType="VARCHAR"/>
+		<result property="memTelno" column="MEM_TELNO" jdbcType="VARCHAR"/>
+		<result property="memAddr" column="MEM_ADDR" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmFamilyMemberInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_family_member_info record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_family_member_info record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 WORKER_ID, 
+				 MEM_RELATION, 
+				 MEM_RELATION_CN,
+				 MEM_NAME, 
+				 MEM_WK_COM, 
+				 MEM_TELNO, 
+				 MEM_ADDR, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null and entity.id != ''">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.workerId != null and entity.workerId != ''">
+					<![CDATA[ and record.WORKER_ID  = #{entity.workerId} ]]>
+				</if>
+				<if test = "entity.memRelation != null and entity.memRelation != ''">
+					<![CDATA[ and record.MEM_RELATION  = #{entity.memRelation} ]]>
+				</if>
+				<if test = "entity.memRelationCn != null and entity.memRelationCn != ''">
+					<![CDATA[ and record.MEM_RELATION_CN  = #{entity.memRelationCn} ]]>
+				</if>
+				<if test = "entity.memName != null and entity.memName != ''">
+					<![CDATA[ and record.MEM_NAME  = #{entity.memName} ]]>
+				</if>
+				<if test = "entity.memWkCom != null and entity.memWkCom != ''">
+					<![CDATA[ and record.MEM_WK_COM  = #{entity.memWkCom} ]]>
+				</if>
+				<if test = "entity.memTelno != null and entity.memTelno != ''">
+					<![CDATA[ and record.MEM_TELNO  = #{entity.memTelno} ]]>
+				</if>
+				<if test = "entity.memAddr != null and entity.memAddr != ''">
+					<![CDATA[ and record.MEM_ADDR  = #{entity.memAddr} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null and entity.createTime != ''">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null and entity.updateTime != ''">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmFamilyMemberInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_family_member_info record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmFamilyMemberInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_family_member_info record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="workerId != null">WORKER_ID,</if>
+			<if test="memRelation != null">MEM_RELATION,</if>
+			<if test="memRelationCn != null">MEM_RELATION_CN,</if>
+			<if test="memName != null">MEM_NAME,</if>
+			<if test="memWkCom != null">MEM_WK_COM,</if>
+			<if test="memTelno != null">MEM_TELNO,</if>
+			<if test="memAddr != null">MEM_ADDR,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{workerId,jdbcType=BIGINT},</if>
+			<if test="memRelation != null">#{memRelation,jdbcType=VARCHAR},</if>
+			<if test="memRelationCn != null">#{memRelationCn,jdbcType=VARCHAR},</if>
+			<if test="memName != null">#{memName,jdbcType=VARCHAR},</if>
+			<if test="memWkCom != null">#{memWkCom,jdbcType=VARCHAR},</if>
+			<if test="memTelno != null">#{memTelno,jdbcType=VARCHAR},</if>
+			<if test="memAddr != null">#{memAddr,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{item.id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{item.workerId,jdbcType=BIGINT},</if>
+			<if test="memRelation != null">#{item.memRelation,jdbcType=VARCHAR},</if>
+			<if test="memRelationCn != null">#{item.memRelationCn,jdbcType=VARCHAR},</if>
+			<if test="memName != null">#{item.memName,jdbcType=VARCHAR},</if>
+			<if test="memWkCom != null">#{item.memWkCom,jdbcType=VARCHAR},</if>
+			<if test="memTelno != null">#{item.memTelno,jdbcType=VARCHAR},</if>
+			<if test="memAddr != null">#{item.memAddr,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmFamilyMemberInfoModel">
+		INSERT INTO ch_pm_family_member_info(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_pm_family_member_info
+        (
+        	WORKER_ID,
+			MEM_RELATION,
+			MEM_RELATION_CN,
+			MEM_NAME,
+			MEM_WK_COM,
+			MEM_TELNO,
+			MEM_ADDR,
+			STATUS,
+			REMARK,
+			CREATE_TIME,
+			UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            #{item.workerId,jdbcType=BIGINT},
+			#{item.memRelation,jdbcType=VARCHAR},
+			#{item.memRelationCn,jdbcType=VARCHAR},
+			#{item.memName,jdbcType=VARCHAR},
+			#{item.memWkCom,jdbcType=VARCHAR},
+			#{item.memTelno,jdbcType=VARCHAR},
+			#{item.memAddr,jdbcType=VARCHAR},
+			#{item.status,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmFamilyMemberInfoModel">
+		UPDATE ch_pm_family_member_info record 
+		<set>
+			<if test = "workerId != null ">
+				record.WORKER_ID = #{workerId,jdbcType=BIGINT},
+			</if>
+			<if test = "memRelation != null ">
+				record.MEM_RELATION = #{memRelation,jdbcType=VARCHAR},
+			</if>
+			<if test = "memRelationCn != null ">
+				record.MEM_RELATION_CN = #{memRelationCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "memName != null ">
+				record.MEM_NAME = #{memName,jdbcType=VARCHAR},
+			</if>
+			<if test = "memWkCom != null ">
+				record.MEM_WK_COM = #{memWkCom,jdbcType=VARCHAR},
+			</if>
+			<if test = "memTelno != null ">
+				record.MEM_TELNO = #{memTelno,jdbcType=VARCHAR},
+			</if>
+			<if test = "memAddr != null ">
+				record.MEM_ADDR = #{memAddr,jdbcType=VARCHAR},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+				record.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_family_member_info 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_family_member_info 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_family_member_info  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_family_member_info  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+</mapper>

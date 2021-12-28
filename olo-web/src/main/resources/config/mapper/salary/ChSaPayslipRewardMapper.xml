@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.salary.mapper.ChSaPayslipRewardMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chSaPayslipRewardModel" type="com.hdfs.olo.olo_web.salary.model.ChSaPayslipRewardModel">
+		<result property="cardNo" column="CARD_NO" jdbcType="VARCHAR"/>
+		<result property="targetYearMonth" column="TARGET_YEARMONTH" jdbcType="VARCHAR"/>
+		<result property="rewardItem" column="REWARD_ITEM" jdbcType="VARCHAR"/>
+		<result property="rewardAmount" column="REWARD_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="btimpNo" column="BTIMP_NO" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chSaPayslipRewardModel" >
+		SELECT 
+		*
+		FROM ch_sa_payslip_reward
+		WHERE CARD_NO = #{cardNo} and TARGET_YEARMONTH=#{targetMonth}
+		and status=0
+		order by card_no
+	</select>
+	
+	<!-- 根据时间段查询所有奖励项目（用于在工资条列表页展示） -->
+	<select id="queryRewardList" resultType="java.lang.String">
+		SELECT
+			<!-- GROUP_CONCAT( REWARD_ITEM )  -->
+			distinct REWARD_ITEM
+		FROM
+			ch_sa_payslip_reward 
+		WHERE status = 0
+			<if test = "startMonth != null">
+				and TARGET_YEARMONTH >= #{startMonth}
+			</if>
+			<if test = "endMonth != null">
+				and TARGET_YEARMONTH &lt;= #{endMonth}
+			</if>
+	</select>
+	
+	<select id="queryLastMonth" resultType="java.lang.String">
+		SELECT
+			TARGET_YEARMONTH
+		FROM
+			ch_sa_payslip_reward 
+		where status = 0
+		ORDER BY
+			TARGET_YEARMONTH DESC
+		limit 1
+	</select>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_sa_payslip_reward
+        (
+			CARD_NO,
+			TARGET_YEARMONTH,
+			REWARD_ITEM,
+			REWARD_AMOUNT,
+			BTIMP_NO,
+			STATUS,
+			CREATE_TIME,
+			UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+			#{item.cardNo,jdbcType=VARCHAR},
+			#{item.targetYearMonth,jdbcType=VARCHAR},
+			#{item.rewardItem,jdbcType=VARCHAR},
+			#{item.rewardAmount,jdbcType=DECIMAL},
+			#{item.btimpNo,jdbcType=VARCHAR},
+			0,
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_sa_payslip_reward 
+		WHERE CARD_NO = #{cardNo} and TARGET_YEARMONTH=#{targetMonth}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_sa_payslip_reward 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE CARD_NO = #{cardNo} and TARGET_YEARMONTH=#{targetMonth}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_sa_payslip_reward  
+		WHERE
+		<foreach collection="list" open="(" separator="or" close=")" item="item">
+            <foreach collection="item.entrySet()" item="key" open="(" separator="," close=")">
+		        ${key} = #{item[${key}]}
+		    </foreach>
+        </foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_sa_payslip_reward  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE 
+		<foreach collection="list" open="(" separator="or" close=")" item="item">
+            <foreach collection="item.entrySet()" item="key" open="(" separator="," close=")">
+		        ${key} = #{item[${key}]}
+		    </foreach>
+        </foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	
+	<!-- 根据导入编号逻辑删除-->
+	<update id="delBatchByBtImpNo4Logic" parameterType="java.lang.String">
+		UPDATE ch_sa_payslip_reward  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE BTIMP_NO = #{btimpNo}
+	</update>
+</mapper>

@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmEduInfoMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmEduInfoMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmEduInfoModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="workerId" column="WORKER_ID" jdbcType="BIGINT"/>
+		<result property="eduSch" column="EDU_SCH" jdbcType="VARCHAR"/>
+		<result property="eduMaj" column="EDU_MAJ" jdbcType="VARCHAR"/>
+		<result property="eduDeg" column="EDU_DEG" jdbcType="INTEGER"/>
+		<result property="eduDegCn" column="EDU_DEG_CN" jdbcType="VARCHAR"/>
+		<result property="eduType" column="EDU_TYPE" jdbcType="INTEGER"/>
+		<result property="eduTypeCn" column="EDU_TYPE_CN" jdbcType="VARCHAR"/>
+		<result property="eduLev" column="EDU_LEV" jdbcType="INTEGER"/>
+		<result property="eduLevCn" column="EDU_LEV_CN" jdbcType="VARCHAR"/>
+		<result property="eduOrder" column="EDU_ORDER" jdbcType="INTEGER"/>
+		<result property="eduStartTime" column="EDU_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="eduEndTime" column="EDU_END_TIME" jdbcType="TIMESTAMP"/>
+		<result property="eduMax" column="EDU_MAX" jdbcType="INTEGER"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmEduInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_edu_info record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_edu_info record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 WORKER_ID, 
+				 EDU_SCH, 
+				 EDU_MAJ, 
+				 EDU_DEG, 
+				 EDU_DEG_CN, 
+				 EDU_TYPE, 
+				 EDU_TYPE_CN, 
+				 EDU_LEV, 
+				 EDU_LEV_CN, 
+				 EDU_ORDER, 
+				 EDU_START_TIME, 
+				 EDU_END_TIME, 
+				 EDU_MAX, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null and entity.id != ''">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.workerId != null and entity.workerId != ''">
+					<![CDATA[ and record.WORKER_ID  = #{entity.workerId} ]]>
+				</if>
+				<if test = "entity.eduSch != null and entity.eduSch != ''">
+					<![CDATA[ and record.EDU_SCH  = #{entity.eduSch} ]]>
+				</if>
+				<if test = "entity.eduMaj != null and entity.eduMaj != ''">
+					<![CDATA[ and record.EDU_MAJ  = #{entity.eduMaj} ]]>
+				</if>
+				<if test = "entity.eduDeg != null and entity.eduDeg != ''">
+					<![CDATA[ and record.EDU_DEG  = #{entity.eduDeg} ]]>
+				</if>
+				<if test = "entity.eduDegCn != null and entity.eduDegCn != ''">
+					<![CDATA[ and record.EDU_DEG_CN  = #{entity.eduDegCn} ]]>
+				</if>
+				<if test = "entity.eduType != null and entity.eduType != ''">
+					<![CDATA[ and record.EDU_TYPE  = #{entity.eduType} ]]>
+				</if>
+				<if test = "entity.eduTypeCn != null and entity.eduTypeCn != ''">
+					<![CDATA[ and record.EDU_TYPE_CN  = #{entity.eduTypeCn} ]]>
+				</if>
+				<if test = "entity.eduLev != null and entity.eduLev != ''">
+					<![CDATA[ and record.EDU_LEV  = #{entity.eduLev} ]]>
+				</if>
+				<if test = "entity.eduLevCn != null and entity.eduLevCn != ''">
+					<![CDATA[ and record.EDU_LEV_CN  = #{entity.eduLevCn} ]]>
+				</if>
+				<if test = "entity.eduOrder != null and entity.eduOrder != ''">
+					<![CDATA[ and record.EDU_ORDER  = #{entity.eduOrder} ]]>
+				</if>
+				<if test = "entity.eduStartTime != null and entity.eduStartTime != ''">
+					<![CDATA[ and record.EDU_START_TIME  = #{entity.eduStartTime} ]]>
+				</if>
+				<if test = "entity.eduEndTime != null and entity.eduEndTime != ''">
+					<![CDATA[ and record.EDU_END_TIME  = #{entity.eduEndTime} ]]>
+				</if>
+				<if test = "entity.eduMax != null and entity.eduMax != ''">
+					<![CDATA[ and record.EDU_MAX  = #{entity.eduMax} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null and entity.createTime != ''">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null and entity.updateTime != ''">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmEduInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_edu_info record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmEduInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_edu_info record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="workerId != null">WORKER_ID,</if>
+			<if test="eduSch != null">EDU_SCH,</if>
+			<if test="eduMaj != null">EDU_MAJ,</if>
+			<if test="eduDeg != null">EDU_DEG,</if>
+			<if test="eduDegCn != null">EDU_DEG_CN,</if>
+			<if test="eduType != null">EDU_TYPE,</if>
+			<if test="eduTypeCn != null">EDU_TYPE_CN,</if>
+			<if test="eduLev != null">EDU_LEV,</if>
+			<if test="eduLevCn != null">EDU_LEV_CN,</if>
+			<if test="eduOrder != null">EDU_ORDER,</if>
+			<if test="eduStartTime != null">EDU_START_TIME,</if>
+			<if test="eduEndTime != null">EDU_END_TIME,</if>
+			<if test="eduMax != null">EDU_MAX,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{workerId,jdbcType=BIGINT},</if>
+			<if test="eduSch != null">#{eduSch,jdbcType=VARCHAR},</if>
+			<if test="eduMaj != null">#{eduMaj,jdbcType=VARCHAR},</if>
+			<if test="eduDeg != null">#{eduDeg,jdbcType=INTEGER},</if>
+			<if test="eduDegCn != null">#{eduDegCn,jdbcType=VARCHAR},</if>
+			<if test="eduType != null">#{eduType,jdbcType=INTEGER},</if>
+			<if test="eduTypeCn != null">#{eduTypeCn,jdbcType=VARCHAR},</if>
+			<if test="eduLev != null">#{eduLev,jdbcType=INTEGER},</if>
+			<if test="eduLevCn != null">#{eduLevCn,jdbcType=VARCHAR},</if>
+			<if test="eduOrder != null">#{eduOrder,jdbcType=INTEGER},</if>
+			<if test="eduStartTime != null">#{eduStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="eduEndTime != null">#{eduEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="eduMax != null">#{eduMax,jdbcType=INTEGER},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{item.id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{item.workerId,jdbcType=BIGINT},</if>
+			<if test="eduSch != null">#{item.eduSch,jdbcType=VARCHAR},</if>
+			<if test="eduMaj != null">#{item.eduMaj,jdbcType=VARCHAR},</if>
+			<if test="eduDeg != null">#{item.eduDeg,jdbcType=INTEGER},</if>
+			<if test="eduDegCn != null">#{item.eduDegCn,jdbcType=VARCHAR},</if>
+			<if test="eduType != null">#{item.eduType,jdbcType=INTEGER},</if>
+			<if test="eduTypeCn != null">#{item.eduTypeCn,jdbcType=VARCHAR},</if>
+			<if test="eduLev != null">#{item.eduLev,jdbcType=INTEGER},</if>
+			<if test="eduLevCn != null">#{item.eduLevCn,jdbcType=VARCHAR},</if>
+			<if test="eduOrder != null">#{item.eduOrder,jdbcType=INTEGER},</if>
+			<if test="eduStartTime != null">#{item.eduStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="eduEndTime != null">#{item.eduEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="eduMax != null">#{item.eduMax,jdbcType=INTEGER},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmEduInfoModel">
+		INSERT INTO ch_pm_edu_info(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_pm_edu_info
+        (
+			WORKER_ID,
+			EDU_SCH,
+			EDU_MAJ,
+			EDU_DEG,
+			EDU_DEG_CN,
+			EDU_TYPE,
+			EDU_TYPE_CN,
+			EDU_LEV,
+			EDU_LEV_CN,
+			EDU_ORDER,
+			EDU_START_TIME,
+			EDU_END_TIME,
+			EDU_MAX,
+			STATUS,
+			REMARK,
+			CREATE_TIME,
+			UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            #{item.workerId,jdbcType=BIGINT},
+			#{item.eduSch,jdbcType=VARCHAR},
+			#{item.eduMaj,jdbcType=VARCHAR},
+			#{item.eduDeg,jdbcType=INTEGER},
+			#{item.eduDegCn,jdbcType=VARCHAR},
+			#{item.eduType,jdbcType=INTEGER},
+			#{item.eduTypeCn,jdbcType=VARCHAR},
+			#{item.eduLev,jdbcType=INTEGER},
+			#{item.eduLevCn,jdbcType=VARCHAR},
+			#{item.eduOrder,jdbcType=INTEGER},
+			#{item.eduStartTime,jdbcType=TIMESTAMP},
+			#{item.eduEndTime,jdbcType=TIMESTAMP},
+			#{item.eduMax,jdbcType=INTEGER},
+			#{item.status,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmEduInfoModel">
+		UPDATE ch_pm_edu_info record 
+		<set>
+			<if test = "id != null ">
+				record.ID = #{id,jdbcType=BIGINT},
+			</if>
+			<if test = "workerId != null ">
+				record.WORKER_ID = #{workerId,jdbcType=BIGINT},
+			</if>
+			<if test = "eduSch != null ">
+				record.EDU_SCH = #{eduSch,jdbcType=VARCHAR},
+			</if>
+			<if test = "eduMaj != null ">
+				record.EDU_MAJ = #{eduMaj,jdbcType=VARCHAR},
+			</if>
+			<if test = "eduDeg != null ">
+				record.EDU_DEG = #{eduDeg,jdbcType=INTEGER},
+			</if>
+			<if test = "eduDegCn != null ">
+				record.EDU_DEG_CN = #{eduDegCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "eduType != null ">
+				record.EDU_TYPE = #{eduType,jdbcType=INTEGER},
+			</if>
+			<if test = "eduTypeCn != null ">
+				record.EDU_TYPE_CN = #{eduTypeCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "eduLev != null ">
+				record.EDU_LEV = #{eduLev,jdbcType=INTEGER},
+			</if>
+			<if test = "eduLevCn != null ">
+				record.EDU_LEV_CN = #{eduLevCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "eduOrder != null ">
+				record.EDU_ORDER = #{eduOrder,jdbcType=INTEGER},
+			</if>
+			<if test = "eduStartTime != null ">
+				record.EDU_START_TIME = #{eduStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "eduEndTime != null ">
+				record.EDU_END_TIME = #{eduEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "eduMax != null ">
+				record.EDU_MAX = #{eduMax,jdbcType=INTEGER},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_edu_info 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_edu_info 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_edu_info  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_edu_info  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	<!-- 根据职工编号对该职工的学历信息进行排序 -->
+	<update id="synEduInfoSortVal" parameterType="java.lang.Long">
+		update 
+		ch_pm_edu_info e,
+		(
+			  SELECT
+					( @i := @i + 1 ) sort,
+					id,
+					EDU_LEV
+			  FROM
+			  <!-- ( SELECT * FROM ch_pm_edu_info where worker_id=#{wkId} ORDER BY EDU_LEV asc ) sort, -->
+			  ( SELECT * FROM ch_pm_edu_info where worker_id=#{wkId} and status=0 ORDER BY EDU_MAX desc,EDU_LEV asc ) sort,
+			  ( SELECT @i := 0 ) AS i 
+		) t
+		set e.edu_order = t.sort
+		WHERE e.id=t.id AND e.worker_id = #{wkId} and e.status=0
+	</update>
+	
+	<!-- 查询所有需要做排序的职工编号列表 -->
+	<select id="queryAllWkIds4NeedSort" resultType="java.lang.Long">
+		select distinct worker_id from ch_pm_edu_info where status=0 and edu_order is null
+	</select>
+	<!-- 根据职工编号对该职工的学历信息进行排序 -->
+	<update id="synEduInfoSortValByCardNo" parameterType="java.lang.String">
+		update 
+		ch_pm_edu_info e,
+		ch_pm_worker w,
+		(
+				SELECT
+					( @i := @i + 1 ) sort,
+					id,
+					EDU_LEV
+				FROM
+				( SELECT i.* FROM ch_pm_edu_info i left join ch_pm_worker r on r.id=i.WORKER_ID where r.card_no=#{cardNo} and i.status=0 ORDER BY i.EDU_MAX desc,i.EDU_LEV asc ) sort,
+				( SELECT @i := 0 ) AS i 
+		) t
+		set e.edu_order = t.sort
+		WHERE e.id=t.id AND w.card_no=#{cardNo} and w.id=e.WORKER_ID and e.status=0
+	</update>
+</mapper>

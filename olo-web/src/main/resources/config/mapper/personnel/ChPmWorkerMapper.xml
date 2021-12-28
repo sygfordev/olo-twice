@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmWorkerMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmWorkerMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmWorkerModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="name" column="NAME" jdbcType="VARCHAR"/>
+		<result property="sex" column="SEX" jdbcType="INTEGER"/>
+		<result property="age" column="AGE" jdbcType="INTEGER"/>
+		<result property="cardType" column="CARD_TYPE" jdbcType="INTEGER"/>
+		<result property="cardNo" column="CARD_NO" jdbcType="VARCHAR"/>
+		<result property="birthDay" column="BIRTH_DAY" jdbcType="TIMESTAMP"/>
+		<result property="nation" column="NATION" jdbcType="INTEGER"/>
+		<result property="nationCn" column="NATION_CN" jdbcType="VARCHAR"/>
+		<result property="politics" column="POLITICS" jdbcType="INTEGER"/>
+		<result property="politicsCn" column="POLITICS_CN" jdbcType="VARCHAR"/>
+		<result property="politicsInTime" column="POLITICS_IN_TIME" jdbcType="TIMESTAMP"/>
+		<result property="firstWorkTime" column="FIRST_WORK_TIME" jdbcType="TIMESTAMP"/>
+		<result property="workedYear" column="WORKED_YEAR" jdbcType="INTEGER"/>
+		<result property="intoLocalCompTime" column="INTO_LOCAL_COMP_TIME" jdbcType="TIMESTAMP"/>
+		<result property="nativePlaceProv" column="NATIVE_PLACE_PROV" jdbcType="INTEGER"/>
+		<result property="nativePlaceProvCn" column="NATIVE_PLACE_PROV_CN" jdbcType="VARCHAR"/>
+		<result property="nativePlaceCity" column="NATIVE_PLACE_CITY" jdbcType="INTEGER"/>
+		<result property="nativePlaceCityCn" column="NATIVE_PLACE_CITY_CN" jdbcType="VARCHAR"/>
+		<result property="nativePlaceArea" column="NATIVE_PLACE_AREA" jdbcType="INTEGER"/>
+		<result property="nativePlaceAreaCn" column="NATIVE_PLACE_AREA_CN" jdbcType="VARCHAR"/>
+		<result property="residenceType" column="RESIDENCE_TYPE" jdbcType="INTEGER"/>
+		<result property="residenceTypeCn" column="RESIDENCE_TYPE_CN" jdbcType="VARCHAR"/>
+		<result property="residenceBirthlandProv" column="RESIDENCE_BIRTHLAND_PROV" jdbcType="INTEGER"/>
+		<result property="residenceBirthlandProvCn" column="RESIDENCE_BIRTHLAND_PROV_CN" jdbcType="VARCHAR"/>
+		<result property="residenceBirthlandCity" column="RESIDENCE_BIRTHLAND_CITY" jdbcType="INTEGER"/>
+		<result property="residenceBirthlandCityCn" column="RESIDENCE_BIRTHLAND_CITY_CN" jdbcType="VARCHAR"/>
+		<result property="residenceBirthlandArea" column="RESIDENCE_BIRTHLAND_AREA" jdbcType="INTEGER"/>
+		<result property="residenceBirthlandAreaCn" column="RESIDENCE_BIRTHLAND_AREA_CN" jdbcType="VARCHAR"/>
+		<result property="residencePoliceStation" column="RESIDENCE_POLICE_STATION" jdbcType="VARCHAR"/>
+		<result property="homeProv" column="HOME_PROV" jdbcType="INTEGER"/>
+		<result property="homeProvCn" column="HOME_PROV_CN" jdbcType="VARCHAR"/>
+		<result property="homeCity" column="HOME_CITY" jdbcType="INTEGER"/>
+		<result property="homeCityCn" column="HOME_CITY_CN" jdbcType="VARCHAR"/>
+		<result property="homeAddr" column="HOME_ADDR" jdbcType="VARCHAR"/>
+		<result property="telphoneNo" column="TELPHONE_NO" jdbcType="VARCHAR"/>
+		<result property="mailBox" column="MAIL_BOX" jdbcType="VARCHAR"/>
+		<result property="salaryAdjustType" column="SALARY_ADJUST_TYPE" jdbcType="INTEGER"/>
+		<result property="salaryAdjustTypeCn" column="SALARY_ADJUST_TYPE_CN" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmWorkerMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_worker record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_worker record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 NAME, 
+				 SEX, 
+				 AGE, 
+				 CARD_TYPE, 
+				 CARD_NO, 
+				 BIRTH_DAY,
+				 NATION, 
+				 NATION_CN, 
+				 POLITICS, 
+				 POLITICS_CN, 
+				 POLITICS_IN_TIME, 
+				 FIRST_WORK_TIME, 
+				 WORKED_YEAR, 
+				 INTO_LOCAL_COMP_TIME, 
+				 NATIVE_PLACE_PROV, 
+				 NATIVE_PLACE_PROV_CN, 
+				 NATIVE_PLACE_CITY, 
+				 NATIVE_PLACE_CITY_CN, 
+				 NATIVE_PLACE_AREA, 
+				 NATIVE_PLACE_AREA_CN,
+				 RESIDENCE_TYPE, 
+				 RESIDENCE_TYPE_CN, 
+				 RESIDENCE_BIRTHLAND_PROV,
+				 RESIDENCE_BIRTHLAND_PROV_CN, 
+				 RESIDENCE_BIRTHLAND_CITY, 
+				 RESIDENCE_BIRTHLAND_CITY_CN,
+				 RESIDENCE_BIRTHLAND_AREA, 
+				 RESIDENCE_BIRTHLAND_AREA_CN,
+				 RESIDENCE_POLICE_STATION,
+				 HOME_PROV, 
+				 HOME_PROV_CN,
+				 HOME_CITY, 
+				 HOME_CITY_CN,
+				 HOME_ADDR, 
+				 TELPHONE_NO, 
+				 MAIL_BOX, 
+				 SALARY_ADJUST_TYPE, 
+				 SALARY_ADJUST_TYPE_CN, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null and entity.id != ''">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.name != null and entity.name != ''">
+					<![CDATA[ and record.NAME  = #{entity.name} ]]>
+				</if>
+				<if test = "entity.sex != null and entity.sex != ''">
+					<![CDATA[ and record.SEX  = #{entity.sex} ]]>
+				</if>
+				<if test = "entity.age != null and entity.age != ''">
+					<![CDATA[ and record.AGE  = #{entity.age} ]]>
+				</if>
+				<if test = "entity.cardType != null and entity.cardType != ''">
+					<![CDATA[ and record.CARD_TYPE  = #{entity.cardType} ]]>
+				</if>
+				<if test = "entity.cardNo != null and entity.cardNo != ''">
+					<![CDATA[ and record.CARD_NO  = #{entity.cardNo} ]]>
+				</if>
+				<if test = "entity.birthDay != null and entity.birthDay != ''">
+					<![CDATA[ and record.BIRTH_DAY  = #{entity.birthDay} ]]>
+				</if>
+				<if test = "entity.nation != null and entity.nation != ''">
+					<![CDATA[ and record.NATION  = #{entity.nation} ]]>
+				</if>
+				<if test = "entity.nationCn != null and entity.nationCn != ''">
+					<![CDATA[ and record.NATION_CN  = #{entity.nationCn} ]]>
+				</if>
+				<if test = "entity.politics != null and entity.politics != ''">
+					<![CDATA[ and record.POLITICS  = #{entity.politics} ]]>
+				</if>
+				<if test = "entity.politicsCn != null and entity.politicsCn != ''">
+					<![CDATA[ and record.POLITICS_CN  = #{entity.politicsCn} ]]>
+				</if>
+				<if test = "entity.politicsInTime != null and entity.politicsInTime != ''">
+					<![CDATA[ and record.POLITICS_IN_TIME  = #{entity.politicsInTime} ]]>
+				</if>
+				<if test = "entity.firstWorkTime != null and entity.firstWorkTime != ''">
+					<![CDATA[ and record.FIRST_WORK_TIME  = #{entity.firstWorkTime} ]]>
+				</if>
+				<if test = "entity.workedYear != null and entity.workedYear != ''">
+					<![CDATA[ and record.WORKED_YEAR  = #{entity.workedYear} ]]>
+				</if>
+				<if test = "entity.intoLocalCompTime != null and entity.intoLocalCompTime != ''">
+					<![CDATA[ and record.INTO_LOCAL_COMP_TIME  = #{entity.intoLocalCompTime} ]]>
+				</if>
+				<if test = "entity.nativePlaceProv != null and entity.nativePlaceProv != ''">
+					<![CDATA[ and record.NATIVE_PLACE_PROV  = #{entity.nativePlaceProv} ]]>
+				</if>
+				<if test = "entity.nativePlaceProvCn != null and entity.nativePlaceProvCn != ''">
+					<![CDATA[ and record.NATIVE_PLACE_PROV_CN  = #{entity.nativePlaceProvCn} ]]>
+				</if>
+				<if test = "entity.nativePlaceCity != null and entity.nativePlaceCity != ''">
+					<![CDATA[ and record.NATIVE_PLACE_CITY  = #{entity.nativePlaceCity} ]]>
+				</if>
+				<if test = "entity.nativePlaceCityCn != null and entity.nativePlaceCityCn != ''">
+					<![CDATA[ and record.NATIVE_PLACE_CITY_CN  = #{entity.nativePlaceCityCn} ]]>
+				</if>
+				<if test = "entity.nativePlaceArea != null and entity.nativePlaceArea != ''">
+					<![CDATA[ and record.NATIVE_PLACE_AREA  = #{entity.nativePlaceArea} ]]>
+				</if>
+				<if test = "entity.nativePlaceAreaCn != null and entity.nativePlaceAreaCn != ''">
+					<![CDATA[ and record.NATIVE_PLACE_AREA_CN  = #{entity.nativePlaceAreaCn} ]]>
+				</if>
+				<if test = "entity.residenceType != null and entity.residenceType != ''">
+					<![CDATA[ and record.RESIDENCE_TYPE  = #{entity.residenceType} ]]>
+				</if>
+				<if test = "entity.residenceTypeCn != null and entity.residenceTypeCn != ''">
+					<![CDATA[ and record.RESIDENCE_TYPE_CN  = #{entity.residenceTypeCn} ]]>
+				</if>
+				<if test = "entity.residenceBirthlandProv != null and entity.residenceBirthlandProv != ''">
+					<![CDATA[ and record.RESIDENCE_BIRTHLAND_PROV  = #{entity.residenceBirthlandProv} ]]>
+				</if>
+				<if test = "entity.residenceBirthlandProvCn != null and entity.residenceBirthlandProvCn != ''">
+					<![CDATA[ and record.RESIDENCE_BIRTHLAND_PROV_CN  = #{entity.residenceBirthlandProvCn} ]]>
+				</if>
+				<if test = "entity.residenceBirthlandCity != null and entity.residenceBirthlandCity != ''">
+					<![CDATA[ and record.RESIDENCE_BIRTHLAND_CITY  = #{entity.residenceBirthlandCity} ]]>
+				</if>
+				<if test = "entity.residenceBirthlandCityCn != null and entity.residenceBirthlandCityCn != ''">
+					<![CDATA[ and record.RESIDENCE_BIRTHLAND_CITY_CN  = #{entity.residenceBirthlandCityCn} ]]>
+				</if>
+				<if test = "entity.residenceBirthlandArea != null and entity.residenceBirthlandArea != ''">
+					<![CDATA[ and record.RESIDENCE_BIRTHLAND_AREA  = #{entity.residenceBirthlandArea} ]]>
+				</if>
+				<if test = "entity.residenceBirthlandAreaCn != null and entity.residenceBirthlandAreaCn != ''">
+					<![CDATA[ and record.RESIDENCE_BIRTHLAND_AREA_CN  = #{entity.residenceBirthlandAreaCn} ]]>
+				</if>
+				<if test = "entity.residencePoliceStation != null and entity.residencePoliceStation != ''">
+					<![CDATA[ and record.RESIDENCE_POLICE_STATION  = #{entity.residencePoliceStation} ]]>
+				</if>
+				<if test = "entity.homeProv != null and entity.homeProv != ''">
+					<![CDATA[ and record.HOME_PROV  = #{entity.homeProv} ]]>
+				</if>
+				<if test = "entity.homeProvCn != null and entity.homeProvCn != ''">
+					<![CDATA[ and record.HOME_PROV_CN  = #{entity.homeProvCn} ]]>
+				</if>
+				<if test = "entity.homeCity != null and entity.homeCity != ''">
+					<![CDATA[ and record.HOME_CITY  = #{entity.homeCity} ]]>
+				</if>
+				<if test = "entity.homeCityCn != null and entity.homeCityCn != ''">
+					<![CDATA[ and record.HOME_CITY_CN  = #{entity.homeCityCn} ]]>
+				</if>
+				<if test = "entity.homeAddr != null and entity.homeAddr != ''">
+					<![CDATA[ and record.HOME_ADDR  = #{entity.homeAddr} ]]>
+				</if>
+				<if test = "entity.telphoneNo != null and entity.telphoneNo != ''">
+					<![CDATA[ and record.TELPHONE_NO  = #{entity.telphoneNo} ]]>
+				</if>
+				<if test = "entity.mailBox != null and entity.mailBox != ''">
+					<![CDATA[ and record.MAIL_BOX  = #{entity.mailBox} ]]>
+				</if>
+				<if test = "entity.salaryAdjustType != null and entity.salaryAdjustType != ''">
+					<![CDATA[ and record.SALARY_ADJUST_TYPE  = #{entity.salaryAdjustType} ]]>
+				</if>
+				<if test = "entity.salaryAdjustTypeCn != null and entity.salaryAdjustTypeCn != ''">
+					<![CDATA[ and record.SALARY_ADJUST_TYPE_CN  = #{entity.salaryAdjustTypeCn} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null and entity.createTime != ''">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null and entity.updateTime != ''">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmWorkerMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_worker record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmWorkerMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_worker record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="name != null">NAME,</if>
+			<if test="sex != null">SEX,</if>
+			<if test="age != null">AGE,</if>
+			<if test="cardType != null">CARD_TYPE,</if>
+			<if test="cardNo != null">CARD_NO,</if>
+			<if test="birthDay != null">BIRTH_DAY,</if>
+			<if test="nation != null">NATION,</if>
+			<if test="nationCn != null">NATION_CN,</if>
+			<if test="politics != null">POLITICS,</if>
+			<if test="politicsCn != null">POLITICS_CN,</if>
+			<if test="politicsInTime != null">POLITICS_IN_TIME,</if>
+			<if test="firstWorkTime != null">FIRST_WORK_TIME,</if>
+			<if test="workedYear != null">WORKED_YEAR,</if>
+			<if test="intoLocalCompTime != null">INTO_LOCAL_COMP_TIME,</if>
+			<if test="nativePlaceProv != null">NATIVE_PLACE_PROV,</if>
+			<if test="nativePlaceProvCn != null">NATIVE_PLACE_PROV_CN,</if>
+			<if test="nativePlaceCity != null">NATIVE_PLACE_CITY,</if>
+			<if test="nativePlaceCityCn != null">NATIVE_PLACE_CITY_CN,</if>
+			<if test="nativePlaceArea != null">NATIVE_PLACE_AREA,</if>
+			<if test="nativePlaceAreaCn != null">NATIVE_PLACE_AREA_CN,</if>
+			<if test="residenceType != null">RESIDENCE_TYPE,</if>
+			<if test="residenceTypeCn != null">RESIDENCE_TYPE_CN,</if>
+			<if test="residenceBirthlandProv != null">RESIDENCE_BIRTHLAND_PROV,</if>
+			<if test="residenceBirthlandProvCn != null">RESIDENCE_BIRTHLAND_PROV_CN,</if>
+			<if test="residenceBirthlandCity != null">RESIDENCE_BIRTHLAND_CITY,</if>
+			<if test="residenceBirthlandCityCn != null">RESIDENCE_BIRTHLAND_CITY_CN,</if>
+			<if test="residenceBirthlandArea != null">RESIDENCE_BIRTHLAND_AREA,</if>
+			<if test="residenceBirthlandAreaCn != null">RESIDENCE_BIRTHLAND_AREA_CN,</if>
+			<if test="residencePoliceStation != null">RESIDENCE_POLICE_STATION,</if>
+			<if test="homeProv != null">HOME_PROV,</if>
+			<if test="homeProvCn != null">HOME_PROV_CN,</if>
+			<if test="homeCity != null">HOME_CITY,</if>
+			<if test="homeCityCn != null">HOME_CITY_CN,</if>
+			<if test="homeAddr != null">HOME_ADDR,</if>
+			<if test="telphoneNo != null">TELPHONE_NO,</if>
+			<if test="mailBox != null">MAIL_BOX,</if>
+			<if test="salaryAdjustType != null">SALARY_ADJUST_TYPE,</if>
+			<if test="salaryAdjustTypeCn != null">SALARY_ADJUST_TYPE_CN,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="name != null">#{name,jdbcType=VARCHAR},</if>
+			<if test="sex != null">#{sex,jdbcType=INTEGER},</if>
+			<if test="age != null">#{age,jdbcType=INTEGER},</if>
+			<if test="cardType != null">#{cardType,jdbcType=INTEGER},</if>
+			<if test="cardNo != null">#{cardNo,jdbcType=VARCHAR},</if>
+			<if test="birthDay != null">#{birthDay,jdbcType=TIMESTAMP},</if>
+			<if test="nation != null">#{nation,jdbcType=INTEGER},</if>
+			<if test="nationCn != null">#{nationCn,jdbcType=VARCHAR},</if>
+			<if test="politics != null">#{politics,jdbcType=INTEGER},</if>
+			<if test="politicsCn != null">#{politicsCn,jdbcType=VARCHAR},</if>
+			<if test="politicsInTime != null">#{politicsInTime,jdbcType=TIMESTAMP},</if>
+			<if test="firstWorkTime != null">#{firstWorkTime,jdbcType=TIMESTAMP},</if>
+			<if test="workedYear != null">#{workedYear,jdbcType=INTEGER},</if>
+			<if test="intoLocalCompTime != null">#{intoLocalCompTime,jdbcType=TIMESTAMP},</if>
+			<if test="nativePlaceProv != null">#{nativePlaceProv,jdbcType=INTEGER},</if>
+			<if test="nativePlaceProvCn != null">#{nativePlaceProvCn,jdbcType=VARCHAR},</if>
+			<if test="nativePlaceCity != null">#{nativePlaceCity,jdbcType=INTEGER},</if>
+			<if test="nativePlaceCityCn != null">#{nativePlaceCityCn,jdbcType=VARCHAR},</if>
+			<if test="nativePlaceArea != null">#{nativePlaceArea,jdbcType=INTEGER},</if>
+			<if test="nativePlaceAreaCn != null">#{nativePlaceAreaCn,jdbcType=VARCHAR},</if>
+			<if test="residenceType != null">#{residenceType,jdbcType=INTEGER},</if>
+			<if test="residenceTypeCn != null">#{residenceTypeCn,jdbcType=VARCHAR},</if>
+			<if test="residenceBirthlandProv != null">#{residenceBirthlandProv,jdbcType=INTEGER},</if>
+			<if test="residenceBirthlandProvCn != null">#{residenceBirthlandProvCn,jdbcType=VARCHAR},</if>
+			<if test="residenceBirthlandCity != null">#{residenceBirthlandCity,jdbcType=INTEGER},</if>
+			<if test="residenceBirthlandCityCn != null">#{residenceBirthlandCityCn,jdbcType=VARCHAR},</if>
+			<if test="residenceBirthlandArea != null">#{residenceBirthlandArea,jdbcType=INTEGER},</if>
+			<if test="residenceBirthlandAreaCn != null">#{residenceBirthlandAreaCn,jdbcType=VARCHAR},</if>
+			<if test="residencePoliceStation != null">#{residencePoliceStation,jdbcType=VARCHAR},</if>
+			<if test="homeProv != null">#{homeProv,jdbcType=INTEGER},</if>
+			<if test="homeProvCn != null">#{homeProvCn,jdbcType=VARCHAR},</if>
+			<if test="homeCity != null">#{homeCity,jdbcType=INTEGER},</if>
+			<if test="homeCityCn != null">#{homeCityCn,jdbcType=VARCHAR},</if>
+			<if test="homeAddr != null">#{homeAddr,jdbcType=VARCHAR},</if>
+			<if test="telphoneNo != null">#{telphoneNo,jdbcType=VARCHAR},</if>
+			<if test="mailBox != null">#{mailBox,jdbcType=VARCHAR},</if>
+			<if test="salaryAdjustType != null">#{salaryAdjustType,jdbcType=INTEGER},</if>
+			<if test="salaryAdjustTypeCn != null">#{salaryAdjustTypeCn,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4batch">
+		<trim suffixOverrides=",">
+			NAME,
+			SEX,
+			AGE,
+			CARD_TYPE,
+			CARD_NO,
+			BIRTH_DAY,
+			NATION,
+			NATION_CN,
+			POLITICS,
+			POLITICS_CN,
+			POLITICS_IN_TIME,
+			FIRST_WORK_TIME,
+			WORKED_YEAR,
+			INTO_LOCAL_COMP_TIME,
+			NATIVE_PLACE_PROV,
+			NATIVE_PLACE_PROV_CN,
+			NATIVE_PLACE_CITY,
+			NATIVE_PLACE_CITY_CN,
+			NATIVE_PLACE_AREA,
+			NATIVE_PLACE_AREA_CN,
+			RESIDENCE_TYPE,
+			RESIDENCE_TYPE_CN,
+			RESIDENCE_BIRTHLAND_PROV,
+			RESIDENCE_BIRTHLAND_PROV_CN,
+			RESIDENCE_BIRTHLAND_CITY,
+			RESIDENCE_BIRTHLAND_CITY_CN,
+			RESIDENCE_BIRTHLAND_AREA,
+			RESIDENCE_BIRTHLAND_AREA_CN,
+			RESIDENCE_POLICE_STATION,
+			HOME_PROV,
+			HOME_PROV_CN,
+			HOME_CITY,
+			HOME_CITY_CN,
+			HOME_ADDR,
+			TELPHONE_NO,
+			MAIL_BOX,
+			SALARY_ADJUST_TYPE,
+			SALARY_ADJUST_TYPE_CN,
+			STATUS,
+			REMARK,
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			#{item.name,jdbcType=VARCHAR},
+			#{item.sex,jdbcType=INTEGER},
+			#{item.age,jdbcType=INTEGER},
+			#{item.cardType,jdbcType=INTEGER},
+			#{item.cardNo,jdbcType=VARCHAR},
+			#{item.birthDay,jdbcType=TIMESTAMP},
+			#{item.nation,jdbcType=INTEGER},
+			#{item.nationCn,jdbcType=VARCHAR},
+			#{item.politics,jdbcType=INTEGER},
+			#{item.politicsCn,jdbcType=VARCHAR},
+			#{item.politicsInTime,jdbcType=TIMESTAMP},
+			#{item.firstWorkTime,jdbcType=TIMESTAMP},
+			#{item.workedYear,jdbcType=INTEGER},
+			#{item.intoLocalCompTime,jdbcType=TIMESTAMP},
+			#{item.nativePlaceProv,jdbcType=INTEGER},
+			#{item.nativePlaceProvCn,jdbcType=VARCHAR},
+			#{item.nativePlaceCity,jdbcType=INTEGER},
+			#{item.nativePlaceCityCn,jdbcType=VARCHAR},
+			#{item.nativePlaceArea,jdbcType=INTEGER},
+			#{item.nativePlaceAreaCn,jdbcType=VARCHAR},
+			#{item.residenceType,jdbcType=INTEGER},
+			#{item.residenceTypeCn,jdbcType=VARCHAR},
+			#{item.residenceBirthlandProv,jdbcType=INTEGER},
+			#{item.residenceBirthlandProvCn,jdbcType=VARCHAR},
+			#{item.residenceBirthlandCity,jdbcType=INTEGER},
+			#{item.residenceBirthlandCityCn,jdbcType=VARCHAR},
+			#{item.residenceBirthlandArea,jdbcType=INTEGER},
+			#{item.residenceBirthlandAreaCn,jdbcType=VARCHAR},
+			#{item.residencePoliceStation,jdbcType=VARCHAR},
+			#{item.homeProv,jdbcType=INTEGER},
+			#{item.homeProvCn,jdbcType=VARCHAR},
+			#{item.homeCity,jdbcType=INTEGER},
+			#{item.homeCityCn,jdbcType=VARCHAR},
+			#{item.homeAddr,jdbcType=VARCHAR},
+			#{item.telphoneNo,jdbcType=VARCHAR},
+			#{item.mailBox,jdbcType=VARCHAR},
+			#{item.salaryAdjustType,jdbcType=INTEGER},
+			#{item.salaryAdjustTypeCn,jdbcType=VARCHAR},
+			#{item.status,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmWorkerModel"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO ch_pm_worker(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO ch_pm_worker
+        (
+        	<include refid="colKeys4batch"/>
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            <include refid="colVals4Itemive"/>
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmWorkerModel">
+		UPDATE ch_pm_worker record 
+		<set>
+			<if test = "name != null ">
+				record.NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test = "sex != null ">
+				record.SEX = #{sex,jdbcType=INTEGER},
+			</if>
+			<if test = "age != null ">
+				record.AGE = #{age,jdbcType=INTEGER},
+			</if>
+			<if test = "cardType != null ">
+				record.CARD_TYPE = #{cardType,jdbcType=INTEGER},
+			</if>
+			<if test = "cardNo != null ">
+				record.CARD_NO = #{cardNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "birthDay != null ">
+				record.BIRTH_DAY = #{birthDay,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "nation != null ">
+				record.NATION = #{nation,jdbcType=INTEGER},
+			</if>
+			<if test = "nationCn != null ">
+				record.NATION_CN = #{nationCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "politics != null ">
+				record.POLITICS = #{politics,jdbcType=INTEGER},
+			</if>
+			<if test = "politicsCn != null ">
+				record.POLITICS_CN = #{politicsCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "politicsInTime != null ">
+				record.POLITICS_IN_TIME = #{politicsInTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "firstWorkTime != null ">
+				record.FIRST_WORK_TIME = #{firstWorkTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "workedYear != null ">
+				record.WORKED_YEAR = #{workedYear,jdbcType=INTEGER},
+			</if>
+			<if test = "intoLocalCompTime != null ">
+				record.INTO_LOCAL_COMP_TIME = #{intoLocalCompTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "nativePlaceProv != null ">
+				record.NATIVE_PLACE_PROV = #{nativePlaceProv,jdbcType=INTEGER},
+			</if>
+			<if test = "nativePlaceProvCn != null ">
+				record.NATIVE_PLACE_PROV_CN = #{nativePlaceProvCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "nativePlaceCity != null ">
+				record.NATIVE_PLACE_CITY = #{nativePlaceCity,jdbcType=INTEGER},
+			</if>
+			<if test = "nativePlaceCityCn != null ">
+				record.NATIVE_PLACE_CITY_CN = #{nativePlaceCityCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "nativePlaceArea != null ">
+				record.NATIVE_PLACE_AREA = #{nativePlaceArea,jdbcType=INTEGER},
+			</if>
+			<if test = "nativePlaceAreaCn != null ">
+				record.NATIVE_PLACE_AREA_CN = #{nativePlaceAreaCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "residenceType != null ">
+				record.RESIDENCE_TYPE = #{residenceType,jdbcType=INTEGER},
+			</if>
+			<if test = "residenceTypeCn != null ">
+				record.RESIDENCE_TYPE_CN = #{residenceTypeCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "residenceBirthlandProv != null ">
+				record.RESIDENCE_BIRTHLAND_PROV = #{residenceBirthlandProv,jdbcType=INTEGER},
+			</if>
+			<if test = "residenceBirthlandProvCn != null ">
+				record.RESIDENCE_BIRTHLAND_PROV_CN = #{residenceBirthlandProvCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "residenceBirthlandCity != null ">
+				record.RESIDENCE_BIRTHLAND_CITY = #{residenceBirthlandCity,jdbcType=INTEGER},
+			</if>
+			<if test = "residenceBirthlandCityCn != null ">
+				record.RESIDENCE_BIRTHLAND_CITY_CN = #{residenceBirthlandCityCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "residenceBirthlandArea != null ">
+				record.RESIDENCE_BIRTHLAND_AREA = #{residenceBirthlandArea,jdbcType=INTEGER},
+			</if>
+			<if test = "residenceBirthlandAreaCn != null ">
+				record.RESIDENCE_BIRTHLAND_AREA_CN = #{residenceBirthlandAreaCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "residencePoliceStation != null ">
+				record.RESIDENCE_POLICE_STATION = #{residencePoliceStation,jdbcType=VARCHAR},
+			</if>
+			<if test = "homeProv != null ">
+				record.HOME_PROV = #{homeProv,jdbcType=INTEGER},
+			</if>
+			<if test = "homeProvCn != null ">
+				record.HOME_PROV_CN = #{homeProvCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "homeCity != null ">
+				record.HOME_CITY = #{homeCity,jdbcType=INTEGER},
+			</if>
+			<if test = "homeCityCn != null ">
+				record.HOME_CITY_CN = #{homeCityCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "homeAddr != null ">
+				record.HOME_ADDR = #{homeAddr,jdbcType=VARCHAR},
+			</if>
+			<if test = "telphoneNo != null ">
+				record.TELPHONE_NO = #{telphoneNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "mailBox != null ">
+				record.MAIL_BOX = #{mailBox,jdbcType=VARCHAR},
+			</if>
+			<if test = "salaryAdjustType != null ">
+				record.SALARY_ADJUST_TYPE = #{salaryAdjustType,jdbcType=INTEGER},
+			</if>
+			<if test = "salaryAdjustTypeCn != null ">
+				record.SALARY_ADJUST_TYPE_CN = #{salaryAdjustTypeCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test = "createTime != null ">
+				record.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "updateTime != null ">
+				record.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_worker 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_worker 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_worker  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_worker  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	
+	<!-- 根据身份证号批量查询职工是否存在 -->
+	<select id="queryExisted" parameterType="java.util.List" resultType="java.lang.String">
+        select card_no from ch_pm_worker
+        where card_no in
+	    <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+        and status=0
+	</select>
+	
+	<!-- 根据身份证号批量查询职工信息 -->
+	<select id="queryByCardNoBatch" parameterType="java.util.List" resultType="java.util.Map">
+        select id,card_no from ch_pm_worker
+        where card_no in
+	    <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+        and status=0
+	</select>
+	
+	<!-- 根据身份证号批量查询职工的其他信息、人事档案和增减信息是否存在 -->
+	<select id="queryExist4OthByCardNos" parameterType="java.util.List" resultType="java.util.Map">
+        select 
+        	w.id,
+        	w.card_no,
+			IF(IFNULL(o.WORKER_ID,-1)>=0,1,0) as o_exist,
+			IF(IFNULL(d.WORKER_ID,-1)>=0,1,0) as d_exist,
+			IF(IFNULL(i.WORKER_ID,-1)>=0,1,0) as i_exist
+		from ch_pm_worker w 
+		left join ch_pm_other_info o on w.id = o.WORKER_ID and o.status=0
+		left join ch_pm_dossier_info d on w.id = d.WORKER_ID and d.status=0
+		left join ch_pm_incdec_info i on w.id = i.WORKER_ID and i.status=0
+		where w.CARD_NO in 
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+					#{item}
+		</foreach>
+		and w.status=0
+	</select>
+</mapper>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmHosBranchMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmHosBranchMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmHosBranchModel">
+		<result property="hbhNo" column="hbh_no" jdbcType="INTEGER"/>
+		<result property="hbhName" column="hbh_name" jdbcType="VARCHAR"/>
+		<result property="sorts" column="sorts" jdbcType="INTEGER"/>
+		<result property="status" column="status" jdbcType="INTEGER"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmHosBranchMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_hos_branch record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_hos_branch record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 hbh_no, 
+				 hbh_name, 
+				 sorts, 
+				 status 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.hbhNo != null and entity.hbhNo != ''">
+					<![CDATA[ and record.hbh_no  = #{entity.hbhNo} ]]>
+				</if>
+				<if test = "entity.hbhName != null and entity.hbhName != ''">
+					<![CDATA[ and record.hbh_name  = #{entity.hbhName} ]]>
+				</if>
+				<if test = "entity.sorts != null and entity.sorts != ''">
+					<![CDATA[ and record.sorts  = #{entity.sorts} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.status  = #{entity.status} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmHosBranchMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_hos_branch record
+		<include refid="whereFilter" />
+		ORDER BY sorts asc
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmHosBranchMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_hos_branch record
+		WHERE 
+		 record.hbh_no = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="hbhNo != null">hbh_no,</if>
+			<if test="hbhName != null">hbh_name,</if>
+			<if test="sorts != null">sorts,</if>
+			<if test="status != null">status,</if>
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="hbhNo != null">#{hbhNo,jdbcType=INTEGER},</if>
+			<if test="hbhName != null">#{hbhName,jdbcType=VARCHAR},</if>
+			<if test="sorts != null">#{sorts,jdbcType=INTEGER},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="hbhNo != null">#{item.hbhNo,jdbcType=INTEGER},</if>
+			<if test="hbhName != null">#{item.hbhName,jdbcType=VARCHAR},</if>
+			<if test="sorts != null">#{item.sorts,jdbcType=INTEGER},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmHosBranchModel">
+		INSERT INTO ch_pm_hos_branch(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_pm_hos_branch
+        (
+        	<include refid="colKeys4Selective"/>
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            <include refid="colVals4Itemive"/>
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmHosBranchModel">
+		UPDATE ch_pm_hos_branch record 
+		<set>
+			<if test = "hbhName != null ">
+				record.hbh_name = #{hbhName,jdbcType=VARCHAR},
+			</if>
+			<if test = "sorts != null ">
+				record.sorts = #{sorts,jdbcType=INTEGER},
+			</if>
+			<if test = "status != null ">
+				record.status = #{status,jdbcType=INTEGER}
+			</if>
+		</set>
+		WHERE hbh_no = #{hbhNo}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_hos_branch 
+		WHERE hbh_no = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_hos_branch 
+		SET status = '1'
+		WHERE hbh_no = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_hos_branch  
+		WHERE hbh_no IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_hos_branch  
+		SET status = '1'
+		WHERE hbh_no IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+</mapper>

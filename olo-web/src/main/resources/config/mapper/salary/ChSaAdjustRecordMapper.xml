@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.salary.mapper.ChSaAdjustRecordMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chSaAdjustRecordMapper" type="com.hdfs.olo.olo_web.salary.model.ChSaAdjustRecordModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="adjustMonth" column="ADJUST_MONTH" jdbcType="VARCHAR"/>
+		<result property="adjustAccount" column="ADJUST_ACCOUNT" jdbcType="VARCHAR"/>
+		<result property="adjustUser" column="ADJUST_USER" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chSaAdjustRecordMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_adjust_record record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by ${page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_sa_adjust_record record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 ADJUST_MONTH, 
+				 ADJUST_ACCOUNT, 
+				 ADJUST_USER, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.adjustMonth != null and entity.adjustMonth != ''">
+					<![CDATA[ and record.ADJUST_MONTH  = #{entity.adjustMonth} ]]>
+				</if>
+				<if test = "entity.adjustAccount != null and entity.adjustAccount != ''">
+					<![CDATA[ and record.ADJUST_ACCOUNT  = #{entity.adjustAccount} ]]>
+				</if>
+				<if test = "entity.adjustUser != null and entity.adjustUser != ''">
+					<![CDATA[ and record.ADJUST_USER  = #{entity.adjustUser} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chSaAdjustRecordMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_adjust_record record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chSaAdjustRecordMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_adjust_record record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="adjustMonth != null">ADJUST_MONTH,</if>
+			<if test="adjustAccount != null">ADJUST_ACCOUNT,</if>
+			<if test="adjustUser != null">ADJUST_USER,</if>
+			STATUS,
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="adjustMonth != null">#{adjustMonth,jdbcType=VARCHAR},</if>
+			<if test="adjustAccount != null">#{adjustAccount,jdbcType=VARCHAR},</if>
+			<if test="adjustUser != null">#{adjustUser,jdbcType=VARCHAR},</if>
+			0,
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.salary.model.ChSaAdjustRecordModel"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+		INSERT INTO ch_sa_adjust_record(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_sa_adjust_record
+        (
+			ADJUST_MONTH,
+			ADJUST_ACCOUNT,
+			ADJUST_USER,
+			STATUS,
+			REMARK,
+			CREATE_TIME,
+			UPDATE_TIME,
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+			#{item.adjustMonth,jdbcType=VARCHAR},
+			#{item.adjustAccount,jdbcType=VARCHAR},
+			#{item.adjustUser,jdbcType=VARCHAR},
+			0,
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.salary.model.ChSaAdjustRecordModel">
+		UPDATE ch_sa_adjust_record record 
+		<set>
+			<if test = "adjustMonth != null ">
+				record.ADJUST_MONTH = #{adjustMonth,jdbcType=VARCHAR},
+			</if>
+			<if test = "adjustAccount != null ">
+				record.ADJUST_ACCOUNT = #{adjustAccount,jdbcType=VARCHAR},
+			</if>
+			<if test = "adjustUser != null ">
+				record.ADJUST_USER = #{adjustUser,jdbcType=VARCHAR},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_sa_adjust_record 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_sa_adjust_record 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_sa_adjust_record  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_sa_adjust_record  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+</mapper>

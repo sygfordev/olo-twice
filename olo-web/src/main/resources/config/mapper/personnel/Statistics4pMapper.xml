@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.Statistics4pMapper">
+	
+	<!-- 统计机构编制汇总信息-->
+	<select id="s4orgTotal" resultType="java.util.Map">
+		SELECT
+			"合计" as "机构名称",
+			count(s.STATION_SITU = 0 OR NULL)  AS "在岗",
+		  	count(s.STATION_SITU = 1 OR NULL)  AS "调研员",
+		  	count(s.STATION_SITU = 2 OR NULL)     AS "协理员",
+			count(s.STATION_SITU = 3 OR NULL)     AS "人力资源市场",
+			count(s.STATION_SITU = 4 OR NULL)     AS "内退人员",
+			count(s.STATION_SITU = 5 OR NULL)     AS "留职",
+			count(s.STATION_SITU = 6 OR NULL)     AS "其他",
+			count(ph.POSIT_LEVEL_4NOW &lt;=1 OR NULL) as "科级人数",
+			count(ph.POSIT_LEVEL_4NOW=0 OR NULL) as "正科人数",
+			count(ph.POSIT_LEVEL_4NOW=1 OR NULL) as "副科人数",
+			0 as "正科级科员",
+			0 as "副科级科员",
+			"" as "备注"
+		FROM
+			ch_pm_worker w
+			left join ch_pm_station s on s.WORKER_ID=w.id and s.status=0
+			left join ch_pm_posit_head ph on ph.WORKER_ID=w.id and ph.status=0
+		where w.status=0
+	</select>
+	
+	<!-- 统计机构编制-支部统计-->
+	<select id="s4orgBranch" resultType="java.util.Map">
+		SELECT
+			hb.hbh_no as "机构编号",
+			hb.hbh_name as "机构名称",
+			count(s.STATION_SITU = 0 OR NULL)  AS "在岗",
+		  	count(s.STATION_SITU = 1 OR NULL)  AS "调研员",
+		  	count(s.STATION_SITU = 2 OR NULL)     AS "协理员",
+			count(s.STATION_SITU = 3 OR NULL)     AS "人力资源市场",
+			count(s.STATION_SITU = 4 OR NULL)     AS "内退人员",
+			count(s.STATION_SITU = 5 OR NULL)     AS "留职",
+			count(s.STATION_SITU = 6 OR NULL)     AS "其他",
+			count(ph.POSIT_LEVEL_4NOW &lt;=1 OR NULL) as "科级人数",
+			count(ph.POSIT_LEVEL_4NOW=0 OR NULL) as "正科人数",
+			count(ph.POSIT_LEVEL_4NOW=1 OR NULL) as "副科人数",
+			0 as "正科级科员",
+			0 as "副科级科员",
+			"" as "备注"
+		FROM
+			ch_pm_hos_branch hb
+			left join ch_pm_station s on s.HOS_BRANCH = hb.hbh_no and s.status=0
+			left join ch_pm_worker w on s.WORKER_ID=w.id and  w.status=0
+			left join ch_pm_posit_head ph on ph.WORKER_ID=w.id and ph.status=0
+		group by hb.hbh_no,hb.hbh_name
+	</select>
+	
+	<!-- 统计机构编制-未指定支部统计-->
+	<select id="s4orgBranchUnKnown" resultType="java.util.Map">
+		SELECT
+			"未指定支部" as "机构名称",
+			count(s.STATION_SITU = 0 OR NULL)  AS "在岗",
+		  	count(s.STATION_SITU = 1 OR NULL)  AS "调研员",
+		  	count(s.STATION_SITU = 2 OR NULL)     AS "协理员",
+			count(s.STATION_SITU = 3 OR NULL)     AS "人力资源市场",
+			count(s.STATION_SITU = 4 OR NULL)     AS "内退人员",
+			count(s.STATION_SITU = 5 OR NULL)     AS "留职",
+			count(s.STATION_SITU = 6 OR NULL)     AS "其他",
+			count(ph.POSIT_LEVEL_4NOW &lt;=1 OR NULL) as "科级人数",
+			count(ph.POSIT_LEVEL_4NOW = 0 OR NULL) as "正科人数",
+			count(ph.POSIT_LEVEL_4NOW = 1 OR NULL) as "副科人数",
+			0 as "正科级科员",
+			0 as "副科级科员",
+			"" as "备注"
+		FROM
+			ch_pm_worker w
+			left join ch_pm_station s on s.WORKER_ID=w.id and s.status=0
+			left join ch_pm_posit_head ph on ph.WORKER_ID=w.id and ph.status=0
+		where w.status=0 and s.HOS_BRANCH is null
+		group by s.HOS_BRANCH
+	</select>
+	
+	<!-- 统计机构编制-根据支部统计一级科室统计-->
+	<select id="s4orgDepart" resultType="java.util.Map" parameterType="java.lang.Integer">
+		SELECT
+			<!-- dp.hdp_no, -->
+			dp.hdp_name as "机构名称",
+			count(s.STATION_SITU = 0 OR NULL)  AS "在岗",
+		  	count(s.STATION_SITU = 1 OR NULL)  AS "调研员",
+		  	count(s.STATION_SITU = 2 OR NULL)     AS "协理员",
+			count(s.STATION_SITU = 3 OR NULL)     AS "人力资源市场",
+			count(s.STATION_SITU = 4 OR NULL)     AS "内退人员",
+			count(s.STATION_SITU = 5 OR NULL)     AS "留职",
+			count(s.STATION_SITU = 6 OR NULL)     AS "其他",
+			count(ph.POSIT_LEVEL_4NOW &lt;=1 OR NULL) as "科级人数",
+			count(ph.POSIT_LEVEL_4NOW=0 OR NULL) as "正科人数",
+			count(ph.POSIT_LEVEL_4NOW=1 OR NULL) as "副科人数",
+			0 as "正科级科员",
+			0 as "副科级科员",
+			"" as "备注"
+		FROM
+			ch_pm_hos_depart dp
+			left join ch_pm_station s on s.HOS_DEPART_1LEVEL = dp.hdp_no and s.status=0
+			left join ch_pm_worker w on s.WORKER_ID=w.id and  w.status=0
+			left join ch_pm_posit_head ph on ph.WORKER_ID=w.id and ph.status=0
+		where dp.hbh_no=#{hbhNo}
+		group by dp.hdp_no,dp.hdp_name
+	</select>
+</mapper>

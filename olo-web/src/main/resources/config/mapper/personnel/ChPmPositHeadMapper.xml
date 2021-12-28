@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmPositHeadMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmPositHeadMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmPositHeadModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="workerId" column="WORKER_ID" jdbcType="BIGINT"/>
+		<result property="posit4now" column="POSIT_4NOW" jdbcType="INTEGER"/>
+		<result property="posit4nowCn" column="POSIT_4NOW_CN" jdbcType="VARCHAR"/>
+		<result property="positDepart4now" column="POSIT_DEPART_4NOW" jdbcType="VARCHAR"/>
+		<result property="positLevel4now" column="POSIT_LEVEL_4NOW" jdbcType="INTEGER"/>
+		<result property="positLevel4nowCn" column="POSIT_LEVEL_4NOW_CN" jdbcType="VARCHAR"/>
+		<result property="posit4nowStartTime" column="POSIT_4NOW_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="posit4nowEndTime" column="POSIT_4NOW_END_TIME" jdbcType="TIMESTAMP"/>
+		<result property="treatLevel4now" column="TREAT_LEVEL_4NOW" jdbcType="INTEGER"/>
+		<result property="treatLevel4nowCn" column="TREAT_LEVEL_4NOW_CN" jdbcType="VARCHAR"/>
+		<result property="treat4nowStartTime" column="TREAT_4NOW_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="treat4nowEndTime" column="TREAT_4NOW_END_TIME" jdbcType="TIMESTAMP"/>
+		<result property="treat4nowYears" column="TREAT_4NOW_YEARS" jdbcType="INTEGER"/>
+		<result property="onChuStartTime" column="ON_CHU_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="onChuEndTime" column="ON_CHU_END_TIME" jdbcType="TIMESTAMP"/>
+		<result property="onChuDetupyStartTime" column="ON_CHU_DETUPY_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="onChuDetupyEndTime" column="ON_CHU_DETUPY_END_TIME" jdbcType="TIMESTAMP"/>
+		<result property="onKeStartTime" column="ON_KE_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="onKeEndTime" column="ON_KE_END_TIME" jdbcType="TIMESTAMP"/>
+		<result property="onKeDetupyStartTime" column="ON_KE_DETUPY_START_TIME" jdbcType="TIMESTAMP"/>
+		<result property="onKeDetupyEndTime" column="ON_KE_DETUPY_END_TIME" jdbcType="TIMESTAMP"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmPositHeadMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_posit_head record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_posit_head record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 WORKER_ID, 
+				 POSIT_4NOW, 
+				 POSIT_4NOW_CN, 
+				 POSIT_DEPART_4NOW, 
+				 POSIT_LEVEL_4NOW, 
+				 POSIT_LEVEL_4NOW_CN, 
+				 POSIT_4NOW_START_TIME, 
+				 POSIT_4NOW_END_TIME, 
+				 TREAT_LEVEL_4NOW, 
+				 TREAT_LEVEL_4NOW_CN, 
+				 TREAT_4NOW_START_TIME, 
+				 TREAT_4NOW_END_TIME, 
+				 TREAT_4NOW_YEARS, 
+				 ON_CHU_START_TIME, 
+				 ON_CHU_END_TIME, 
+				 ON_CHU_DETUPY_START_TIME, 
+				 ON_CHU_DETUPY_END_TIME, 
+				 ON_KE_START_TIME, 
+				 ON_KE_END_TIME, 
+				 ON_KE_DETUPY_START_TIME, 
+				 ON_KE_DETUPY_END_TIME, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null and entity.id != ''">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.workerId != null and entity.workerId != ''">
+					<![CDATA[ and record.WORKER_ID  = #{entity.workerId} ]]>
+				</if>
+				<if test = "entity.posit4now != null and entity.posit4now != ''">
+					<![CDATA[ and record.POSIT_4NOW  = #{entity.posit4now} ]]>
+				</if>
+				<if test = "entity.posit4nowCn != null and entity.posit4nowCn != ''">
+					<![CDATA[ and record.POSIT_4NOW_CN  = #{entity.posit4nowCn} ]]>
+				</if>
+				<if test = "entity.positDepart4now != null and entity.positDepart4now != ''">
+					<![CDATA[ and record.POSIT_DEPART_4NOW  = #{entity.positDepart4now} ]]>
+				</if>
+				<if test = "entity.positLevel4now != null and entity.positLevel4now != ''">
+					<![CDATA[ and record.POSIT_LEVEL_4NOW  = #{entity.positLevel4now} ]]>
+				</if>
+				<if test = "entity.positLevel4nowCn != null and entity.positLevel4nowCn != ''">
+					<![CDATA[ and record.POSIT_LEVEL_4NOW_CN  = #{entity.positLevel4nowCn} ]]>
+				</if>
+				<if test = "entity.posit4nowStartTime != null and entity.posit4nowStartTime != ''">
+					<![CDATA[ and record.POSIT_4NOW_START_TIME  = #{entity.posit4nowStartTime} ]]>
+				</if>
+				<if test = "entity.posit4nowEndTime != null and entity.posit4nowEndTime != ''">
+					<![CDATA[ and record.POSIT_4NOW_END_TIME  = #{entity.posit4nowEndTime} ]]>
+				</if>
+				<if test = "entity.treatLevel4now != null and entity.treatLevel4now != ''">
+					<![CDATA[ and record.TREAT_LEVEL_4NOW  = #{entity.treatLevel4now} ]]>
+				</if>
+				<if test = "entity.treatLevel4nowCn != null and entity.treatLevel4nowCn != ''">
+					<![CDATA[ and record.TREAT_LEVEL_4NOW_CN  = #{entity.treatLevel4nowCn} ]]>
+				</if>
+				<if test = "entity.treat4nowStartTime != null and entity.treat4nowStartTime != ''">
+					<![CDATA[ and record.TREAT_4NOW_START_TIME  = #{entity.treat4nowStartTime} ]]>
+				</if>
+				<if test = "entity.treat4nowEndTime != null and entity.treat4nowEndTime != ''">
+					<![CDATA[ and record.TREAT_4NOW_END_TIME  = #{entity.treat4nowEndTime} ]]>
+				</if>
+				<if test = "entity.treat4nowYears != null and entity.treat4nowYears != ''">
+					<![CDATA[ and record.TREAT_4NOW_YEARS  = #{entity.treat4nowYears} ]]>
+				</if>
+				<if test = "entity.onChuStartTime != null and entity.onChuStartTime != ''">
+					<![CDATA[ and record.ON_CHU_START_TIME  = #{entity.onChuStartTime} ]]>
+				</if>
+				<if test = "entity.onChuEndTime != null and entity.onChuEndTime != ''">
+					<![CDATA[ and record.ON_CHU_END_TIME  = #{entity.onChuEndTime} ]]>
+				</if>
+				<if test = "entity.onChuDetupyStartTime != null and entity.onChuDetupyStartTime != ''">
+					<![CDATA[ and record.ON_CHU_DETUPY_START_TIME  = #{entity.onChuDetupyStartTime} ]]>
+				</if>
+				<if test = "entity.onChuDetupyEndTime != null and entity.onChuDetupyEndTime != ''">
+					<![CDATA[ and record.ON_CHU_DETUPY_END_TIME  = #{entity.onChuDetupyEndTime} ]]>
+				</if>
+				<if test = "entity.onKeStartTime != null and entity.onKeStartTime != ''">
+					<![CDATA[ and record.ON_KE_START_TIME  = #{entity.onKeStartTime} ]]>
+				</if>
+				<if test = "entity.onKeEndTime != null and entity.onKeEndTime != ''">
+					<![CDATA[ and record.ON_KE_END_TIME  = #{entity.onKeEndTime} ]]>
+				</if>
+				<if test = "entity.onKeDetupyStartTime != null and entity.onKeDetupyStartTime != ''">
+					<![CDATA[ and record.ON_KE_DETUPY_START_TIME  = #{entity.onKeDetupyStartTime} ]]>
+				</if>
+				<if test = "entity.onKeDetupyEndTime != null and entity.onKeDetupyEndTime != ''">
+					<![CDATA[ and record.ON_KE_DETUPY_END_TIME  = #{entity.onKeDetupyEndTime} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null and entity.createTime != ''">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null and entity.updateTime != ''">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmPositHeadMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_posit_head record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmPositHeadMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_posit_head record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!-- 根据职工编号查询单个实体 -->
+	<select id="queryByWkId" resultMap="chPmPositHeadMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_posit_head record
+		WHERE 
+		 record.WORKER_ID = #{wkId}
+		 and record.status =0
+		 limit 1
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="workerId != null">WORKER_ID,</if>
+			<if test="posit4now != null">POSIT_4NOW,</if>
+			<if test="posit4nowCn != null">POSIT_4NOW_CN,</if>
+			<if test="positDepart4now != null">POSIT_DEPART_4NOW,</if>
+			<if test="positLevel4now != null">POSIT_LEVEL_4NOW,</if>
+			<if test="positLevel4nowCn != null">POSIT_LEVEL_4NOW_CN,</if>
+			<if test="posit4nowStartTime != null">POSIT_4NOW_START_TIME,</if>
+			<if test="posit4nowEndTime != null">POSIT_4NOW_END_TIME,</if>
+			<if test="treatLevel4now != null">TREAT_LEVEL_4NOW,</if>
+			<if test="treatLevel4nowCn != null">TREAT_LEVEL_4NOW_CN,</if>
+			<if test="treat4nowStartTime != null">TREAT_4NOW_START_TIME,</if>
+			<if test="treat4nowEndTime != null">TREAT_4NOW_END_TIME,</if>
+			<if test="treat4nowYears != null">TREAT_4NOW_YEARS,</if>
+			<if test="onChuStartTime != null">ON_CHU_START_TIME,</if>
+			<if test="onChuEndTime != null">ON_CHU_END_TIME,</if>
+			<if test="onChuDetupyStartTime != null">ON_CHU_DETUPY_START_TIME,</if>
+			<if test="onChuDetupyEndTime != null">ON_CHU_DETUPY_END_TIME,</if>
+			<if test="onKeStartTime != null">ON_KE_START_TIME,</if>
+			<if test="onKeEndTime != null">ON_KE_END_TIME,</if>
+			<if test="onKeDetupyStartTime != null">ON_KE_DETUPY_START_TIME,</if>
+			<if test="onKeDetupyEndTime != null">ON_KE_DETUPY_END_TIME,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{workerId,jdbcType=BIGINT},</if>
+			<if test="posit4now != null">#{posit4now,jdbcType=INTEGER},</if>
+			<if test="posit4nowCn != null">#{posit4nowCn,jdbcType=VARCHAR},</if>
+			<if test="positDepart4now != null">#{positDepart4now,jdbcType=VARCHAR},</if>
+			<if test="positLevel4now != null">#{positLevel4now,jdbcType=INTEGER},</if>
+			<if test="positLevel4nowCn != null">#{positLevel4nowCn,jdbcType=VARCHAR},</if>
+			<if test="posit4nowStartTime != null">#{posit4nowStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="posit4nowEndTime != null">#{posit4nowEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="treatLevel4now != null">#{treatLevel4now,jdbcType=INTEGER},</if>
+			<if test="treatLevel4nowCn != null">#{treatLevel4nowCn,jdbcType=VARCHAR},</if>
+			<if test="treat4nowStartTime != null">#{treat4nowStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="treat4nowEndTime != null">#{treat4nowEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="treat4nowYears != null">#{treat4nowYears,jdbcType=INTEGER},</if>
+			<if test="onChuStartTime != null">#{onChuStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="onChuEndTime != null">#{onChuEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="onChuDetupyStartTime != null">#{onChuDetupyStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="onChuDetupyEndTime != null">#{onChuDetupyEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="onKeStartTime != null">#{onKeStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="onKeEndTime != null">#{onKeEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="onKeDetupyStartTime != null">#{onKeDetupyStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="onKeDetupyEndTime != null">#{onKeDetupyEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{item.id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{item.workerId,jdbcType=BIGINT},</if>
+			<if test="posit4now != null">#{item.posit4now,jdbcType=INTEGER},</if>
+			<if test="posit4nowCn != null">#{item.posit4nowCn,jdbcType=VARCHAR},</if>
+			<if test="positDepart4now != null">#{item.positDepart4now,jdbcType=VARCHAR},</if>
+			<if test="positLevel4now != null">#{item.positLevel4now,jdbcType=INTEGER},</if>
+			<if test="positLevel4nowCn != null">#{item.positLevel4nowCn,jdbcType=VARCHAR},</if>
+			<if test="posit4nowStartTime != null">#{item.posit4nowStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="posit4nowEndTime != null">#{item.posit4nowEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="treatLevel4now != null">#{item.treatLevel4now,jdbcType=INTEGER},</if>
+			<if test="treatLevel4nowCn != null">#{item.treatLevel4nowCn,jdbcType=VARCHAR},</if>
+			<if test="treat4nowStartTime != null">#{item.treat4nowStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="treat4nowEndTime != null">#{item.treat4nowEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="treat4nowYears != null">#{item.treat4nowYears,jdbcType=INTEGER},</if>
+			<if test="onChuStartTime != null">#{item.onChuStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="onChuEndTime != null">#{item.onChuEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="onChuDetupyStartTime != null">#{item.onChuDetupyStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="onChuDetupyEndTime != null">#{item.onChuDetupyEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="onKeStartTime != null">#{item.onKeStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="onKeEndTime != null">#{item.onKeEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="onKeDetupyStartTime != null">#{item.onKeDetupyStartTime,jdbcType=TIMESTAMP},</if>
+			<if test="onKeDetupyEndTime != null">#{item.onKeDetupyEndTime,jdbcType=TIMESTAMP},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmPositHeadModel">
+		INSERT INTO ch_pm_posit_head(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_pm_posit_head
+        (
+        	 WORKER_ID, 
+			 POSIT_4NOW, 
+			 POSIT_4NOW_CN, 
+			 POSIT_DEPART_4NOW, 
+			 POSIT_LEVEL_4NOW, 
+			 POSIT_LEVEL_4NOW_CN, 
+			 POSIT_4NOW_START_TIME, 
+			 POSIT_4NOW_END_TIME, 
+			 TREAT_LEVEL_4NOW, 
+			 TREAT_LEVEL_4NOW_CN, 
+			 TREAT_4NOW_START_TIME, 
+			 TREAT_4NOW_END_TIME, 
+			 TREAT_4NOW_YEARS, 
+			 ON_CHU_START_TIME, 
+			 ON_CHU_END_TIME, 
+			 ON_CHU_DETUPY_START_TIME, 
+			 ON_CHU_DETUPY_END_TIME, 
+			 ON_KE_START_TIME, 
+			 ON_KE_END_TIME, 
+			 ON_KE_DETUPY_START_TIME, 
+			 ON_KE_DETUPY_END_TIME, 
+			 STATUS, 
+			 REMARK, 
+			 CREATE_TIME, 
+			 UPDATE_TIME 
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            #{item.workerId,jdbcType=BIGINT},
+			#{item.posit4now,jdbcType=INTEGER},
+			#{item.posit4nowCn,jdbcType=VARCHAR},
+			#{item.positDepart4now,jdbcType=VARCHAR},
+			#{item.positLevel4now,jdbcType=INTEGER},
+			#{item.positLevel4nowCn,jdbcType=VARCHAR},
+			#{item.posit4nowStartTime,jdbcType=TIMESTAMP},
+			#{item.posit4nowEndTime,jdbcType=TIMESTAMP},
+			#{item.treatLevel4now,jdbcType=INTEGER},
+			#{item.treatLevel4nowCn,jdbcType=VARCHAR},
+			#{item.treat4nowStartTime,jdbcType=TIMESTAMP},
+			#{item.treat4nowEndTime,jdbcType=TIMESTAMP},
+			#{item.treat4nowYears,jdbcType=INTEGER},
+			#{item.onChuStartTime,jdbcType=TIMESTAMP},
+			#{item.onChuEndTime,jdbcType=TIMESTAMP},
+			#{item.onChuDetupyStartTime,jdbcType=TIMESTAMP},
+			#{item.onChuDetupyEndTime,jdbcType=TIMESTAMP},
+			#{item.onKeStartTime,jdbcType=TIMESTAMP},
+			#{item.onKeEndTime,jdbcType=TIMESTAMP},
+			#{item.onKeDetupyStartTime,jdbcType=TIMESTAMP},
+			#{item.onKeDetupyEndTime,jdbcType=TIMESTAMP},
+			#{item.status,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmPositHeadModel">
+		UPDATE ch_pm_posit_head record 
+		<set>
+			<if test = "id != null ">
+				record.ID = #{id,jdbcType=BIGINT},
+			</if>
+			<if test = "workerId != null ">
+				record.WORKER_ID = #{workerId,jdbcType=BIGINT},
+			</if>
+			<if test = "posit4now != null ">
+				record.POSIT_4NOW = #{posit4now,jdbcType=INTEGER},
+			</if>
+			<if test = "posit4nowCn != null ">
+				record.POSIT_4NOW_CN = #{posit4nowCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "positDepart4now != null ">
+				record.POSIT_DEPART_4NOW = #{positDepart4now,jdbcType=VARCHAR},
+			</if>
+			<if test = "positLevel4now != null ">
+				record.POSIT_LEVEL_4NOW = #{positLevel4now,jdbcType=INTEGER},
+			</if>
+			<if test = "positLevel4nowCn != null ">
+				record.POSIT_LEVEL_4NOW_CN = #{positLevel4nowCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "posit4nowStartTime != null ">
+				record.POSIT_4NOW_START_TIME = #{posit4nowStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "posit4nowEndTime != null ">
+				record.POSIT_4NOW_END_TIME = #{posit4nowEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "treatLevel4now != null ">
+				record.TREAT_LEVEL_4NOW = #{treatLevel4now,jdbcType=INTEGER},
+			</if>
+			<if test = "treatLevel4nowCn != null ">
+				record.TREAT_LEVEL_4NOW_CN = #{treatLevel4nowCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "treat4nowStartTime != null ">
+				record.TREAT_4NOW_START_TIME = #{treat4nowStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "treat4nowEndTime != null ">
+				record.TREAT_4NOW_END_TIME = #{treat4nowEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "treat4nowYears != null ">
+				record.TREAT_4NOW_YEARS = #{treat4nowYears,jdbcType=INTEGER},
+			</if>
+			<if test = "onChuStartTime != null ">
+				record.ON_CHU_START_TIME = #{onChuStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "onChuEndTime != null ">
+				record.ON_CHU_END_TIME = #{onChuEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "onChuDetupyStartTime != null ">
+				record.ON_CHU_DETUPY_START_TIME = #{onChuDetupyStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "onChuDetupyEndTime != null ">
+				record.ON_CHU_DETUPY_END_TIME = #{onChuDetupyEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "onKeStartTime != null ">
+				record.ON_KE_START_TIME = #{onKeStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "onKeEndTime != null ">
+				record.ON_KE_END_TIME = #{onKeEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "onKeDetupyStartTime != null ">
+				record.ON_KE_DETUPY_START_TIME = #{onKeDetupyStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "onKeDetupyEndTime != null ">
+				record.ON_KE_DETUPY_END_TIME = #{onKeDetupyEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+				record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_posit_head 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_posit_head 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_posit_head  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_posit_head  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	<!-- 根据身份证号批量查询职工是否存在 -->
+	<select id="queryExistByCardNos" parameterType="java.util.List" resultType="java.util.Map">
+        select 
+        	w.id,
+        	w.card_no,
+			IF(IFNULL(h.WORKER_ID,-1)>=0,1,0) as head_exist
+		from ch_pm_worker w 
+		left join ch_pm_posit_head h on w.id = h.WORKER_ID and h.status=0
+		where w.CARD_NO in 
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+					#{item}
+		</foreach>
+		and w.status=0
+	</select>
+</mapper>

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.salary.mapper.ChSaWechatAccountMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chSaWechatAccountMapper" type="com.hdfs.olo.olo_web.salary.model.ChSaWechatAccountModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="cardNo" column="CARD_NO" jdbcType="VARCHAR"/>
+		<result property="type" column="TYPE" jdbcType="INTEGER"/>
+		<result property="passwd" column="PASSWD" jdbcType="VARCHAR"/>
+		<result property="errTimes" column="ERR_TIMES" jdbcType="INTEGER"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chSaWechatAccountMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_wechat_account record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_sa_wechat_account record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 CARD_NO, 
+				 TYPE, 
+				 PASSWD,
+				 ERR_TIMES,
+				 STATUS, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.cardNo != null and entity.cardNo != ''">
+					<![CDATA[ and record.CARD_NO  = #{entity.cardNo} ]]>
+				</if>
+				<if test = "entity.type != null">
+					<![CDATA[ and record.TYPE  = #{entity.type} ]]>
+				</if>
+				<if test = "entity.passwd != null and entity.passwd != ''">
+					<![CDATA[ and record.PASSWD  = #{entity.passwd} ]]>
+				</if>
+				<if test = "entity.errTimes != null">
+					<![CDATA[ and record.ERR_TIMES  = #{entity.errTimes} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chSaWechatAccountMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_wechat_account record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chSaWechatAccountMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_wechat_account record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="cardNo != null">CARD_NO,</if>
+			<if test="type != null">TYPE,</if>
+			<if test="passwd != null">PASSWD,</if>
+			<if test="errTimes != null">ERR_TIMES,</if>
+			STATUS,
+			CREATE_TIME,
+			UPDATE_TIME
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="cardNo != null">#{cardNo,jdbcType=VARCHAR},</if>
+			<if test="type != null">#{type,jdbcType=INTEGER},</if>
+			<if test="passwd != null">#{passwd,jdbcType=VARCHAR},</if>
+			<if test="errTimes != null">#{errTimes,jdbcType=INTEGER},</if>
+			0,
+			now(),
+			now()
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.salary.model.ChSaWechatAccountModel">
+		INSERT INTO ch_sa_wechat_account(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_sa_wechat_account
+        (
+			ID,
+			CARD_NO,
+			TYPE,
+			PASSWD,
+			ERR_TIMES,
+			STATUS,
+			CREATE_TIME,
+			UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+			#{item.id,jdbcType=BIGINT},
+			#{item.cardNo,jdbcType=VARCHAR},
+			#{item.type,jdbcType=INTEGER},
+			#{item.passwd,jdbcType=VARCHAR},
+			#{item.errTimes,jdbcType=INTEGER},
+			0,
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.salary.model.ChSaWechatAccountModel">
+		UPDATE ch_sa_wechat_account record 
+		<set>
+			<if test = "cardNo != null ">
+				record.CARD_NO = #{cardNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "type != null ">
+				record.TYPE = #{type,jdbcType=INTEGER},
+			</if>
+			<if test = "passwd != null ">
+				record.PASSWD = #{passwd,jdbcType=VARCHAR},
+			</if>
+			<if test = "errTimes != null ">
+				record.ERR_TIMES = #{errTimes,jdbcType=INTEGER},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_sa_wechat_account 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_sa_wechat_account 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_sa_wechat_account  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_sa_wechat_account  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	
+	<!-- 根据身份证号让该账号的失败次数+incVal -->
+	<update id="inc4ErrTimesByCardNo">
+		UPDATE ch_sa_wechat_account  
+		SET ERR_TIMES = ERR_TIMES+#{incVal},
+			UPDATE_TIME = now()
+		WHERE CARD_NO = #{idcard}
+	</update>
+	<!-- 根据主键让该账号的失败次数+incVal -->
+	<update id="inc4ErrTimesById">
+		UPDATE ch_sa_wechat_account  
+		SET ERR_TIMES = ERR_TIMES+#{incVal},
+			UPDATE_TIME = now()
+		WHERE ID = #{id}
+	</update>
+	
+	<!-- 清除密码输入错误次数 -->
+	<update id="clean4ErrTimes">
+		UPDATE ch_sa_wechat_account  
+		SET ERR_TIMES = 0,
+			UPDATE_TIME = now()
+	</update>
+</mapper>

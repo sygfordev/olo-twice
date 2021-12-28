@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:rdb="http://www.dangdang.com/schema/ddframe/rdb"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/tx
+                        http://www.springframework.org/schema/tx/spring-tx.xsd
+                        http://www.springframework.org/schema/aop
+						http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+                        http://www.dangdang.com/schema/ddframe/rdb
+                        http://www.dangdang.com/schema/ddframe/rdb/rdb.xsd">
+    <!-- 单库设置              
+    <bean id="database_smart" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
+          destroy-method="close">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="${jdbc.url.smart}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <property name="maxActive" value="20"/>
+        <property name="initialSize" value="10"/>
+        <property name="maxWait" value="60000"/>
+        <property name="minIdle" value="5"/>
+    </bean>
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="mapperLocations" value="classpath:config/mapper/**/*.xml"/>
+        <property name="dataSource" ref="shardingDataSource"/>
+        <property name="dataSource" ref="database_smart"/>
+        <property name="configLocation" value="classpath:config/mybatis/mybatis-config.xml"/>
+    </bean>
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.hdfs.olo.olo_web.*.mapper"/>
+        <property name="sqlSessionTemplateBeanName" value="sqlSession"/>
+        <property name="annotationClass" value="com.hdfs.olo.olo_web.plugins.annotaion.MyBatisRepository" />
+    </bean>
+
+    <bean id="txManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="shardingDataSource"/>
+        <property name="dataSource" ref="database_smart"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="txManager"/>
+    <tx:advice id ="txAdvice" transaction-manager="txManager">
+    	<tx:attributes>
+    		<tx:method name="add*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+    		<tx:method name="edit*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+    		<tx:method name="del*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+    		<tx:method name="insert*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+    		<tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+    		<tx:method name="delete*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+    	</tx:attributes>
+    </tx:advice>
+    <aop:config>
+    	<aop:pointcut expression="execution(* com.hdfs.olo.olo_web.central.biz..*(..))" id="point1"/>
+    	<aop:advisor advice-ref="txAdvice" pointcut-ref="point1"/>
+    </aop:config>
+     --> 
+    
+    <!-- sharding设置  ddframe -->
+    <!-- 
+    <bean id="database_101" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
+          destroy-method="close">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="${jdbc.url.101}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <property name="maxActive" value="20"/>
+        <property name="initialSize" value="10"/>
+        <property name="maxWait" value="60000"/>
+        <property name="minIdle" value="5"/>
+    </bean>
+    <bean id="database_102" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
+          destroy-method="close">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="${jdbc.url.102}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <property name="maxActive" value="20"/>
+        <property name="initialSize" value="10"/>
+        <property name="maxWait" value="60000"/>
+        <property name="minIdle" value="5"/>
+    </bean>
+    <bean id="database_103" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
+          destroy-method="close">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="${jdbc.url.103}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <property name="maxActive" value="20"/>
+        <property name="initialSize" value="10"/>
+        <property name="maxWait" value="60000"/>
+        <property name="minIdle" value="5"/>
+    </bean>
+    <rdb:master-slave-data-source id="rbb_101" master-data-source-ref="database_smart"
+                                  slave-data-sources-ref="database_101"/>
+    <rdb:master-slave-data-source id="rbb_102" master-data-source-ref="database_smart"
+                                  slave-data-sources-ref="database_102"/>
+    <rdb:master-slave-data-source id="rbb_103" master-data-source-ref="database_smart"
+                                  slave-data-sources-ref="database_103"/> 
+    <rdb:strategy id="databaseShardingStrategy" sharding-columns="business_id"
+                  algorithm-expression="rbb_${business_id.longValue()}"/>
+    <rdb:strategy id="tableShardingStrategy" sharding-columns="user_id,order_id"
+                  algorithm-class="com.hdfs.olo.olo_web.plugins.sharding.MultipleKeysTableShardingAlgorithmImpl"/>
+    <rdb:strategy id="smartDbShardingStrategy" sharding-columns="#"
+                  algorithm-expression="rbb_smart"/>
+    <rdb:strategy id="smartTbShardingStrategy" sharding-columns="#"
+                  algorithm-class="com.hdfs.olo.olo_web.plugins.sharding.MultipleKeysTableShardingAlgorithmImpl" />
+    <rdb:data-source id="shardingDataSource">
+        <rdb:sharding-rule data-sources="rbb_101,rbb_102,rbb_103" default-data-source="rbb_101">
+            <rdb:table-rules>
+                <rdb:table-rule logic-table="t_order" actual-tables="t_order_${0..3}" database-strategy="databaseShardingStrategy"
+                                table-strategy="tableShardingStrategy"/>
+            </rdb:table-rules>
+        </rdb:sharding-rule>
+        <rdb:props>
+            <prop key="metrics.enable">true</prop>
+            <prop key="sql.show">true</prop>
+        </rdb:props>
+    </rdb:data-source>
+     -->
+     
+    <!-- jta+Atomikos -->
+    <bean id="abstractXADataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init"
+             destroy-method="close" abstract="true">
+        <property name="xaDataSourceClassName" value="com.mysql.cj.jdbc.MysqlXADataSource"/>
+        <property name="poolSize" value="10" />
+        <property name="minPoolSize" value="20"/>
+        <property name="maxPoolSize" value="50"/>
+        <property name="borrowConnectionTimeout" value="600"/>
+        <property name="reapTimeout" value="200"/>
+        <property name="maxIdleTime" value="600"/>
+        <property name="maintenanceInterval" value="600" />
+        <property name="loginTimeout" value="600"/>
+        <property name="logWriter" value="600"/>
+        <property name="testQuery">
+            <value>SELECT 1</value>
+        </property>
+    </bean>
+    <bean id="smart" parent="abstractXADataSource">
+        <!-- value只要多个XA数据源之间不重复就行，随便取名 -->
+        <property name="uniqueResourceName" value="smart" />
+        <property name="xaDataSourceClassName"
+            value="com.mysql.cj.jdbc.MysqlXADataSource" />
+        <property name="xaProperties">
+            <props>
+                <prop key="URL">${jdbc.url.smart}</prop>
+                <prop key="user">${jdbc.username}</prop>
+                <prop key="password">${jdbc.password}</prop>
+            </props>
+        </property>
+    </bean>
+   	<bean id="personnel" parent="abstractXADataSource">
+        <!-- value只要多个XA数据源之间不重复就行，随便取名 -->
+        <property name="uniqueResourceName" value="personnel" />
+        <property name="xaDataSourceClassName"
+            value="com.mysql.cj.jdbc.MysqlXADataSource" />
+        <property name="xaProperties">
+            <props>
+                <prop key="URL">${jdbc.url.101}</prop>
+                <prop key="user">${jdbc.username}</prop>
+                <prop key="password">${jdbc.password}</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="social" parent="abstractXADataSource">
+        <property name="uniqueResourceName" value="social" />
+        <property name="xaDataSourceClassName"
+            value="com.mysql.cj.jdbc.MysqlXADataSource" />
+        <property name="xaProperties">
+            <props>
+                <prop key="URL">${jdbc.url.102}</prop>
+                <prop key="user">${jdbc.username}</prop>
+                <prop key="password">${jdbc.password}</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="salary" parent="abstractXADataSource">
+        <property name="uniqueResourceName" value="salary" />
+        <property name="xaDataSourceClassName"
+            value="com.mysql.cj.jdbc.MysqlXADataSource" />
+        <property name="xaProperties">
+            <props>
+                <prop key="URL">${jdbc.url.103}</prop>
+                <prop key="user">${jdbc.username}</prop>
+                <prop key="password">${jdbc.password}</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="sqlSessionFactory_smart" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+        <property name="dataSource" ref="smart"/>
+        <property name="mapperLocations" value="classpath:config/mapper/central/**/*.xml"/>
+        <property name="configLocation" value="classpath:config/mybatis/mybatis-config.xml"/>
+        <!--对应的实体类,value中的值可以逗号或分号隔开-->
+        <property name="typeAliasesPackage" value="com.hdfs.olo.olo_web.central.model"/>
+        <property name="plugins">
+            <array>
+                <!-- 分页插件配置 -->
+                <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
+                    <property name="dialectType" value="mysql"/>
+                </bean>
+            </array>
+        </property>
+        <!-- 全局配置注入 -->
+        <property name="globalConfig" ref="globalConfig" />
+    </bean>
+    <bean id="sqlSessionFactory_personnel" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+        <property name="dataSource" ref="personnel"/>
+        <property name="mapperLocations" value="classpath:config/mapper/personnel/**/*.xml"/>
+        <property name="configLocation" value="classpath:config/mybatis/mybatis-config.xml"/>
+        <!--对应的实体类,value中的值可以逗号或分号隔开-->
+        <property name="typeAliasesPackage" value="com.hdfs.olo.olo_web.personnel.model"/>
+        <property name="plugins">
+            <array>
+                <!-- 分页插件配置 -->
+                <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
+                    <property name="dialectType" value="mysql"/>
+                </bean>
+            </array>
+        </property>
+        <!-- 全局配置注入 -->
+        <property name="globalConfig" ref="globalConfig" />
+    </bean>
+    <bean id="sqlSessionFactory_social" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+        <property name="dataSource" ref="social"/>
+        <!-- 自动扫描Mapping.xml文件 -->
+        <property name="mapperLocations" value="classpath:config/mapper/social/**/*.xml"/>
+        <property name="configLocation" value="classpath:config/mybatis/mybatis-config.xml"/>
+       	<!--对应的实体类-->
+        <property name="typeAliasesPackage" value="com.hdfs.olo.olo_web.social.model"/>
+          <property name="plugins">
+            <array>
+                <!-- 分页插件配置 -->
+                <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
+                    <property name="dialectType" value="mysql"/>
+                </bean>
+            </array>
+        </property>
+        <!-- 全局配置注入 -->
+        <property name="globalConfig" ref="globalConfig" />
+    </bean>
+    <bean id="sqlSessionFactory_salary" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+        <property name="dataSource" ref="salary"/>
+        <!-- 自动扫描Mapping.xml文件 -->
+        <property name="mapperLocations" value="classpath:config/mapper/salary/**/*.xml"/>
+        <property name="configLocation" value="classpath:config/mybatis/mybatis-config.xml"/>
+       	<!--对应的实体类-->
+        <property name="typeAliasesPackage" value="com.hdfs.olo.olo_web.salary.model"/>
+          <property name="plugins">
+            <array>
+                <!-- 分页插件配置 -->
+                <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
+                    <property name="dialectType" value="mysql"/>
+                </bean>
+            </array>
+        </property>
+        <!-- 全局配置注入 -->
+        <property name="globalConfig" ref="globalConfig" />
+    </bean>
+    
+    
+    <!-- 配置多数据源 MultipleDataSource-->
+    <bean name="dynamicDatasource" class="com.hdfs.olo.olo_web.plugins.jtaAtomikos.DynamicDataSource">
+        <property name="targetDataSources">
+            <map>
+                <!-- key和value-ref尽量保持一致，我在测试的时候因为名称不一致一致报错，
+                找了好久都没找到原因，最后统一了名称终于成功启动了 -->
+                <entry key="smart" value-ref="smart"></entry>  
+                <entry key="personnel" value-ref="personnel"></entry>
+                <entry key="social" value-ref="social"></entry>
+                <entry key="salary" value-ref="salary"></entry>
+            </map>
+        </property>
+        <!-- 指定一个默认的数据源，即在不需要切换数据源时，本地系统默认使用的数据源 -->
+        <property name="defaultTargetDataSource" ref="smart" />
+    </bean>
+    <bean id="dataSourceAspect" class="com.hdfs.olo.olo_web.plugins.jtaAtomikos.DataSourceAspect"/>
+    <aop:config>
+        <aop:aspect ref="dataSourceAspect">
+            <!-- <aop:pointcut id="dataSourcePointcut" expression="execution(* com.zzxw.web.*.mapper.*.*(..))"/> -->
+            <!-- <aop:pointcut id="dataSourcePointcut" expression="execution(* com.hdfs.olo.olo_web.central.biz..*(..))"/> -->
+            <aop:pointcut id="dataSourcePointcut" expression="execution(* com.hdfs.olo.olo_web.*.biz..*(..))"/>
+            <aop:before pointcut-ref="dataSourcePointcut" method="intercept" />
+        </aop:aspect>
+    </aop:config>
+
+	<!-- 配置自定义的SqlSessionTemplate模板，注入相关配置 -->
+    <bean id="sqlSessionTemplate" class="com.hdfs.olo.olo_web.plugins.jtaAtomikos.CustomSqlSessionTemplate" scope="prototype">
+        <!-- 构造注入参数指定本地默认数据源对应的SqlSessionFactoryBean -->
+        <constructor-arg ref="sqlSessionFactory_smart" />
+        <property name="targetSqlSessionFactorys">
+            <map>     
+                <!-- key和上文配置的数据源的id值尽量保持一致，我在测试的时候因为名称不一致一致报错，
+                找了好久都没找到原因，最后统一了名称终于成功启动了 -->
+                <entry value-ref="sqlSessionFactory_smart" key="smart"/>
+                <entry value-ref="sqlSessionFactory_personnel" key="personnel"/>
+                <entry value-ref="sqlSessionFactory_social" key="social"/>
+                <entry value-ref="sqlSessionFactory_salary" key="salary"/>
+            </map> 
+        </property>
+    </bean>
+
+
+    <!-- MyBatis 动态扫描  -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.hdfs.olo.olo_web.*.mapper"/>
+        <property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate"/>
+        <property name="annotationClass" value="com.hdfs.olo.olo_web.plugins.annotaion.MyBatisRepository" />
+    </bean>
+
+    <!-- jta配置开始 -->
+    <bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"
+        init-method="init" destroy-method="close">
+        <property name="forceShutdown">
+            <value>true</value>
+        </property>
+    </bean>
+ 
+    <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+        <property name="transactionTimeout" value="300" />
+    </bean>
+ 
+    <bean id="springTransactionManager"
+        class="org.springframework.transaction.jta.JtaTransactionManager">
+        <property name="transactionManager">
+            <ref bean="atomikosTransactionManager" />
+        </property>
+        <property name="userTransaction">
+            <ref bean="atomikosUserTransaction" />
+        </property>
+    </bean>
+    <!-- jta配置结束 -->
+    
+	<!-- 配置事务管理 -->
+    <tx:annotation-driven transaction-manager="springTransactionManager" proxy-target-class="true" />
+     
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" 
+    	p:dataSource-ref="dynamicDatasource"/>
+    
+    <bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
+        <!-- 
+            AUTO->`0`("数据库ID自增")
+             INPUT->`1`(用户输入ID")
+            ID_WORKER->`2`("全局唯一ID")
+            UUID->`3`("全局唯一ID")
+        -->
+        <property name="idType" value="3" />
+        <!--
+            MYSQL->`mysql`
+            ORACLE->`oracle`
+            DB2->`db2`
+            H2->`h2`
+            HSQL->`hsql`
+            SQLITE->`sqlite`
+            POSTGRE->`postgresql`
+            SQLSERVER2005->`sqlserver2005`
+            SQLSERVER->`sqlserver`
+        -->
+        <!-- Oracle需要添加该项 -->
+        <property name="dbType" value="mysql" />
+        <!-- 全局表为下划线命名设置 true -->
+        <property name="dbColumnUnderline" value="true" />
+    </bean>
+
+    
+
+    
+    
+</beans>

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.central.mapper.SystemDictMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="systemDictMapper" type="com.hdfs.olo.olo_web.central.model.SystemDictModel">
+		<result property="id" column="id" jdbcType="BIGINT"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="code" column="code" jdbcType="VARCHAR"/>
+		<result property="type" column="type" jdbcType="INTEGER"/>
+		<result property="status" column="status" jdbcType="INTEGER"/>
+		<result property="remark" column="remark" jdbcType="VARCHAR"/>
+		<result property="creator" column="creator" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+		<result property="updator" column="updator" jdbcType="VARCHAR"/>
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="systemDictMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM system_dict record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM system_dict record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 id, 
+				 name, 
+				 code, 
+				 type, 
+				 status, 
+				 remark, 
+				 creator, 
+				 create_time, 
+				 updator, 
+				 update_time 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null and entity.id != ''">
+					<![CDATA[ and record.id  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.name != null and entity.name != ''">
+					<![CDATA[ and record.name  = #{entity.name} ]]>
+				</if>
+				<if test = "entity.code != null and entity.code != ''">
+					<![CDATA[ and record.code  = #{entity.code} ]]>
+				</if>
+				<if test = "entity.type != null and entity.type != ''">
+					<![CDATA[ and record.type  = #{entity.type} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.status  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.remark  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.creator != null and entity.creator != ''">
+					<![CDATA[ and record.creator  = #{entity.creator} ]]>
+				</if>
+				<if test = "entity.createTime != null and entity.createTime != ''">
+					<![CDATA[ and record.create_time  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updator != null and entity.updator != ''">
+					<![CDATA[ and record.updator  = #{entity.updator} ]]>
+				</if>
+				<if test = "entity.updateTime != null and entity.updateTime != ''">
+					<![CDATA[ and record.update_time  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="systemDictMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM system_dict record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="systemDictMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM system_dict record
+		WHERE 
+		 record.ID = #{id}
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryByCode" resultMap="systemDictMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM system_dict record
+		WHERE 
+		 record.code = #{code}
+		 and status=0
+		 limit 1
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="name != null">name,</if>
+			<if test="code != null">code,</if>
+			<if test="type != null">type,</if>
+			<if test="status != null">status,</if>
+			<if test="remark != null">remark,</if>
+			<if test="creator != null">creator,</if>
+			create_time,
+			<if test="updator != null">updator,</if>
+			update_time,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="name != null">#{name,jdbcType=VARCHAR},</if>
+			<if test="code != null">#{code,jdbcType=VARCHAR},</if>
+			<if test="type != null">#{type,jdbcType=INTEGER},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			<if test="creator != null">#{creator,jdbcType=VARCHAR},</if>
+			now(),
+			<if test="updator != null">#{updator,jdbcType=VARCHAR},</if>
+			now(),
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{item.id,jdbcType=BIGINT},</if>
+			<if test="name != null">#{item.name,jdbcType=VARCHAR},</if>
+			<if test="code != null">#{item.code,jdbcType=VARCHAR},</if>
+			<if test="type != null">#{item.type,jdbcType=INTEGER},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			<if test="creator != null">#{item.creator,jdbcType=VARCHAR},</if>
+			now(),
+			<if test="updator != null">#{item.updator,jdbcType=VARCHAR},</if>
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.central.model.SystemDictModel">
+		INSERT INTO system_dict(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO system_dict
+        (
+        	<include refid="colKeys4Selective"/>
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            <include refid="colVals4Itemive"/>
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.central.model.SystemDictModel">
+		UPDATE system_dict record 
+		<set>
+			<if test = "name != null ">
+				record.name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test = "code != null ">
+				record.code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test = "type != null ">
+				record.type = #{type,jdbcType=INTEGER},
+			</if>
+			<if test = "status != null ">
+				record.status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test = "updator != null ">
+				record.updator = #{updator,jdbcType=VARCHAR},
+			</if>
+			<if test = "updateTime != null ">
+				record.update_time = now()
+			</if>
+		</set>
+		WHERE ID = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM system_dict 
+		WHERE ID = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE system_dict 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE ID = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM system_dict  
+		WHERE ID IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE system_dict  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE ID IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	<!-- 根据字典编码查询字典-->
+	<select id="queryListByCodes" parameterType="java.util.List" resultMap="systemDictMapper">
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM system_dict d
+		WHERE 
+		d.status = 0
+		and d.code in 
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+		ORDER BY id asc
+	</select>
+</mapper>

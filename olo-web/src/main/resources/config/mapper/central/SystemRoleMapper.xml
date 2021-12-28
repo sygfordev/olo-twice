@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 常用标签使用方式 -->
+<!-- 
+1、trim 有四个属性
+2、prefix，suffix 表示在trim标签包裹的部分的前面或者后面添加内容（注意：是没有prefixOverrides，suffixOverrides的情况下）
+3、如果有prefixOverrides，suffixOverrides 表示**覆盖**Overrides中的内容。
+4、如果只有prefixOverrides，suffixOverrides 表示删除。
+ -->
+<mapper namespace="com.hdfs.olo.olo_web.central.mapper.SystemRoleMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="systemRoleMapper" type="com.hdfs.olo.olo_web.central.model.SystemRoleModel">
+		<id property="roleId" column="ROLE_ID" jdbcType="BIGINT"/>
+		<result property="roleName" column="ROLE_NAME" jdbcType="VARCHAR"/>
+		<result property="roleLevel" column="ROLE_LEVEL" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="VARCHAR"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 查询数量公共sql -->
+	<sql id="count_Tail">
+		select count(1) from system_role record
+	</sql>
+	
+	<!-- 分页公共sql -->
+	<sql id="pagination_tail">
+	  limit #{page.pageOffset} , #{page.pageSize}
+	</sql>
+
+	<!-- 查询字段公共sql -->
+	<sql id="selectAllColumns">
+	    SELECT 
+	    <if test="queryFields != null ">
+	 	     <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		      </trim> 	
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ROLE_ID, 
+				 ROLE_NAME, 
+				 ROLE_LEVEL, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	     FROM system_role record
+	</sql>
+	
+	<sql id="where_fragement">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.roleId != null">
+					<![CDATA[ and record.ROLE_ID  = #{entity.roleId} ]]>
+				</if>
+				<if test = "entity.roleName != null and entity.roleName != ''">
+					<![CDATA[ and record.ROLE_NAME  = #{entity.roleName} ]]>
+				</if>
+				<if test = "entity.roleLevel != null and entity.roleLevel != ''">
+					<![CDATA[ and record.ROLE_LEVEL  = #{entity.roleLevel} ]]>
+				</if>
+				<if test = "entity.status != null and entity.status != ''">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="time_sort">
+		order by create_time desc
+	</sql>
+
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="systemRoleMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+		<if test="page!=null">
+			<include refid="pagination_tail" />
+		</if>
+		
+	</select>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="systemRoleMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="count_Tail"></include>
+		<include refid="where_fragement"></include>
+	</select>
+
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="systemRoleMapper" >
+		<include refid="selectAllColumns"/>
+		 where 
+		 record.ROLE_ID = #{id}
+	</select>
+	
+	<!-- 新增列处理 -->
+	<sql id="sql_add_columns">
+		<trim suffixOverrides=",">
+			<if test="roleName != null and roleName != ''">ROLE_NAME,</if>
+			<if test="roleLevel != null and roleLevel != ''">ROLE_LEVEL,</if>
+			<if test="status != null and status != ''">STATUS,</if>
+			<if test="remark != null and remark != ''">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+
+	<sql id="sql_add_properties">
+		<trim suffixOverrides=",">
+			<if test="roleName != null and roleName != ''">#{roleName,jdbcType=VARCHAR},</if>
+			<if test="roleLevel != null and roleLevel != ''">#{roleLevel,jdbcType=VARCHAR},</if>
+			<if test="status != null and status != ''">#{status,jdbcType=VARCHAR},</if>
+			<if test="remark != null and remark != ''">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增 -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.central.model.SystemRoleModel" useGeneratedKeys="true" keyProperty="roleId" keyColumn="ROLE_ID">
+		insert into system_role(
+			<include refid="sql_add_columns"/>
+		)values(
+			<include refid="sql_add_properties"/>
+		)
+	</insert>
+	
+	<!-- 批量添加数据，并返回主键字段 -->
+	<insert id="insertBatch" useGeneratedKeys="true" keyProperty="id" keyColumn="ROLE_ID" parameterType="java.util.List">
+        insert into system_role
+        (
+        	<trim suffixOverrides=",">
+				ROLE_NAME,
+				ROLE_LEVEL,
+				STATUS,
+				REMARK,
+				CREATE_TIME,
+				UPDATE_TIME
+			</trim>
+        ) 
+        values
+        <foreach collection="list" separator="," item="item">
+         (
+         	<trim suffixOverrides=",">
+				#{item.roleName,jdbcType=VARCHAR},
+				#{item.roleLevel,jdbcType=VARCHAR},
+				#{item.status,jdbcType=VARCHAR},
+				#{item.remark,jdbcType=VARCHAR},
+				now(),
+				now(),
+			</trim>	
+         )
+        </foreach>
+	</insert>
+
+	<!-- 编辑 -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.central.model.SystemRoleModel">
+		update system_role record 
+		<set>
+			<if test="roleName != null and roleName != ''">
+				record.ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+			</if>
+			<if test="roleLevel != null and roleLevel != ''">
+				record.ROLE_LEVEL = #{roleLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null and status != ''">
+				record.STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null and remark != ''">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			record.UPDATE_TIME = now()
+		</set>
+		where ROLE_ID = #{roleId}
+	</update>
+	
+	<!-- 单项删除 -->
+	<delete id="delById">
+		delete from system_role 
+		where ROLE_ID = #{id}
+	</delete>
+	
+	<delete id="delById4Logic">
+		update system_role 
+		set status = '0',
+			UPDATE_TIME = now()
+		where ROLE_ID = #{id}
+	</delete>
+	
+	<!-- 批量删除 -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		delete from system_role 
+		where ROLE_ID in
+		<foreach collection="list" open="(" separator="," close=")" item="ids">
+			#{ids}
+		</foreach>
+	</delete>
+
+	<delete id="delBatchByIds4Logic" parameterType="java.util.List">
+		update system_role 
+		set status = '0',
+			UPDATE_TIME = now()
+		where ROLE_ID in
+		<foreach collection="list" open="(" separator="," close=")" item="ids">
+			#{ids}
+		</foreach>
+	</delete>
+</mapper>

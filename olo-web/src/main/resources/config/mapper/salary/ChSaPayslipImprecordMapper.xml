@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.salary.mapper.ChSaPayslipImprecordMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chSaPayslipImprecordMapper" type="com.hdfs.olo.olo_web.salary.model.ChSaPayslipImprecordModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="batchNo" column="BATCH_NO" jdbcType="VARCHAR"/>
+		<result property="batchType" column="BATCH_TYPE" jdbcType="VARCHAR"/>
+		<result property="batchUserAccount" column="BATCH_USER_ACCOUNT" jdbcType="VARCHAR"/>
+		<result property="batchUser" column="BATCH_USER" jdbcType="VARCHAR"/>
+		<result property="sucNum" column="SUC_NUM" jdbcType="BIGINT"/>
+		<result property="faiNum" column="FAI_NUM" jdbcType="BIGINT"/>
+		<result property="exeNum" column="EXE_NUM" jdbcType="BIGINT"/>
+		<result property="existNum" column="EXIST_NUM" jdbcType="BIGINT"/>
+		<result property="batchMsg" column="BATCH_MSG" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chSaPayslipImprecordMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_payslip_imprecord record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_sa_payslip_imprecord record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 BATCH_NO, 
+				 BATCH_TYPE,
+				 BATCH_USER_ACCOUNT,
+				 BATCH_USER, 
+				 SUC_NUM, 
+				 FAI_NUM, 
+				 EXE_NUM, 
+				 EXIST_NUM, 
+				 BATCH_MSG, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null and entity.id != ''">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.batchNo != null and entity.batchNo != ''">
+					<![CDATA[ and record.BATCH_NO  = #{entity.batchNo} ]]>
+				</if>
+				<if test = "entity.batchType != null and entity.batchType != ''">
+					<![CDATA[ and record.BATCH_TYPE  = #{entity.batchType} ]]>
+				</if>
+				<if test = "entity.batchUserAccount != null and entity.batchUserAccount != ''">
+					<![CDATA[ and record.BATCH_USER_ACCOUNT  = #{entity.batchUserAccount} ]]>
+				</if>
+				<if test = "entity.batchUser != null and entity.batchUser != ''">
+					<![CDATA[ and record.BATCH_USER  = #{entity.batchUser} ]]>
+				</if>
+				<if test = "entity.sucNum != null and entity.sucNum != ''">
+					<![CDATA[ and record.SUC_NUM  = #{entity.sucNum} ]]>
+				</if>
+				<if test = "entity.faiNum != null and entity.faiNum != ''">
+					<![CDATA[ and record.FAI_NUM  = #{entity.faiNum} ]]>
+				</if>
+				<if test = "entity.exeNum != null and entity.exeNum != ''">
+					<![CDATA[ and record.EXE_NUM  = #{entity.exeNum} ]]>
+				</if>
+				<if test = "entity.existNum != null and entity.existNum != ''">
+					<![CDATA[ and record.EXIST_NUM  = #{entity.existNum} ]]>
+				</if>
+				<if test = "entity.batchMsg != null and entity.batchMsg != ''">
+					<![CDATA[ and record.BATCH_MSG  = #{entity.batchMsg} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null and entity.createTime != ''">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null and entity.updateTime != ''">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chSaPayslipImprecordMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_payslip_imprecord record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chSaPayslipImprecordMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_payslip_imprecord record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="batchNo != null">BATCH_NO,</if>
+			<if test="batchType != null">BATCH_TYPE,</if>
+			<if test="batchUserAccount != null">BATCH_USER_ACCOUNT,</if>
+			<if test="batchUser != null">BATCH_USER,</if>
+			<if test="sucNum != null">SUC_NUM,</if>
+			<if test="faiNum != null">FAI_NUM,</if>
+			<if test="exeNum != null">EXE_NUM,</if>
+			<if test="existNum != null">EXIST_NUM,</if>
+			<if test="batchMsg != null">BATCH_MSG,</if>
+			STATUS,
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="batchNo != null">#{batchNo,jdbcType=VARCHAR},</if>
+			<if test="batchType != null">#{batchType,jdbcType=VARCHAR},</if>
+			<if test="batchUserAccount != null">#{batchUserAccount,jdbcType=VARCHAR},</if>
+			<if test="batchUser != null">#{batchUser,jdbcType=VARCHAR},</if>
+			<if test="sucNum != null">#{sucNum,jdbcType=BIGINT},</if>
+			<if test="faiNum != null">#{faiNum,jdbcType=BIGINT},</if>
+			<if test="exeNum != null">#{exeNum,jdbcType=BIGINT},</if>
+			<if test="existNum != null">#{existNum,jdbcType=BIGINT},</if>
+			<if test="batchMsg != null">#{batchMsg,jdbcType=VARCHAR},</if>
+			0,
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now()
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.salary.model.ChSaPayslipImprecordModel">
+		INSERT INTO ch_sa_payslip_imprecord(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_sa_payslip_imprecord
+        (
+			ID,
+			BATCH_NO,
+			BATCH_TYPE,
+			BATCH_USER_ACCOUNT,
+			BATCH_USER,
+			SUC_NUM,
+			FAI_NUM,
+			EXE_NUM,
+			EXIST_NUM,
+			BATCH_MSG,
+			STATUS,
+			REMARK,
+			CREATE_TIME,
+			UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+			#{id,jdbcType=BIGINT},
+			#{batchNo,jdbcType=VARCHAR},
+			#{batchType,jdbcType=VARCHAR},
+			#{batchUserAccount,jdbcType=VARCHAR},
+			#{batchUser,jdbcType=VARCHAR},
+			#{sucNum,jdbcType=BIGINT},
+			#{faiNum,jdbcType=BIGINT},
+			#{exeNum,jdbcType=BIGINT},
+			#{existNum,jdbcType=BIGINT},
+			#{batchMsg,jdbcType=VARCHAR},
+			0,
+			#{remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.salary.model.ChSaPayslipImprecordModel">
+		UPDATE ch_sa_payslip_imprecord record 
+		<set>
+			<if test = "batchNo != null ">
+				record.BATCH_NO = #{batchNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "batchType != null ">
+				record.BATCH_TYPE = #{batchType,jdbcType=VARCHAR},
+			</if>
+			<if test = "batchUserAccount != null ">
+				record.BATCH_USER_ACCOUNT = #{batchUserAccount,jdbcType=VARCHAR},
+			</if>
+			<if test = "batchUser != null ">
+				record.BATCH_USER = #{batchUser,jdbcType=VARCHAR},
+			</if>
+			<if test = "sucNum != null ">
+				record.SUC_NUM = #{sucNum,jdbcType=BIGINT},
+			</if>
+			<if test = "faiNum != null ">
+				record.FAI_NUM = #{faiNum,jdbcType=BIGINT},
+			</if>
+			<if test = "exeNum != null ">
+				record.EXE_NUM = #{exeNum,jdbcType=BIGINT},
+			</if>
+			<if test = "existNum != null ">
+				record.EXIST_NUM = #{existNum,jdbcType=BIGINT},
+			</if>
+			<if test = "batchMsg != null ">
+				record.BATCH_MSG = #{batchMsg,jdbcType=VARCHAR},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_sa_payslip_imprecord 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_sa_payslip_imprecord 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_sa_payslip_imprecord  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_sa_payslip_imprecord  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+</mapper>

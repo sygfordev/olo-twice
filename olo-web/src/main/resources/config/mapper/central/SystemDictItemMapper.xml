@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.central.mapper.SystemDictItemMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="systemDictItemMapper" type="com.hdfs.olo.olo_web.central.model.SystemDictItemModel">
+		<result property="id" column="id" jdbcType="BIGINT"/>
+		<result property="dictId" column="dict_id" jdbcType="BIGINT"/>
+		<result property="dictName" column="dict_name" jdbcType="VARCHAR"/>
+		<result property="itemKey" column="item_key" jdbcType="VARCHAR"/>
+		<result property="itemVal" column="item_val" jdbcType="VARCHAR"/>
+		<result property="existSuper" column="exist_super" jdbcType="INTEGER"/>
+		<result property="superId" column="super_id" jdbcType="BIGINT"/>
+		<result property="superName" column="super_name" jdbcType="BIGINT"/>
+		<result property="sortVal" column="sort_val" jdbcType="INTEGER"/>
+		<result property="status" column="status" jdbcType="INTEGER"/>
+		<result property="remark" column="remark" jdbcType="VARCHAR"/>
+		<result property="creator" column="creator" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+		<result property="updator" column="updator" jdbcType="VARCHAR"/>
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="systemDictItemMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM system_dict_item record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM system_dict_item record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 id, 
+				 dict_id,
+				 (select name from system_dict where id=record.dict_id) as dict_name,
+				 item_key, 
+				 item_val, 
+				 exist_super,
+				 super_id,
+				 if(record.exist_super=1,(select item_val from system_dict_item where id=record.super_id),NULL) as super_name,
+				 sort_val, 
+				 status, 
+				 remark, 
+				 creator, 
+				 create_time, 
+				 updator, 
+				 update_time 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null">
+					<![CDATA[ and record.id  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.dictId != null">
+					<![CDATA[ and record.dict_id  = #{entity.dictId} ]]>
+				</if>
+				<if test = "entity.itemKey != null and entity.itemKey != ''">
+					<![CDATA[ and record.item_key  = #{entity.itemKey} ]]>
+				</if>
+				<if test = "entity.itemVal != null and entity.itemVal != ''">
+					<![CDATA[ and record.item_val  = #{entity.itemVal} ]]>
+				</if>
+				<if test = "entity.existSuper != null">
+					<![CDATA[ and record.exist_super  = #{entity.existSuper} ]]>
+				</if>
+				<if test = "entity.superId != null">
+					<![CDATA[ and record.super_id  = #{entity.superId} ]]>
+				</if>
+				<if test = "entity.sortVal != null">
+					<![CDATA[ and record.sort_val  = #{entity.sortVal} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.status  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.remark  = #{entity.remark} ]]>
+				</if>
+				<!-- <if test = "entity.creator != null and entity.creator != ''">
+					<![CDATA[ and record.creator  = #{entity.creator} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and record.create_time  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updator != null and entity.updator != ''">
+					<![CDATA[ and record.updator  = #{entity.updator} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and record.update_time  = #{entity.updateTime} ]]>
+				</if> -->
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="systemDictItemMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM system_dict_item record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="systemDictItemMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM system_dict_item record
+		WHERE 
+		 record.ID = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="dictId != null">dict_id,</if>
+			<if test="itemKey != null">item_key,</if>
+			<if test="itemVal != null">item_val,</if>
+			<if test="existSuper != null">exist_super,</if>
+			<if test="superId != null">super_id,</if>
+			<if test="sortVal != null">sort_val,</if>
+			<if test="status != null">status,</if>
+			<if test="remark != null">remark,</if>
+			<if test="creator != null">creator,</if>
+			create_time,
+			<if test="updator != null">updator,</if>
+			update_time,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="dictId != null">#{dictId,jdbcType=BIGINT},</if>
+			<if test="itemKey != null">#{itemKey,jdbcType=VARCHAR},</if>
+			<if test="itemVal != null">#{itemVal,jdbcType=VARCHAR},</if>
+			<if test="existSuper != null">#{existSuper,jdbcType=INTEGER},</if>
+			<if test="superId != null">#{superId,jdbcType=BIGINT},</if>
+			<if test="sortVal != null">#{sortVal,jdbcType=INTEGER},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			<if test="creator != null">#{creator,jdbcType=VARCHAR},</if>
+			now(),
+			<if test="updator != null">#{updator,jdbcType=VARCHAR},</if>
+			now(),
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{item.id,jdbcType=BIGINT},</if>
+			<if test="dictId != null">#{item.dictId,jdbcType=BIGINT},</if>
+			<if test="itemKey != null">#{item.itemKey,jdbcType=VARCHAR},</if>
+			<if test="itemVal != null">#{item.itemVal,jdbcType=VARCHAR},</if>
+			<if test="existSuper != null">#{item.existSuper,jdbcType=INTEGER},</if>
+			<if test="superId != null">#{item.superId,jdbcType=BIGINT},</if>
+			<if test="sortVal != null">#{item.sortVal,jdbcType=INTEGER},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			<if test="creator != null">#{item.creator,jdbcType=VARCHAR},</if>
+			now(),
+			<if test="updator != null">#{item.updator,jdbcType=VARCHAR},</if>
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.central.model.SystemDictItemModel">
+		INSERT INTO system_dict_item(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO system_dict_item
+        (
+        	<include refid="colKeys4Selective"/>
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            <include refid="colVals4Itemive"/>
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.central.model.SystemDictItemModel">
+		UPDATE system_dict_item record 
+		<set>
+			<if test = "dictId != null ">
+				record.dict_id = #{dictId,jdbcType=BIGINT},
+			</if>
+			<if test = "itemKey != null ">
+				record.item_key = #{itemKey,jdbcType=VARCHAR},
+			</if>
+			<if test = "itemVal != null ">
+				record.item_val = #{itemVal,jdbcType=VARCHAR},
+			</if>
+			<if test = "existSuper != null ">
+				record.exist_super = #{existSuper,jdbcType=INTEGER},
+			</if>
+			<if test = "superId != null ">
+				record.super_id = #{superId,jdbcType=BIGINT},
+			</if>
+			<if test = "sortVal != null ">
+				record.sort_val = #{sortVal,jdbcType=INTEGER},
+			</if>
+			<if test = "status != null ">
+				record.status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test = "updator != null ">
+				record.updator = #{updator,jdbcType=VARCHAR},
+			</if>
+			record.update_time = now()
+		</set>
+		WHERE ID = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM system_dict_item 
+		WHERE ID = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE system_dict_item 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE ID = #{id}
+	</update>
+	<update id="delByDictId4Logic">
+		UPDATE system_dict_item 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE dict_id = #{dictId}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM system_dict_item  
+		WHERE ID IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE system_dict_item  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE ID IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	<update id="delBatchByDictIds4Logic" parameterType="java.util.List">
+		UPDATE system_dict_item  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE dict_id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	<!-- 根据字典编码查询字典项-->
+	<select id="queryDictItemByCodes" parameterType="java.util.List" resultType="java.util.Map">
+		SELECT 
+			i.id as item_id,
+			if(1=d.type,CONVERT(i.item_key,SIGNED),i.item_key) as item_key,
+			i.item_val,
+			i.sort_val,
+			d.id as dict_id,
+			d.name as dict_name,
+			d.code as dict_code,
+			d.type as dict_type
+		FROM system_dict_item i
+		LEFT JOIN system_dict d on i.dict_id=d.id
+		WHERE
+		<!-- 字典和字典项状态均为有效  且 字典项不存在父级 -->
+		d.status = 0 and i.status = 0 and i.exist_super = 0
+		and d.code in 
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+		order by d.code,i.sort_val asc
+	</select>
+</mapper>

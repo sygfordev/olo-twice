@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 常用标签使用方式 -->
+<!-- 
+1、trim 有四个属性
+2、prefix，suffix 表示在trim标签包裹的部分的前面或者后面添加内容（注意：是没有prefixOverrides，suffixOverrides的情况下）
+3、如果有prefixOverrides，suffixOverrides 表示**覆盖**Overrides中的内容。
+4、如果只有prefixOverrides，suffixOverrides 表示删除。
+ -->
+<mapper namespace="com.hdfs.olo.olo_web.central.mapper.UserInfoMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="userInfoMapper" type="com.hdfs.olo.olo_web.central.model.UserInfoModel">
+		<result property="userId" column="USER_ID" jdbcType="BIGINT"/>
+		<result property="account" column="ACCOUNT" jdbcType="VARCHAR"/>
+		<result property="userPassword" column="USER_PASSWORD" jdbcType="VARCHAR"/>
+		<result property="userRealName" column="USER_REAL_NAME" jdbcType="VARCHAR"/>
+		<result property="userSex" column="USER_SEX" jdbcType="VARCHAR"/>
+		<!-- <result property="branch" column="BRANCH" jdbcType="BIGINT"/> -->
+		<result property="userJob" column="USER_JOB" jdbcType="VARCHAR"/>
+		<result property="userTelPhone" column="USER_TEL_PHONE" jdbcType="VARCHAR"/>
+		<result property="userFax" column="USER_FAX" jdbcType="VARCHAR"/>
+		<result property="userMobile" column="USER_MOBILE" jdbcType="VARCHAR"/>
+		<result property="userAddress" column="USER_ADDRESS" jdbcType="VARCHAR"/>
+		<result property="userZip" column="USER_ZIP" jdbcType="VARCHAR"/>
+		<result property="userHomeAddress" column="USER_HOME_ADDRESS" jdbcType="VARCHAR"/>
+		<result property="userHomeZip" column="USER_HOME_ZIP" jdbcType="VARCHAR"/>
+		<result property="userEmail" column="USER_EMAIL" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="VARCHAR"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="userExpireDate" column="USER_EXPIRE_DATE" jdbcType="TIMESTAMP"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+		<association property="branch" column="{id=BRANCH}" select="com.hdfs.olo.olo_web.central.mapper.BranchOfficeMapper.queryBranchById"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPageUserInfo" resultMap="userInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM USER_INFO record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCountUserInfo" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM USER_INFO record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="field" index="index">
+		          ${field},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 USER_ID, 
+				 ACCOUNT, 
+				 USER_PASSWORD, 
+				 USER_REAL_NAME, 
+				 USER_SEX, 
+				 BRANCH, 
+				 USER_JOB, 
+				 USER_TEL_PHONE, 
+				 USER_FAX, 
+				 USER_MOBILE, 
+				 USER_ADDRESS, 
+				 USER_ZIP, 
+				 USER_HOME_ADDRESS, 
+				 USER_HOME_ZIP, 
+				 USER_EMAIL, 
+				 STATUS, 
+				 REMARK, 
+				 USER_EXPIRE_DATE, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.userId != null and entity.userId != ''">
+					<![CDATA[ and record.USER_ID  = #{entity.userId} ]]>
+				</if>
+				<if test = "entity.account != null and entity.account != ''">
+					<![CDATA[ and record.ACCOUNT  = #{entity.account} ]]>
+				</if>
+				<if test = "entity.userPassword != null and entity.userPassword != ''">
+					<![CDATA[ and record.USER_PASSWORD  = #{entity.userPassword} ]]>
+				</if>
+				<if test = "entity.userRealName != null and entity.userRealName != ''">
+					<![CDATA[ and record.USER_REAL_NAME  = #{entity.userRealName} ]]>
+				</if>
+				<if test = "entity.userSex != null and entity.userSex != ''">
+					<![CDATA[ and record.USER_SEX  = #{entity.userSex} ]]>
+				</if>
+				<if test = "entity.branch != null and entity.branch != ''">
+					<![CDATA[ and record.BRANCH  = #{entity.branch} ]]>
+				</if>
+				<if test = "entity.userJob != null and entity.userJob != ''">
+					<![CDATA[ and record.USER_JOB  = #{entity.userJob} ]]>
+				</if>
+				<if test = "entity.userTelPhone != null and entity.userTelPhone != ''">
+					<![CDATA[ and record.USER_TEL_PHONE  = #{entity.userTelPhone} ]]>
+				</if>
+				<if test = "entity.userFax != null and entity.userFax != ''">
+					<![CDATA[ and record.USER_FAX  = #{entity.userFax} ]]>
+				</if>
+				<if test = "entity.userMobile != null and entity.userMobile != ''">
+					<![CDATA[ and record.USER_MOBILE  = #{entity.userMobile} ]]>
+				</if>
+				<if test = "entity.userAddress != null and entity.userAddress != ''">
+					<![CDATA[ and record.USER_ADDRESS  = #{entity.userAddress} ]]>
+				</if>
+				<if test = "entity.userZip != null and entity.userZip != ''">
+					<![CDATA[ and record.USER_ZIP  = #{entity.userZip} ]]>
+				</if>
+				<if test = "entity.userHomeAddress != null and entity.userHomeAddress != ''">
+					<![CDATA[ and record.USER_HOME_ADDRESS  = #{entity.userHomeAddress} ]]>
+				</if>
+				<if test = "entity.userHomeZip != null and entity.userHomeZip != ''">
+					<![CDATA[ and record.USER_HOME_ZIP  = #{entity.userHomeZip} ]]>
+				</if>
+				<if test = "entity.userEmail != null and entity.userEmail != ''">
+					<![CDATA[ and record.USER_EMAIL  = #{entity.userEmail} ]]>
+				</if>
+				<if test = "entity.status != null and entity.status != ''">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.userExpireDate != null and entity.userExpireDate != ''">
+					<![CDATA[ and record.USER_EXPIRE_DATE  = #{entity.userExpireDate} ]]>
+				</if>
+				<if test = "entity.createTime != null and entity.createTime != ''">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null and entity.updateTime != ''">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryListUserInfo" resultMap="userInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM USER_INFO record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryUserInfoById" resultMap="userInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM USER_INFO record
+		WHERE 
+		 record.USER_ID = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="userId != null">USER_ID,</if>
+			<if test="account != null">ACCOUNT,</if>
+			<if test="userPassword != null">USER_PASSWORD,</if>
+			<if test="userRealName != null">USER_REAL_NAME,</if>
+			<if test="userSex != null">USER_SEX,</if>
+			<if test="branch != null">BRANCH,</if>
+			<if test="userJob != null">USER_JOB,</if>
+			<if test="userTelPhone != null">USER_TEL_PHONE,</if>
+			<if test="userFax != null">USER_FAX,</if>
+			<if test="userMobile != null">USER_MOBILE,</if>
+			<if test="userAddress != null">USER_ADDRESS,</if>
+			<if test="userZip != null">USER_ZIP,</if>
+			<if test="userHomeAddress != null">USER_HOME_ADDRESS,</if>
+			<if test="userHomeZip != null">USER_HOME_ZIP,</if>
+			<if test="userEmail != null">USER_EMAIL,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			<if test="userExpireDate != null">USER_EXPIRE_DATE,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="userId != null">#{userId,jdbcType=BIGINT},</if>
+			<if test="account != null">#{account,jdbcType=VARCHAR},</if>
+			<if test="userPassword != null">#{userPassword,jdbcType=VARCHAR},</if>
+			<if test="userRealName != null">#{userRealName,jdbcType=VARCHAR},</if>
+			<if test="userSex != null">#{userSex,jdbcType=VARCHAR},</if>
+			<if test="branch != null">#{branch.id,jdbcType=BIGINT},</if>
+			<if test="userJob != null">#{userJob,jdbcType=VARCHAR},</if>
+			<if test="userTelPhone != null">#{userTelPhone,jdbcType=VARCHAR},</if>
+			<if test="userFax != null">#{userFax,jdbcType=VARCHAR},</if>
+			<if test="userMobile != null">#{userMobile,jdbcType=VARCHAR},</if>
+			<if test="userAddress != null">#{userAddress,jdbcType=VARCHAR},</if>
+			<if test="userZip != null">#{userZip,jdbcType=VARCHAR},</if>
+			<if test="userHomeAddress != null">#{userHomeAddress,jdbcType=VARCHAR},</if>
+			<if test="userHomeZip != null">#{userHomeZip,jdbcType=VARCHAR},</if>
+			<if test="userEmail != null">#{userEmail,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{status,jdbcType=VARCHAR},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			<if test="userExpireDate != null">#{userExpireDate,jdbcType=TIMESTAMP},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="userId != null">#{item.userId,jdbcType=BIGINT},</if>
+			<if test="account != null">#{item.account,jdbcType=VARCHAR},</if>
+			<if test="userPassword != null">#{item.userPassword,jdbcType=VARCHAR},</if>
+			<if test="userRealName != null">#{item.userRealName,jdbcType=VARCHAR},</if>
+			<if test="userSex != null">#{item.userSex,jdbcType=VARCHAR},</if>
+			<if test="branch != null">#{item.branch,jdbcType=BIGINT},</if>
+			<if test="userJob != null">#{item.userJob,jdbcType=VARCHAR},</if>
+			<if test="userTelPhone != null">#{item.userTelPhone,jdbcType=VARCHAR},</if>
+			<if test="userFax != null">#{item.userFax,jdbcType=VARCHAR},</if>
+			<if test="userMobile != null">#{item.userMobile,jdbcType=VARCHAR},</if>
+			<if test="userAddress != null">#{item.userAddress,jdbcType=VARCHAR},</if>
+			<if test="userZip != null">#{item.userZip,jdbcType=VARCHAR},</if>
+			<if test="userHomeAddress != null">#{item.userHomeAddress,jdbcType=VARCHAR},</if>
+			<if test="userHomeZip != null">#{item.userHomeZip,jdbcType=VARCHAR},</if>
+			<if test="userEmail != null">#{item.userEmail,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{item.status,jdbcType=VARCHAR},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			<if test="userExpireDate != null">#{item.userExpireDate,jdbcType=TIMESTAMP},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertUserInfo" parameterType="com.hdfs.olo.olo_web.central.model.UserInfoModel" 
+		useGeneratedKeys="true" keyProperty="userId" keyColumn="USER_ID">
+		INSERT INTO USER_INFO(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertUserInfoBatch" parameterType="java.util.List"
+		useGeneratedKeys="true" keyProperty="userId" keyColumn="USER_ID">
+        INSERT INTO USER_INFO
+        (
+        	<include refid="colKeys4Selective"/>
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            <include refid="colVals4Itemive"/>
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="updateUserInfo" parameterType="com.hdfs.olo.olo_web.central.model.UserInfoModel">
+		UPDATE USER_INFO record 
+		<set>
+			<if test = "account != null ">
+				record.ACCOUNT = #{account,jdbcType=VARCHAR},
+			</if>
+			<if test = "userPassword != null ">
+				record.USER_PASSWORD = #{userPassword,jdbcType=VARCHAR},
+			</if>
+			<if test = "userRealName != null ">
+				record.USER_REAL_NAME = #{userRealName,jdbcType=VARCHAR},
+			</if>
+			<if test = "userSex != null ">
+				record.USER_SEX = #{userSex,jdbcType=VARCHAR},
+			</if>
+			<if test = "branch != null ">
+				record.BRANCH = #{branch.id,jdbcType=BIGINT},
+			</if>
+			<if test = "userJob != null ">
+				record.USER_JOB = #{userJob,jdbcType=VARCHAR},
+			</if>
+			<if test = "userTelPhone != null ">
+				record.USER_TEL_PHONE = #{userTelPhone,jdbcType=VARCHAR},
+			</if>
+			<if test = "userFax != null ">
+				record.USER_FAX = #{userFax,jdbcType=VARCHAR},
+			</if>
+			<if test = "userMobile != null ">
+				record.USER_MOBILE = #{userMobile,jdbcType=VARCHAR},
+			</if>
+			<if test = "userAddress != null ">
+				record.USER_ADDRESS = #{userAddress,jdbcType=VARCHAR},
+			</if>
+			<if test = "userZip != null ">
+				record.USER_ZIP = #{userZip,jdbcType=VARCHAR},
+			</if>
+			<if test = "userHomeAddress != null ">
+				record.USER_HOME_ADDRESS = #{userHomeAddress,jdbcType=VARCHAR},
+			</if>
+			<if test = "userHomeZip != null ">
+				record.USER_HOME_ZIP = #{userHomeZip,jdbcType=VARCHAR},
+			</if>
+			<if test = "userEmail != null ">
+				record.USER_EMAIL = #{userEmail,jdbcType=VARCHAR},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test = "userExpireDate != null ">
+				record.USER_EXPIRE_DATE = #{userExpireDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "createTime != null ">
+				record.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			record.UPDATE_TIME = now()
+		</set>
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delUserInfoById">
+		DELETE FROM USER_INFO 
+		WHERE USER_ID = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delUserInfoById4Logic">
+		UPDATE USER_INFO 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE USER_ID = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delUserInfoBatchByIds" parameterType="java.util.List">
+		DELETE FROM USER_INFO  
+		WHERE USER_ID IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delUserInfoBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE USER_INFO  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE USER_ID IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	
+	<!-- 查询单个实体 -->
+	<select id="queryByAccount" resultMap="userInfoMapper">
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM USER_INFO record
+		WHERE 
+		record.ACCOUNT = #{account,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据机构编号查询总数量 -->
+	<select id="queryCountByBranch" resultType="long" parameterType="java.util.List">
+		<include refid="query4count"/>
+		where record.BRANCH in 
+		<foreach collection="list" open="(" separator="," close=")" item="branchIds">
+			#{branchIds}
+		</foreach>
+	</select>
+	
+	<!-- 修改密码 -->
+	<update id="update4Pwd">
+		UPDATE USER_INFO record 
+		<set>
+			record.USER_PASSWORD = #{param2},
+			record.UPDATE_TIME = now()
+		</set>
+		WHERE USER_ID = #{param1}
+	</update>
+</mapper>

@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmStationMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmStationMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmStationModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="workerId" column="WORKER_ID" jdbcType="BIGINT"/>
+		<result property="wagesId" column="WAGES_ID" jdbcType="VARCHAR"/>
+		<result property="identity" column="IDENTITY" jdbcType="INTEGER"/>
+		<result property="identityCn" column="IDENTITY_CN" jdbcType="VARCHAR"/>
+		<result property="wkModality" column="WK_MODALITY" jdbcType="INTEGER"/>
+		<result property="wkModalityCn" column="WK_MODALITY_CN" jdbcType="VARCHAR"/>
+		<result property="wkType" column="WK_TYPE" jdbcType="INTEGER"/>
+		<result property="wkTypeCn" column="WK_TYPE_CN" jdbcType="VARCHAR"/>
+		<result property="laborRelNo" column="LABOR_REL_NO" jdbcType="INTEGER"/>
+		<result property="laborRelCn" column="LABOR_REL_CN" jdbcType="VARCHAR"/>
+		<result property="stationSitu" column="STATION_SITU" jdbcType="INTEGER"/>
+		<result property="stationSituCn" column="STATION_SITU_CN" jdbcType="VARCHAR"/>
+		<result property="stationType" column="STATION_TYPE" jdbcType="INTEGER"/>
+		<result property="stationTypeCn" column="STATION_TYPE_CN" jdbcType="VARCHAR"/>
+		<result property="stationStatus" column="STATION_STATUS" jdbcType="INTEGER"/>
+		<result property="stationStatusCn" column="STATION_STATUS_CN" jdbcType="VARCHAR"/>
+		<result property="stationSeqNo" column="STATION_SEQ_NO" jdbcType="INTEGER"/>
+		<result property="stationSeqCn" column="STATION_SEQ_CN" jdbcType="VARCHAR"/>
+		<result property="isMajorPerson" column="IS_MAJOR_PERSON" jdbcType="INTEGER"/>
+		<result property="inMajorNow" column="IN_MAJOR_NOW" jdbcType="INTEGER"/>
+		<result property="inMajorNowCn" column="IN_MAJOR_NOW_CN" jdbcType="VARCHAR"/>
+		<result property="workArea" column="WORK_AREA" jdbcType="INTEGER"/>
+		<result property="workAreaCn" column="WORK_AREA_CN" jdbcType="VARCHAR"/>
+		<result property="hosBranch" column="HOS_BRANCH" jdbcType="INTEGER"/>
+		<result property="hosBranchCn" column="HOS_BRANCH_CN" jdbcType="VARCHAR"/>
+		<result property="hosDepart1level" column="HOS_DEPART_1LEVEL" jdbcType="INTEGER"/>
+		<result property="hosDepart1levelCn" column="HOS_DEPART_1LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="hosDepart2level" column="HOS_DEPART_2LEVEL" jdbcType="INTEGER"/>
+		<result property="hosDepart2levelCn" column="HOS_DEPART_2LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="homeAddress" column="HOME_ADDRESS" jdbcType="VARCHAR"/>
+		<result property="telphoneNo" column="TELPHONE_NO" jdbcType="VARCHAR"/>
+		<result property="mailBox" column="MAIL_BOX" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmStationMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_station record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_station record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 WORKER_ID, 
+				 WAGES_ID, 
+				 IDENTITY, 
+				 IDENTITY_CN, 
+				 WK_MODALITY, 
+				 WK_MODALITY_CN, 
+				 WK_TYPE, 
+				 WK_TYPE_CN, 
+				 LABOR_REL_NO, 
+				 LABOR_REL_CN, 
+				 STATION_SITU, 
+				 STATION_SITU_CN, 
+				 STATION_TYPE, 
+				 STATION_TYPE_CN, 
+				 STATION_STATUS, 
+				 STATION_STATUS_CN, 
+				 STATION_SEQ_NO, 
+				 STATION_SEQ_CN, 
+				 IS_MAJOR_PERSON, 
+				 IN_MAJOR_NOW, 
+				 IN_MAJOR_NOW_CN, 
+				 WORK_AREA, 
+				 WORK_AREA_CN, 
+				 HOS_BRANCH, 
+				 HOS_BRANCH_CN, 
+				 HOS_DEPART_1LEVEL, 
+				 HOS_DEPART_1LEVEL_CN, 
+				 HOS_DEPART_2LEVEL, 
+				 HOS_DEPART_2LEVEL_CN, 
+				 HOME_ADDRESS, 
+				 TELPHONE_NO, 
+				 MAIL_BOX, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null and entity.id != ''">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.workerId != null and entity.workerId != ''">
+					<![CDATA[ and record.WORKER_ID  = #{entity.workerId} ]]>
+				</if>
+				<if test = "entity.wagesId != null and entity.wagesId != ''">
+					<![CDATA[ and record.WAGES_ID  = #{entity.wagesId} ]]>
+				</if>
+				<if test = "entity.identity != null and entity.identity != ''">
+					<![CDATA[ and record.IDENTITY  = #{entity.identity} ]]>
+				</if>
+				<if test = "entity.identityCn != null and entity.identityCn != ''">
+					<![CDATA[ and record.IDENTITY_CN  = #{entity.identityCn} ]]>
+				</if>
+				<if test = "entity.wkModality != null and entity.wkModality != ''">
+					<![CDATA[ and record.WK_MODALITY  = #{entity.wkModality} ]]>
+				</if>
+				<if test = "entity.wkModalityCn != null and entity.wkModalityCn != ''">
+					<![CDATA[ and record.WK_MODALITY_CN  = #{entity.wkModalityCn} ]]>
+				</if>
+				<if test = "entity.wkType != null and entity.wkType != ''">
+					<![CDATA[ and record.WK_TYPE  = #{entity.wkType} ]]>
+				</if>
+				<if test = "entity.wkTypeCn != null and entity.wkTypeCn != ''">
+					<![CDATA[ and record.WK_TYPE_CN  = #{entity.wkTypeCn} ]]>
+				</if>
+				<if test = "entity.laborRelNo != null and entity.laborRelNo != ''">
+					<![CDATA[ and record.LABOR_REL_NO  = #{entity.laborRelNo} ]]>
+				</if>
+				<if test = "entity.laborRelCn != null and entity.laborRelCn != ''">
+					<![CDATA[ and record.LABOR_REL_CN  = #{entity.laborRelCn} ]]>
+				</if>
+				<if test = "entity.stationSitu != null and entity.stationSitu != ''">
+					<![CDATA[ and record.STATION_SITU  = #{entity.stationSitu} ]]>
+				</if>
+				<if test = "entity.stationSituCn != null and entity.stationSituCn != ''">
+					<![CDATA[ and record.STATION_SITU_CN  = #{entity.stationSituCn} ]]>
+				</if>
+				<if test = "entity.stationType != null and entity.stationType != ''">
+					<![CDATA[ and record.STATION_TYPE  = #{entity.stationType} ]]>
+				</if>
+				<if test = "entity.stationTypeCn != null and entity.stationTypeCn != ''">
+					<![CDATA[ and record.STATION_TYPE_CN  = #{entity.stationTypeCn} ]]>
+				</if>
+				<if test = "entity.stationStatus != null and entity.stationStatus != ''">
+					<![CDATA[ and record.STATION_STATUS  = #{entity.stationStatus} ]]>
+				</if>
+				<if test = "entity.stationStatusCn != null and entity.stationStatusCn != ''">
+					<![CDATA[ and record.STATION_STATUS_CN  = #{entity.stationStatusCn} ]]>
+				</if>
+				<if test = "entity.stationSeqNo != null and entity.stationSeqNo != ''">
+					<![CDATA[ and record.STATION_SEQ_NO  = #{entity.stationSeqNo} ]]>
+				</if>
+				<if test = "entity.stationSeqCn != null and entity.stationSeqCn != ''">
+					<![CDATA[ and record.STATION_SEQ_CN  = #{entity.stationSeqCn} ]]>
+				</if>
+				<if test = "entity.isMajorPerson != null and entity.isMajorPerson != ''">
+					<![CDATA[ and record.IS_MAJOR_PERSON  = #{entity.isMajorPerson} ]]>
+				</if>
+				<if test = "entity.inMajorNow != null and entity.inMajorNow != ''">
+					<![CDATA[ and record.IN_MAJOR_NOW  = #{entity.inMajorNow} ]]>
+				</if>
+				<if test = "entity.inMajorNowCn != null and entity.inMajorNowCn != ''">
+					<![CDATA[ and record.IN_MAJOR_NOW_CN  = #{entity.inMajorNowCn} ]]>
+				</if>
+				<if test = "entity.workArea != null and entity.workArea != ''">
+					<![CDATA[ and record.WORK_AREA  = #{entity.workArea} ]]>
+				</if>
+				<if test = "entity.workAreaCn != null and entity.workAreaCn != ''">
+					<![CDATA[ and record.WORK_AREA_CN  = #{entity.workAreaCn} ]]>
+				</if>
+				<if test = "entity.hosBranch != null and entity.hosBranch != ''">
+					<![CDATA[ and record.HOS_BRANCH  = #{entity.hosBranch} ]]>
+				</if>
+				<if test = "entity.hosBranchCn != null and entity.hosBranchCn != ''">
+					<![CDATA[ and record.HOS_BRANCH_CN  = #{entity.hosBranchCn} ]]>
+				</if>
+				<if test = "entity.hosDepart1level != null and entity.hosDepart1level != ''">
+					<![CDATA[ and record.HOS_DEPART_1LEVEL  = #{entity.hosDepart1level} ]]>
+				</if>
+				<if test = "entity.hosDepart1levelCn != null and entity.hosDepart1levelCn != ''">
+					<![CDATA[ and record.HOS_DEPART_1LEVEL_CN  = #{entity.hosDepart1levelCn} ]]>
+				</if>
+				<if test = "entity.hosDepart2level != null and entity.hosDepart2level != ''">
+					<![CDATA[ and record.HOS_DEPART_2LEVEL  = #{entity.hosDepart2level} ]]>
+				</if>
+				<if test = "entity.hosDepart2levelCn != null and entity.hosDepart2levelCn != ''">
+					<![CDATA[ and record.HOS_DEPART_2LEVEL_CN  = #{entity.hosDepart2levelCn} ]]>
+				</if>
+				<if test = "entity.homeAddress != null and entity.homeAddress != ''">
+					<![CDATA[ and record.HOME_ADDRESS  = #{entity.homeAddress} ]]>
+				</if>
+				<if test = "entity.telphoneNo != null and entity.telphoneNo != ''">
+					<![CDATA[ and record.TELPHONE_NO  = #{entity.telphoneNo} ]]>
+				</if>
+				<if test = "entity.mailBox != null and entity.mailBox != ''">
+					<![CDATA[ and record.MAIL_BOX  = #{entity.mailBox} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null and entity.createTime != ''">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null and entity.updateTime != ''">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmStationMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_station record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmStationMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_station record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryByWkId" resultMap="chPmStationMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_station record
+		WHERE 
+		 record.WORKER_ID = #{wkId}
+		 and record.status =0
+		 limit 1
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="workerId != null">WORKER_ID,</if>
+			<if test="wagesId != null">WAGES_ID,</if>
+			<if test="identity != null">IDENTITY,</if>
+			<if test="identityCn != null">IDENTITY_CN,</if>
+			<if test="wkModality != null">WK_MODALITY,</if>
+			<if test="wkModalityCn != null">WK_MODALITY_CN,</if>
+			<if test="wkType != null">WK_TYPE,</if>
+			<if test="wkTypeCn != null">WK_TYPE_CN,</if>
+			<if test="laborRelNo != null">LABOR_REL_NO,</if>
+			<if test="laborRelCn != null">LABOR_REL_CN,</if>
+			<if test="stationSitu != null">STATION_SITU,</if>
+			<if test="stationSituCn != null">STATION_SITU_CN,</if>
+			<if test="stationType != null">STATION_TYPE,</if>
+			<if test="stationTypeCn != null">STATION_TYPE_CN,</if>
+			<if test="stationStatus != null">STATION_STATUS,</if>
+			<if test="stationStatusCn != null">STATION_STATUS_CN,</if>
+			<if test="stationSeqNo != null">STATION_SEQ_NO,</if>
+			<if test="stationSeqCn != null">STATION_SEQ_CN,</if>
+			<if test="isMajorPerson != null">IS_MAJOR_PERSON,</if>
+			<if test="inMajorNow != null">IN_MAJOR_NOW,</if>
+			<if test="inMajorNowCn != null">IN_MAJOR_NOW_CN,</if>
+			<if test="workArea != null">WORK_AREA,</if>
+			<if test="workAreaCn != null">WORK_AREA_CN,</if>
+			<if test="hosBranch != null">HOS_BRANCH,</if>
+			<if test="hosBranchCn != null">HOS_BRANCH_CN,</if>
+			<if test="hosDepart1level != null">HOS_DEPART_1LEVEL,</if>
+			<if test="hosDepart1levelCn != null">HOS_DEPART_1LEVEL_CN,</if>
+			<if test="hosDepart2level != null">HOS_DEPART_2LEVEL,</if>
+			<if test="hosDepart2levelCn != null">HOS_DEPART_2LEVEL_CN,</if>
+			<if test="homeAddress != null">HOME_ADDRESS,</if>
+			<if test="telphoneNo != null">TELPHONE_NO,</if>
+			<if test="mailBox != null">MAIL_BOX,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{workerId,jdbcType=BIGINT},</if>
+			<if test="wagesId != null">#{wagesId,jdbcType=VARCHAR},</if>
+			<if test="identity != null">#{identity,jdbcType=INTEGER},</if>
+			<if test="identityCn != null">#{identityCn,jdbcType=VARCHAR},</if>
+			<if test="wkModality != null">#{wkModality,jdbcType=INTEGER},</if>
+			<if test="wkModalityCn != null">#{wkModalityCn,jdbcType=VARCHAR},</if>
+			<if test="wkType != null">#{wkType,jdbcType=INTEGER},</if>
+			<if test="wkTypeCn != null">#{wkTypeCn,jdbcType=VARCHAR},</if>
+			<if test="laborRelNo != null">#{laborRelNo,jdbcType=INTEGER},</if>
+			<if test="laborRelCn != null">#{laborRelCn,jdbcType=VARCHAR},</if>
+			<if test="stationSitu != null">#{stationSitu,jdbcType=INTEGER},</if>
+			<if test="stationSituCn != null">#{stationSituCn,jdbcType=VARCHAR},</if>
+			<if test="stationType != null">#{stationType,jdbcType=INTEGER},</if>
+			<if test="stationTypeCn != null">#{stationTypeCn,jdbcType=VARCHAR},</if>
+			<if test="stationStatus != null">#{stationStatus,jdbcType=INTEGER},</if>
+			<if test="stationStatusCn != null">#{stationStatusCn,jdbcType=VARCHAR},</if>
+			<if test="stationSeqNo != null">#{stationSeqNo,jdbcType=INTEGER},</if>
+			<if test="stationSeqCn != null">#{stationSeqCn,jdbcType=VARCHAR},</if>
+			<if test="isMajorPerson != null">#{isMajorPerson,jdbcType=INTEGER},</if>
+			<if test="inMajorNow != null">#{inMajorNow,jdbcType=INTEGER},</if>
+			<if test="inMajorNowCn != null">#{inMajorNowCn,jdbcType=VARCHAR},</if>
+			<if test="workArea != null">#{workArea,jdbcType=INTEGER},</if>
+			<if test="workAreaCn != null">#{workAreaCn,jdbcType=VARCHAR},</if>
+			<if test="hosBranch != null">#{hosBranch,jdbcType=INTEGER},</if>
+			<if test="hosBranchCn != null">#{hosBranchCn,jdbcType=VARCHAR},</if>
+			<if test="hosDepart1level != null">#{hosDepart1level,jdbcType=INTEGER},</if>
+			<if test="hosDepart1levelCn != null">#{hosDepart1levelCn,jdbcType=VARCHAR},</if>
+			<if test="hosDepart2level != null">#{hosDepart2level,jdbcType=INTEGER},</if>
+			<if test="hosDepart2levelCn != null">#{hosDepart2levelCn,jdbcType=VARCHAR},</if>
+			<if test="homeAddress != null">#{homeAddress,jdbcType=VARCHAR},</if>
+			<if test="telphoneNo != null">#{telphoneNo,jdbcType=VARCHAR},</if>
+			<if test="mailBox != null">#{mailBox,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{item.id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{item.workerId,jdbcType=BIGINT},</if>
+			<if test="wagesId != null">#{item.wagesId,jdbcType=VARCHAR},</if>
+			<if test="identity != null">#{item.identity,jdbcType=INTEGER},</if>
+			<if test="identityCn != null">#{item.identityCn,jdbcType=VARCHAR},</if>
+			<if test="wkModality != null">#{item.wkModality,jdbcType=INTEGER},</if>
+			<if test="wkModalityCn != null">#{item.wkModalityCn,jdbcType=VARCHAR},</if>
+			<if test="wkType != null">#{item.wkType,jdbcType=INTEGER},</if>
+			<if test="wkTypeCn != null">#{item.wkTypeCn,jdbcType=VARCHAR},</if>
+			<if test="laborRelNo != null">#{item.laborRelNo,jdbcType=INTEGER},</if>
+			<if test="laborRelCn != null">#{item.laborRelCn,jdbcType=VARCHAR},</if>
+			<if test="stationSitu != null">#{item.stationSitu,jdbcType=INTEGER},</if>
+			<if test="stationSituCn != null">#{item.stationSituCn,jdbcType=VARCHAR},</if>
+			<if test="stationType != null">#{item.stationType,jdbcType=INTEGER},</if>
+			<if test="stationTypeCn != null">#{item.stationTypeCn,jdbcType=VARCHAR},</if>
+			<if test="stationStatus != null">#{item.stationStatus,jdbcType=INTEGER},</if>
+			<if test="stationStatusCn != null">#{item.stationStatusCn,jdbcType=VARCHAR},</if>
+			<if test="stationSeqNo != null">#{item.stationSeqNo,jdbcType=INTEGER},</if>
+			<if test="stationSeqCn != null">#{item.stationSeqCn,jdbcType=VARCHAR},</if>
+			<if test="isMajorPerson != null">#{item.isMajorPerson,jdbcType=INTEGER},</if>
+			<if test="inMajorNow != null">#{item.inMajorNow,jdbcType=INTEGER},</if>
+			<if test="inMajorNowCn != null">#{item.inMajorNowCn,jdbcType=VARCHAR},</if>
+			<if test="workArea != null">#{item.workArea,jdbcType=INTEGER},</if>
+			<if test="workAreaCn != null">#{item.workAreaCn,jdbcType=VARCHAR},</if>
+			<if test="hosBranch != null">#{item.hosBranch,jdbcType=INTEGER},</if>
+			<if test="hosBranchCn != null">#{item.hosBranchCn,jdbcType=VARCHAR},</if>
+			<if test="hosDepart1level != null">#{item.hosDepart1level,jdbcType=INTEGER},</if>
+			<if test="hosDepart1levelCn != null">#{item.hosDepart1levelCn,jdbcType=VARCHAR},</if>
+			<if test="hosDepart2level != null">#{item.hosDepart2level,jdbcType=INTEGER},</if>
+			<if test="hosDepart2levelCn != null">#{item.hosDepart2levelCn,jdbcType=VARCHAR},</if>
+			<if test="homeAddress != null">#{item.homeAddress,jdbcType=VARCHAR},</if>
+			<if test="telphoneNo != null">#{item.telphoneNo,jdbcType=VARCHAR},</if>
+			<if test="mailBox != null">#{item.mailBox,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmStationModel"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+		INSERT INTO ch_pm_station(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_pm_station
+        (
+        	WORKER_ID,
+			WAGES_ID,
+			IDENTITY,
+			IDENTITY_CN,
+			WK_MODALITY,
+			WK_MODALITY_CN,
+			WK_TYPE,
+			WK_TYPE_CN,
+			LABOR_REL_NO,
+			LABOR_REL_CN,
+			STATION_SITU,
+			STATION_SITU_CN,
+			STATION_TYPE,
+			STATION_TYPE_CN,
+			STATION_STATUS,
+			STATION_STATUS_CN,
+			STATION_SEQ_NO,
+			STATION_SEQ_CN,
+			IS_MAJOR_PERSON,
+			IN_MAJOR_NOW,
+			IN_MAJOR_NOW_CN,
+			WORK_AREA,
+			WORK_AREA_CN,
+			HOS_BRANCH,
+			HOS_BRANCH_CN,
+			HOS_DEPART_1LEVEL,
+			HOS_DEPART_1LEVEL_CN,
+			HOS_DEPART_2LEVEL,
+			HOS_DEPART_2LEVEL_CN,
+			HOME_ADDRESS,
+			TELPHONE_NO,
+			MAIL_BOX,
+			STATUS,
+			REMARK,
+			CREATE_TIME,
+			UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            #{item.workerId,jdbcType=BIGINT},
+			#{item.wagesId,jdbcType=VARCHAR},
+			#{item.identity,jdbcType=INTEGER},
+			#{item.identityCn,jdbcType=VARCHAR},
+			#{item.wkModality,jdbcType=INTEGER},
+			#{item.wkModalityCn,jdbcType=VARCHAR},
+			#{item.wkType,jdbcType=INTEGER},
+			#{item.wkTypeCn,jdbcType=VARCHAR},
+			#{item.laborRelNo,jdbcType=INTEGER},
+			#{item.laborRelCn,jdbcType=VARCHAR},
+			#{item.stationSitu,jdbcType=INTEGER},
+			#{item.stationSituCn,jdbcType=VARCHAR},
+			#{item.stationType,jdbcType=INTEGER},
+			#{item.stationTypeCn,jdbcType=VARCHAR},
+			#{item.stationStatus,jdbcType=INTEGER},
+			#{item.stationStatusCn,jdbcType=VARCHAR},
+			#{item.stationSeqNo,jdbcType=INTEGER},
+			#{item.stationSeqCn,jdbcType=VARCHAR},
+			#{item.isMajorPerson,jdbcType=INTEGER},
+			#{item.inMajorNow,jdbcType=INTEGER},
+			#{item.inMajorNowCn,jdbcType=VARCHAR},
+			#{item.workArea,jdbcType=INTEGER},
+			#{item.workAreaCn,jdbcType=VARCHAR},
+			#{item.hosBranch,jdbcType=INTEGER},
+			#{item.hosBranchCn,jdbcType=VARCHAR},
+			#{item.hosDepart1level,jdbcType=INTEGER},
+			#{item.hosDepart1levelCn,jdbcType=VARCHAR},
+			#{item.hosDepart2level,jdbcType=INTEGER},
+			#{item.hosDepart2levelCn,jdbcType=VARCHAR},
+			#{item.homeAddress,jdbcType=VARCHAR},
+			#{item.telphoneNo,jdbcType=VARCHAR},
+			#{item.mailBox,jdbcType=VARCHAR},
+			#{item.status,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmStationModel">
+		UPDATE ch_pm_station record 
+		<set>
+			<if test = "id != null ">
+				record.ID = #{id,jdbcType=BIGINT},
+			</if>
+			<if test = "workerId != null ">
+				record.WORKER_ID = #{workerId,jdbcType=BIGINT},
+			</if>
+			<if test = "wagesId != null ">
+				record.WAGES_ID = #{wagesId,jdbcType=VARCHAR},
+			</if>
+			<if test = "identity != null ">
+				record.IDENTITY = #{identity,jdbcType=INTEGER},
+			</if>
+			<if test = "identityCn != null ">
+				record.IDENTITY_CN = #{identityCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "wkModality != null ">
+				record.WK_MODALITY = #{wkModality,jdbcType=INTEGER},
+			</if>
+			<if test = "wkModalityCn != null ">
+				record.WK_MODALITY_CN = #{wkModalityCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "wkType != null ">
+				record.WK_TYPE = #{wkType,jdbcType=INTEGER},
+			</if>
+			<if test = "wkTypeCn != null ">
+				record.WK_TYPE_CN = #{wkTypeCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "laborRelNo != null ">
+				record.LABOR_REL_NO = #{laborRelNo,jdbcType=INTEGER},
+			</if>
+			<if test = "laborRelCn != null ">
+				record.LABOR_REL_CN = #{laborRelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "stationSitu != null ">
+				record.STATION_SITU = #{stationSitu,jdbcType=INTEGER},
+			</if>
+			<if test = "stationSituCn != null ">
+				record.STATION_SITU_CN = #{stationSituCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "stationType != null ">
+				record.STATION_TYPE = #{stationType,jdbcType=INTEGER},
+			</if>
+			<if test = "stationTypeCn != null ">
+				record.STATION_TYPE_CN = #{stationTypeCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "stationStatus != null ">
+				record.STATION_STATUS = #{stationStatus,jdbcType=INTEGER},
+			</if>
+			<if test = "stationStatusCn != null ">
+				record.STATION_STATUS_CN = #{stationStatusCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "stationSeqNo != null ">
+				record.STATION_SEQ_NO = #{stationSeqNo,jdbcType=INTEGER},
+			</if>
+			<if test = "stationSeqCn != null ">
+				record.STATION_SEQ_CN = #{stationSeqCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "isMajorPerson != null ">
+				record.IS_MAJOR_PERSON = #{isMajorPerson,jdbcType=INTEGER},
+			</if>
+			<if test = "inMajorNow != null ">
+				record.IN_MAJOR_NOW = #{inMajorNow,jdbcType=INTEGER},
+			</if>
+			<if test = "inMajorNowCn != null ">
+				record.IN_MAJOR_NOW_CN = #{inMajorNowCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "workArea != null ">
+				record.WORK_AREA = #{workArea,jdbcType=INTEGER},
+			</if>
+			<if test = "workAreaCn != null ">
+				record.WORK_AREA_CN = #{workAreaCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "hosBranch != null ">
+				record.HOS_BRANCH = #{hosBranch,jdbcType=INTEGER},
+			</if>
+			<if test = "hosBranchCn != null ">
+				record.HOS_BRANCH_CN = #{hosBranchCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "hosDepart1level != null ">
+				record.HOS_DEPART_1LEVEL = #{hosDepart1level,jdbcType=INTEGER},
+			</if>
+			<if test = "hosDepart1levelCn != null ">
+				record.HOS_DEPART_1LEVEL_CN = #{hosDepart1levelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "hosDepart2level != null ">
+				record.HOS_DEPART_2LEVEL = #{hosDepart2level,jdbcType=INTEGER},
+			</if>
+			<if test = "hosDepart2levelCn != null ">
+				record.HOS_DEPART_2LEVEL_CN = #{hosDepart2levelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "homeAddress != null ">
+				record.HOME_ADDRESS = #{homeAddress,jdbcType=VARCHAR},
+			</if>
+			<if test = "telphoneNo != null ">
+				record.TELPHONE_NO = #{telphoneNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "mailBox != null ">
+				record.MAIL_BOX = #{mailBox,jdbcType=VARCHAR},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test = "createTime != null ">
+				record.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+				record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_station 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_station 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_station  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_station  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	
+	<!-- 根据身份证号批量查询职工的用工及岗位是否存在 -->
+	<select id="queryExistByCardNos" parameterType="java.util.List" resultType="java.util.Map">
+        select 
+        	w.id,
+        	w.card_no,
+			IF(IFNULL(h.WORKER_ID,-1)>=0,1,0) as station_exist
+		from ch_pm_worker w 
+		left join ch_pm_station h on w.id = h.WORKER_ID and h.status=0
+		where w.CARD_NO in 
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+					#{item}
+		</foreach>
+		and w.status=0
+	</select>
+</mapper>

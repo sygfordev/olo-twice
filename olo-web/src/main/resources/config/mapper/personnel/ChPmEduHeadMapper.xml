@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmEduHeadMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmEduHeadMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmEduHeadModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="workerId" column="WORKER_ID" jdbcType="BIGINT"/>
+		<result property="eduDeg4now" column="EDU_DEG_4NOW" jdbcType="INTEGER"/>
+		<result property="eduDeg4nowCn" column="EDU_DEG_4NOW_CN" jdbcType="VARCHAR"/>
+		<result property="eduLev4now" column="EDU_LEV_4NOW" jdbcType="INTEGER"/>
+		<result property="eduLev4nowCn" column="EDU_LEV_4NOW_CN" jdbcType="VARCHAR"/>
+		<result property="eduLev4sal" column="EDU_LEV_4SAL" jdbcType="INTEGER"/>
+		<result property="eduLev4salCn" column="EDU_LEV_4SAL_CN" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmEduHeadMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_edu_head record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_edu_head record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 WORKER_ID, 
+				 EDU_DEG_4NOW, 
+				 EDU_DEG_4NOW_CN, 
+				 EDU_LEV_4NOW, 
+				 EDU_LEV_4NOW_CN, 
+				 EDU_LEV_4SAL, 
+				 EDU_LEV_4SAL_CN, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null and entity.id != ''">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.workerId != null and entity.workerId != ''">
+					<![CDATA[ and record.WORKER_ID  = #{entity.workerId} ]]>
+				</if>
+				<if test = "entity.eduDeg4now != null and entity.eduDeg4now != ''">
+					<![CDATA[ and record.EDU_DEG_4NOW  = #{entity.eduDeg4now} ]]>
+				</if>
+				<if test = "entity.eduDeg4nowCn != null and entity.eduDeg4nowCn != ''">
+					<![CDATA[ and record.EDU_DEG_4NOW_CN  = #{entity.eduDeg4nowCn} ]]>
+				</if>
+				<if test = "entity.eduLev4now != null and entity.eduLev4now != ''">
+					<![CDATA[ and record.EDU_LEV_4NOW  = #{entity.eduLev4now} ]]>
+				</if>
+				<if test = "entity.eduLev4nowCn != null and entity.eduLev4nowCn != ''">
+					<![CDATA[ and record.EDU_LEV_4NOW_CN  = #{entity.eduLev4nowCn} ]]>
+				</if>
+				<if test = "entity.eduLev4sal != null and entity.eduLev4sal != ''">
+					<![CDATA[ and record.EDU_LEV_4SAL  = #{entity.eduLev4sal} ]]>
+				</if>
+				<if test = "entity.eduLev4salCn != null and entity.eduLev4salCn != ''">
+					<![CDATA[ and record.EDU_LEV_4SAL_CN  = #{entity.eduLev4salCn} ]]>
+				</if>
+				and record.STATUS  = 0 
+				<!-- <if test = "entity.status != null and entity.status != ''">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if> -->
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null and entity.createTime != ''">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null and entity.updateTime != ''">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmEduHeadMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_edu_head record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmEduHeadMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_edu_head record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryByWkId" resultMap="chPmEduHeadMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_edu_head record
+		WHERE 
+		 record.WORKER_ID = #{wkId}
+		 and record.status = 0
+		 limit 1
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="workerId != null">WORKER_ID,</if>
+			<if test="eduDeg4now != null">EDU_DEG_4NOW,</if>
+			<if test="eduDeg4nowCn != null">EDU_DEG_4NOW_CN,</if>
+			<if test="eduLev4now != null">EDU_LEV_4NOW,</if>
+			<if test="eduLev4nowCn != null">EDU_LEV_4NOW_CN,</if>
+			<if test="eduLev4sal != null">EDU_LEV_4SAL,</if>
+			<if test="eduLev4salCn != null">EDU_LEV_4SAL_CN,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{workerId,jdbcType=BIGINT},</if>
+			<if test="eduDeg4now != null">#{eduDeg4now,jdbcType=INTEGER},</if>
+			<if test="eduDeg4nowCn != null">#{eduDeg4nowCn,jdbcType=VARCHAR},</if>
+			<if test="eduLev4now != null">#{eduLev4now,jdbcType=INTEGER},</if>
+			<if test="eduLev4nowCn != null">#{eduLev4nowCn,jdbcType=VARCHAR},</if>
+			<if test="eduLev4sal != null">#{eduLev4sal,jdbcType=INTEGER},</if>
+			<if test="eduLev4salCn != null">#{eduLev4salCn,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{item.id,jdbcType=BIGINT},</if>
+			<if test="workerId != null">#{item.workerId,jdbcType=BIGINT},</if>
+			<if test="eduDeg4now != null">#{item.eduDeg4now,jdbcType=INTEGER},</if>
+			<if test="eduDeg4nowCn != null">#{item.eduDeg4nowCn,jdbcType=VARCHAR},</if>
+			<if test="eduLev4now != null">#{item.eduLev4now,jdbcType=INTEGER},</if>
+			<if test="eduLev4nowCn != null">#{item.eduLev4nowCn,jdbcType=VARCHAR},</if>
+			<if test="eduLev4sal != null">#{item.eduLev4sal,jdbcType=INTEGER},</if>
+			<if test="eduLev4salCn != null">#{item.eduLev4salCn,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmEduHeadModel">
+		INSERT INTO ch_pm_edu_head(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_pm_edu_head
+        (
+        	 WORKER_ID, 
+			 EDU_DEG_4NOW, 
+			 EDU_DEG_4NOW_CN, 
+			 EDU_LEV_4NOW, 
+			 EDU_LEV_4NOW_CN, 
+			 EDU_LEV_4SAL, 
+			 EDU_LEV_4SAL_CN, 
+			 STATUS, 
+			 REMARK, 
+			 CREATE_TIME, 
+			 UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            #{item.workerId,jdbcType=BIGINT},
+			#{item.eduDeg4now,jdbcType=INTEGER},
+			#{item.eduDeg4nowCn,jdbcType=VARCHAR},
+			#{item.eduLev4now,jdbcType=INTEGER},
+			#{item.eduLev4nowCn,jdbcType=VARCHAR},
+			#{item.eduLev4sal,jdbcType=INTEGER},
+			#{item.eduLev4salCn,jdbcType=VARCHAR},
+			#{item.status,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmEduHeadModel">
+		UPDATE ch_pm_edu_head record 
+		<set>
+			<if test = "id != null ">
+				record.ID = #{id,jdbcType=BIGINT},
+			</if>
+			<if test = "workerId != null ">
+				record.WORKER_ID = #{workerId,jdbcType=BIGINT},
+			</if>
+			<if test = "eduDeg4now != null ">
+				record.EDU_DEG_4NOW = #{eduDeg4now,jdbcType=INTEGER},
+			</if>
+			<if test = "eduDeg4nowCn != null ">
+				record.EDU_DEG_4NOW_CN = #{eduDeg4nowCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "eduLev4now != null ">
+				record.EDU_LEV_4NOW = #{eduLev4now,jdbcType=INTEGER},
+			</if>
+			<if test = "eduLev4nowCn != null ">
+				record.EDU_LEV_4NOW_CN = #{eduLev4nowCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "eduLev4sal != null ">
+				record.EDU_LEV_4SAL = #{eduLev4sal,jdbcType=INTEGER},
+			</if>
+			<if test = "eduLev4salCn != null ">
+				record.EDU_LEV_4SAL_CN = #{eduLev4salCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_edu_head 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_edu_head 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_edu_head  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_edu_head  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	
+	<!-- 根据身份证号批量查询职工是否存在 -->
+	<select id="queryExistByCardNos" parameterType="java.util.List" resultType="java.util.Map">
+        select 
+        	w.id,
+        	w.card_no,
+			IF(IFNULL(h.WORKER_ID,-1)>=0,1,0) as head_exist
+		from ch_pm_worker w 
+		left join ch_pm_edu_head h on w.id = h.WORKER_ID and h.status=0
+		where w.CARD_NO in 
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+					#{item}
+		</foreach>
+		and w.status=0
+	</select>
+</mapper>

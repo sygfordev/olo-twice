@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.personnel.mapper.ChPmImportRecordMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chPmImportRecordMapper" type="com.hdfs.olo.olo_web.personnel.model.ChPmImportRecordModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="batchNo" column="BATCH_NO" jdbcType="VARCHAR"/>
+		<result property="batchType" column="BATCH_TYPE" jdbcType="INTEGER"/>
+		<result property="batchTypeCn" column="BATCH_TYPE_CN" jdbcType="VARCHAR"/>
+		<result property="batchUser" column="BATCH_USER" jdbcType="VARCHAR"/>
+		<result property="sucNum" column="SUC_NUM" jdbcType="BIGINT"/>
+		<result property="faiNum" column="FAI_NUM" jdbcType="BIGINT"/>
+		<result property="batchMsg" column="BATCH_MSG" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chPmImportRecordMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_import_record record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_pm_import_record record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 BATCH_NO, 
+				 BATCH_TYPE, 
+				 BATCH_TYPE_CN, 
+				 BATCH_USER, 
+				 SUC_NUM, 
+				 FAI_NUM, 
+				 BATCH_MSG, 
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null and entity.id != ''">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.batchNo != null and entity.batchNo != ''">
+					<![CDATA[ and record.BATCH_NO  = #{entity.batchNo} ]]>
+				</if>
+				<if test = "entity.batchType != null">
+					<![CDATA[ and record.BATCH_TYPE  = #{entity.batchType} ]]>
+				</if>
+				<if test = "entity.batchTypeCn != null and entity.batchTypeCn != ''">
+					<![CDATA[ and record.BATCH_TYPE_CN  = #{entity.batchTypeCn} ]]>
+				</if>
+				<if test = "entity.batchUser != null and entity.batchUser != ''">
+					<![CDATA[ and record.BATCH_USER  = #{entity.batchUser} ]]>
+				</if>
+				<if test = "entity.sucNum != null">
+					<![CDATA[ and record.SUC_NUM  = #{entity.sucNum} ]]>
+				</if>
+				<if test = "entity.faiNum != null">
+					<![CDATA[ and record.FAI_NUM  = #{entity.faiNum} ]]>
+				</if>
+				<if test = "entity.batchMsg != null and entity.batchMsg != ''">
+					<![CDATA[ and record.BATCH_MSG  = #{entity.batchMsg} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chPmImportRecordMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_import_record record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chPmImportRecordMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_pm_import_record record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="batchNo != null">BATCH_NO,</if>
+			<if test="batchType != null">BATCH_TYPE,</if>
+			<if test="batchTypeCn != null">BATCH_TYPE_CN,</if>
+			<if test="batchUser != null">BATCH_USER,</if>
+			<if test="sucNum != null">SUC_NUM,</if>
+			<if test="faiNum != null">FAI_NUM,</if>
+			<if test="batchMsg != null">BATCH_MSG,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="batchNo != null">#{batchNo,jdbcType=VARCHAR},</if>
+			<if test="batchType != null">#{batchType,jdbcType=INTEGER},</if>
+			<if test="batchTypeCn != null">#{batchTypeCn,jdbcType=VARCHAR},</if>
+			<if test="batchUser != null">#{batchUser,jdbcType=VARCHAR},</if>
+			<if test="sucNum != null">#{sucNum,jdbcType=BIGINT},</if>
+			<if test="faiNum != null">#{faiNum,jdbcType=BIGINT},</if>
+			<if test="batchMsg != null">#{batchMsg,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now()
+		</trim>		
+	</sql>
+	<!--拼装SQL:选择性使用列对应值(针对批量操作使用) -->
+	<sql id="colVals4Itemive">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{item.id,jdbcType=BIGINT},</if>
+			<if test="batchNo != null">#{item.batchNo,jdbcType=VARCHAR},</if>
+			<if test="batchType != null">#{item.batchType,jdbcType=INTEGER},</if>
+			<if test="batchTypeCn != null">#{item.batchTypeCn,jdbcType=VARCHAR},</if>
+			<if test="batchUser != null">#{item.batchUser,jdbcType=VARCHAR},</if>
+			<if test="sucNum != null">#{item.sucNum,jdbcType=BIGINT},</if>
+			<if test="faiNum != null">#{item.faiNum,jdbcType=BIGINT},</if>
+			<if test="batchMsg != null">#{item.batchMsg,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{item.status,jdbcType=INTEGER},</if>
+			<if test="remark != null">#{item.remark,jdbcType=VARCHAR},</if>
+			now(),
+			now()
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmImportRecordModel">
+		INSERT INTO ch_pm_import_record(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_pm_import_record
+        (
+        	<include refid="colKeys4Selective"/>
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+            <include refid="colVals4Itemive"/>
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.personnel.model.ChPmImportRecordModel">
+		UPDATE ch_pm_import_record record 
+		<set>
+			<if test = "batchNo != null ">
+				record.BATCH_NO = #{batchNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "batchType != null ">
+				record.BATCH_TYPE = #{batchType,jdbcType=INTEGER},
+			</if>
+			<if test = "batchTypeCn != null ">
+				record.BATCH_TYPE_CN = #{batchTypeCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "batchUser != null ">
+				record.BATCH_USER = #{batchUser,jdbcType=VARCHAR},
+			</if>
+			<if test = "sucNum != null ">
+				record.SUC_NUM = #{sucNum,jdbcType=BIGINT},
+			</if>
+			<if test = "faiNum != null ">
+				record.FAI_NUM = #{faiNum,jdbcType=BIGINT},
+			</if>
+			<if test = "batchMsg != null ">
+				record.BATCH_MSG = #{batchMsg,jdbcType=VARCHAR},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_pm_import_record 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_pm_import_record 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_pm_import_record  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_pm_import_record  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+</mapper>

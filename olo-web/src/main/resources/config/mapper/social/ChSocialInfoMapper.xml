@@ -1,0 +1,1664 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.social.mapper.ChSocialInfoMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chSocialInfoMapper" type="com.hdfs.olo.olo_web.social.model.ChSocialInfoModel">
+		<result property="serialNo" column="SERIAL_NO" jdbcType="BIGINT"/>
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="name" column="NAME" jdbcType="VARCHAR"/>
+		<result property="cardNo" column="CARD_NO" jdbcType="VARCHAR"/>
+		<result property="compName" column="COMP_NAME" jdbcType="VARCHAR"/>
+		<result property="wkModalityCn" column="WK_MODALITY_CN" jdbcType="VARCHAR"/>
+		<result property="workAreaCn" column="WORK_AREA_CN" jdbcType="VARCHAR"/>
+		<result property="positCn" column="POSIT_CN" jdbcType="VARCHAR"/>
+		<result property="titleCn" column="TITLE_CN" jdbcType="VARCHAR"/>
+		<result property="hosBranchCn" column="HOS_BRANCH_CN" jdbcType="VARCHAR"/>
+		<result property="hosDepart1levelCn" column="HOS_DEPART_1LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="hosDepart2levelCn" column="HOS_DEPART_2LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="socialYmonth" column="SOCIAL_YMONTH" jdbcType="VARCHAR"/>
+		<result property="changeTime" column="CHANGE_TIME" jdbcType="VARCHAR"/>
+		<result property="isExistSupple" column="IS_EXIST_SUPPLE" jdbcType="INTEGER"/>
+		<result property="sPenBase" column="S_PEN_BASE" jdbcType="DECIMAL"/>
+		<result property="sPenCompRatio" column="S_PEN_COMP_RATIO" jdbcType="DECIMAL"/>
+		<result property="sPenCompAmount" column="S_PEN_COMP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sPenCompRecapAmount" column="S_PEN_COMP_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sPenCompRecapDiffe" column="S_PEN_COMP_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sPenCompOverpaid" column="S_PEN_COMP_OVERPAID" jdbcType="DECIMAL"/>
+		<result property="sPenPersRatio" column="S_PEN_PERS_RATIO" jdbcType="DECIMAL"/>
+		<result property="sPenPersAmount" column="S_PEN_PERS_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sPenPersRecapAmount" column="S_PEN_PERS_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sPenPersRecapDiffe" column="S_PEN_PERS_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sPenPersComple" column="S_PEN_PERS_COMPLE" jdbcType="DECIMAL"/>
+		<result property="sMediBase" column="S_MEDI_BASE" jdbcType="DECIMAL"/>
+		<result property="sMediCompRatio" column="S_MEDI_COMP_RATIO" jdbcType="DECIMAL"/>
+		<result property="sMediCompAmount" column="S_MEDI_COMP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sMediCompRecapAmount" column="S_MEDI_COMP_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sMediCompRecapDiffe" column="S_MEDI_COMP_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sMediCompOverpaid" column="S_MEDI_COMP_OVERPAID" jdbcType="DECIMAL"/>
+		<result property="sMediPersRatio" column="S_MEDI_PERS_RATIO" jdbcType="DECIMAL"/>
+		<result property="sMediPersAmount" column="S_MEDI_PERS_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sMediPersRecapAmount" column="S_MEDI_PERS_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sMediPersRecapDiffe" column="S_MEDI_PERS_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sMediPersComple" column="S_MEDI_PERS_COMPLE" jdbcType="DECIMAL"/>
+		<result property="sUnempBase" column="S_UNEMP_BASE" jdbcType="DECIMAL"/>
+		<result property="sUnempCompRatio" column="S_UNEMP_COMP_RATIO" jdbcType="DECIMAL"/>
+		<result property="sUnempCompAmount" column="S_UNEMP_COMP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sUnempCompRecapAmount" column="S_UNEMP_COMP_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sUnempCompRecapDiffe" column="S_UNEMP_COMP_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sUnempCompOverpaid" column="S_UNEMP_COMP_OVERPAID" jdbcType="DECIMAL"/>
+		<result property="sUnempPersRatio" column="S_UNEMP_PERS_RATIO" jdbcType="DECIMAL"/>
+		<result property="sUnempPersAmount" column="S_UNEMP_PERS_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sUnempPersRecapAmount" column="S_UNEMP_PERS_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sUnempPersRecapDiffe" column="S_UNEMP_PERS_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sUnempPersComple" column="S_UNEMP_PERS_COMPLE" jdbcType="DECIMAL"/>
+		<result property="sInjuryBase" column="S_INJURY_BASE" jdbcType="DECIMAL"/>
+		<result property="sInjuryCompRatio" column="S_INJURY_COMP_RATIO" jdbcType="DECIMAL"/>
+		<result property="sInjuryCompAmount" column="S_INJURY_COMP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sInjuryCompRecapAmount" column="S_INJURY_COMP_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sInjuryCompRecapDiffe" column="S_INJURY_COMP_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sInjuryCompOverpaid" column="S_INJURY_COMP_OVERPAID" jdbcType="DECIMAL"/>
+		<result property="sInjuryPersRatio" column="S_INJURY_PERS_RATIO" jdbcType="DECIMAL"/>
+		<result property="sInjuryPersAmount" column="S_INJURY_PERS_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sInjuryPersRecapAmount" column="S_INJURY_PERS_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sInjuryPersRecapDiffe" column="S_INJURY_PERS_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sInjuryPersComple" column="S_INJURY_PERS_COMPLE" jdbcType="DECIMAL"/>
+		<result property="sBirthBase" column="S_BIRTH_BASE" jdbcType="DECIMAL"/>
+		<result property="sBirthCompRatio" column="S_BIRTH_COMP_RATIO" jdbcType="DECIMAL"/>
+		<result property="sBirthCompAmount" column="S_BIRTH_COMP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sBirthCompRecapAmount" column="S_BIRTH_COMP_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sBirthCompRecapDiffe" column="S_BIRTH_COMP_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sBirthCompOverpaid" column="S_BIRTH_COMP_OVERPAID" jdbcType="DECIMAL"/>
+		<result property="sBirthPersRatio" column="S_BIRTH_PERS_RATIO" jdbcType="DECIMAL"/>
+		<result property="sBirthPersAmount" column="S_BIRTH_PERS_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sBirthPersRecapAmount" column="S_BIRTH_PERS_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sBirthPersRecapDiffe" column="S_BIRTH_PERS_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sBirthPersComple" column="S_BIRTH_PERS_COMPLE" jdbcType="DECIMAL"/>
+		<result property="sAnnuityBase" column="S_ANNUITY_BASE" jdbcType="DECIMAL"/>
+		<result property="sAnnuityCompRatio" column="S_ANNUITY_COMP_RATIO" jdbcType="DECIMAL"/>
+		<result property="sAnnuityCompAmount" column="S_ANNUITY_COMP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sAnnuityCompRecapAmount" column="S_ANNUITY_COMP_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sAnnuityCompRecapDiffe" column="S_ANNUITY_COMP_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sAnnuityCompOverpaid" column="S_ANNUITY_COMP_OVERPAID" jdbcType="DECIMAL"/>
+		<result property="sAnnuityPersRatio" column="S_ANNUITY_PERS_RATIO" jdbcType="DECIMAL"/>
+		<result property="sAnnuityPersAmount" column="S_ANNUITY_PERS_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sAnnuityPersRecapAmount" column="S_ANNUITY_PERS_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sAnnuityPersRecapDiffe" column="S_ANNUITY_PERS_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sAnnuityPersComple" column="S_ANNUITY_PERS_COMPLE" jdbcType="DECIMAL"/>
+		<result property="sOvpBase" column="S_OVP_BASE" jdbcType="DECIMAL"/>
+		<result property="sOvpCompRatio" column="S_OVP_COMP_RATIO" jdbcType="DECIMAL"/>
+		<result property="sOvpCompAmount" column="S_OVP_COMP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sOvpCompRecapAmount" column="S_OVP_COMP_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sOvpCompRecapDiffe" column="S_OVP_COMP_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sOvpCompOverpaid" column="S_OVP_COMP_OVERPAID" jdbcType="DECIMAL"/>
+		<result property="sOvpPersRatio" column="S_OVP_PERS_RATIO" jdbcType="DECIMAL"/>
+		<result property="sOvpPersAmount" column="S_OVP_PERS_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sOvpPersRecapAmount" column="S_OVP_PERS_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sOvpPersRecapDiffe" column="S_OVP_PERS_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sOvpPersComple" column="S_OVP_PERS_COMPLE" jdbcType="DECIMAL"/>
+		<result property="sSpMediBase" column="S_SP_MEDI_BASE" jdbcType="DECIMAL"/>
+		<result property="sSpMediCompRatio" column="S_SP_MEDI_COMP_RATIO" jdbcType="DECIMAL"/>
+		<result property="sSpMediCompAmount" column="S_SP_MEDI_COMP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sSpMediCompRecapAmount" column="S_SP_MEDI_COMP_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sSpMediCompRecapDiffe" column="S_SP_MEDI_COMP_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sSpMediCompOverpaid" column="S_SP_MEDI_COMP_OVERPAID" jdbcType="DECIMAL"/>
+		<result property="sSpMediPersRatio" column="S_SP_MEDI_PERS_RATIO" jdbcType="DECIMAL"/>
+		<result property="sSpMediPersAmount" column="S_SP_MEDI_PERS_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sSpMediPersRecapAmount" column="S_SP_MEDI_PERS_RECAP_AMOUNT" jdbcType="DECIMAL"/>
+		<result property="sSpMediPersRecapDiffe" column="S_SP_MEDI_PERS_RECAP_DIFFE" jdbcType="DECIMAL"/>
+		<result property="sSpMediPersComple" column="S_SP_MEDI_PERS_COMPLE" jdbcType="DECIMAL"/>
+		<result property="remark4month" column="REMARK4MONTH" jdbcType="VARCHAR"/>
+		<result property="remark4year" column="REMARK4YEAR" jdbcType="VARCHAR"/>
+		<result property="persRecapDiffe4addup" column="PERS_RECAP_DIFFE_4ADDUP" jdbcType="DECIMAL"/>
+		<result property="persCompleDiffe4addup" column="PERS_COMPLE_DIFFE_4ADDUP" jdbcType="DECIMAL"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="btimpNo" column="BTIMP_NO" jdbcType="VARCHAR"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chSocialInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_social_info record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_social_info record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 NAME, 
+				 CARD_NO, 
+				 COMP_NAME, 
+				 WK_MODALITY_CN, 
+				 WORK_AREA_CN, 
+				 POSIT_CN, 
+				 TITLE_CN, 
+				 HOS_BRANCH_CN, 
+				 HOS_DEPART_1LEVEL_CN, 
+				 HOS_DEPART_2LEVEL_CN, 
+				 SOCIAL_YMONTH,
+				 CHANGE_TIME,
+				 IS_EXIST_SUPPLE,
+				 S_PEN_BASE, 
+				 S_PEN_COMP_RATIO, 
+				 S_PEN_COMP_AMOUNT, 
+				 S_PEN_COMP_RECAP_AMOUNT, 
+				 S_PEN_COMP_RECAP_DIFFE, 
+				 S_PEN_COMP_OVERPAID, 
+				 S_PEN_PERS_RATIO, 
+				 S_PEN_PERS_AMOUNT, 
+				 S_PEN_PERS_RECAP_AMOUNT, 
+				 S_PEN_PERS_RECAP_DIFFE, 
+				 S_PEN_PERS_COMPLE, 
+				 S_MEDI_BASE, 
+				 S_MEDI_COMP_RATIO, 
+				 S_MEDI_COMP_AMOUNT, 
+				 S_MEDI_COMP_RECAP_AMOUNT, 
+				 S_MEDI_COMP_RECAP_DIFFE, 
+				 S_MEDI_COMP_OVERPAID, 
+				 S_MEDI_PERS_RATIO, 
+				 S_MEDI_PERS_AMOUNT, 
+				 S_MEDI_PERS_RECAP_AMOUNT, 
+				 S_MEDI_PERS_RECAP_DIFFE, 
+				 S_MEDI_PERS_COMPLE, 
+				 S_UNEMP_BASE, 
+				 S_UNEMP_COMP_RATIO, 
+				 S_UNEMP_COMP_AMOUNT, 
+				 S_UNEMP_COMP_RECAP_AMOUNT, 
+				 S_UNEMP_COMP_RECAP_DIFFE, 
+				 S_UNEMP_COMP_OVERPAID, 
+				 S_UNEMP_PERS_RATIO, 
+				 S_UNEMP_PERS_AMOUNT, 
+				 S_UNEMP_PERS_RECAP_AMOUNT, 
+				 S_UNEMP_PERS_RECAP_DIFFE, 
+				 S_UNEMP_PERS_COMPLE, 
+				 S_INJURY_BASE, 
+				 S_INJURY_COMP_RATIO, 
+				 S_INJURY_COMP_AMOUNT, 
+				 S_INJURY_COMP_RECAP_AMOUNT, 
+				 S_INJURY_COMP_RECAP_DIFFE, 
+				 S_INJURY_COMP_OVERPAID, 
+				 S_INJURY_PERS_RATIO, 
+				 S_INJURY_PERS_AMOUNT, 
+				 S_INJURY_PERS_RECAP_AMOUNT, 
+				 S_INJURY_PERS_RECAP_DIFFE, 
+				 S_INJURY_PERS_COMPLE, 
+				 S_BIRTH_BASE, 
+				 S_BIRTH_COMP_RATIO, 
+				 S_BIRTH_COMP_AMOUNT, 
+				 S_BIRTH_COMP_RECAP_AMOUNT, 
+				 S_BIRTH_COMP_RECAP_DIFFE, 
+				 S_BIRTH_COMP_OVERPAID, 
+				 S_BIRTH_PERS_RATIO, 
+				 S_BIRTH_PERS_AMOUNT, 
+				 S_BIRTH_PERS_RECAP_AMOUNT, 
+				 S_BIRTH_PERS_RECAP_DIFFE, 
+				 S_BIRTH_PERS_COMPLE, 
+				 S_ANNUITY_BASE, 
+				 S_ANNUITY_COMP_RATIO, 
+				 S_ANNUITY_COMP_AMOUNT, 
+				 S_ANNUITY_COMP_RECAP_AMOUNT, 
+				 S_ANNUITY_COMP_RECAP_DIFFE, 
+				 S_ANNUITY_COMP_OVERPAID, 
+				 S_ANNUITY_PERS_RATIO, 
+				 S_ANNUITY_PERS_AMOUNT, 
+				 S_ANNUITY_PERS_RECAP_AMOUNT, 
+				 S_ANNUITY_PERS_RECAP_DIFFE, 
+				 S_ANNUITY_PERS_COMPLE, 
+				 S_OVP_BASE, 
+				 S_OVP_COMP_RATIO, 
+				 S_OVP_COMP_AMOUNT, 
+				 S_OVP_COMP_RECAP_AMOUNT, 
+				 S_OVP_COMP_RECAP_DIFFE, 
+				 S_OVP_COMP_OVERPAID, 
+				 S_OVP_PERS_RATIO, 
+				 S_OVP_PERS_AMOUNT, 
+				 S_OVP_PERS_RECAP_AMOUNT, 
+				 S_OVP_PERS_RECAP_DIFFE, 
+				 S_OVP_PERS_COMPLE, 
+				 S_SP_MEDI_BASE, 
+				 S_SP_MEDI_COMP_RATIO, 
+				 S_SP_MEDI_COMP_AMOUNT, 
+				 S_SP_MEDI_COMP_RECAP_AMOUNT, 
+				 S_SP_MEDI_COMP_RECAP_DIFFE, 
+				 S_SP_MEDI_COMP_OVERPAID, 
+				 S_SP_MEDI_PERS_RATIO, 
+				 S_SP_MEDI_PERS_AMOUNT, 
+				 S_SP_MEDI_PERS_RECAP_AMOUNT, 
+				 S_SP_MEDI_PERS_RECAP_DIFFE, 
+				 S_SP_MEDI_PERS_COMPLE, 
+				 REMARK4MONTH, 
+				 REMARK4YEAR, 
+				 PERS_RECAP_DIFFE_4ADDUP, 
+				 PERS_COMPLE_DIFFE_4ADDUP, 
+				 STATUS, 
+				 BTIMP_NO, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.name != null and entity.name != ''">
+					<![CDATA[ and record.NAME  = #{entity.name} ]]>
+				</if>
+				<if test = "entity.cardNo != null and entity.cardNo != ''">
+					<![CDATA[ and record.CARD_NO  = #{entity.cardNo} ]]>
+				</if>
+				<choose>
+					<when test="entity.compNames != null">
+						and record.COMP_NAME in
+						<foreach collection="entity.compNames" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test="entity.compName != null and entity.compName != ''">
+						<![CDATA[ and record.COMP_NAME  = #{entity.compName} ]]>
+					</when>
+				</choose>
+				<choose>
+					<when test="entity.wkModalityCns != null">
+						and record.WK_MODALITY_CN in
+						<foreach collection="entity.wkModalityCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test="entity.wkModalityCn != null and entity.wkModalityCn != ''">
+						<![CDATA[ and record.WK_MODALITY_CN  = #{entity.wkModalityCn} ]]>
+					</when>
+				</choose>
+				<if test = "entity.workAreaCn != null and entity.workAreaCn != ''">
+					<![CDATA[ and record.WORK_AREA_CN  = #{entity.workAreaCn} ]]>
+				</if>
+				<if test = "entity.positCn != null and entity.positCn != ''">
+					<![CDATA[ and record.POSIT_CN  = #{entity.positCn} ]]>
+				</if>
+				<if test = "entity.titleCn != null and entity.titleCn != ''">
+					<![CDATA[ and record.TITLE_CN  = #{entity.titleCn} ]]>
+				</if>
+				<if test = "entity.hosBranchCn != null and entity.hosBranchCn != ''">
+					<![CDATA[ and record.HOS_BRANCH_CN  = #{entity.hosBranchCn} ]]>
+				</if>
+				<choose>
+					<when test="entity.hosDepart1levelCns != null">
+						and record.HOS_DEPART_1LEVEL_CN in
+						<foreach collection="entity.hosDepart1levelCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test="entity.hosDepart1levelCn != null and entity.hosDepart1levelCn != ''">
+						<![CDATA[ and record.HOS_DEPART_1LEVEL_CN  = #{entity.hosDepart1levelCn} ]]>
+					</when>
+				</choose>
+				<choose>
+					<when test="entity.hosDepart2levelCns != null">
+						and record.HOS_DEPART_2LEVEL_CN in
+						<foreach collection="entity.hosDepart2levelCns" open="(" separator="," close=")" item="item">
+							#{item}
+						</foreach>
+					</when>
+					<when test="entity.hosDepart2levelCn != null and entity.hosDepart2levelCn != ''">
+						<![CDATA[ and record.HOS_DEPART_2LEVEL_CN  = #{entity.hosDepart2levelCn} ]]>
+					</when>
+				</choose>
+				<if test = "entity.socialYmonth != null and entity.socialYmonth != ''">
+					<![CDATA[ and record.SOCIAL_YMONTH  = #{entity.socialYmonth} ]]>
+				</if>
+				<if test = "entity.changeTime != null and entity.changeTime != ''">
+					<![CDATA[ and record.CHANGE_TIME  = #{entity.changeTime} ]]>
+				</if>
+				<if test = "entity.isExistSupple != null">
+					<![CDATA[ and record.IS_EXIST_SUPPLE  = #{entity.isExistSupple} ]]>
+				</if>
+				<if test = "entity.sPenBase != null">
+					<![CDATA[ and record.S_PEN_BASE  = #{entity.sPenBase} ]]>
+				</if>
+				<if test = "entity.sPenCompRatio != null">
+					<![CDATA[ and record.S_PEN_COMP_RATIO  = #{entity.sPenCompRatio} ]]>
+				</if>
+				<if test = "entity.sPenCompAmount != null">
+					<![CDATA[ and record.S_PEN_COMP_AMOUNT  = #{entity.sPenCompAmount} ]]>
+				</if>
+				<if test = "entity.sPenCompRecapAmount != null">
+					<![CDATA[ and record.S_PEN_COMP_RECAP_AMOUNT  = #{entity.sPenCompRecapAmount} ]]>
+				</if>
+				<if test = "entity.sPenCompRecapDiffe != null">
+					<![CDATA[ and record.S_PEN_COMP_RECAP_DIFFE  = #{entity.sPenCompRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sPenCompOverpaid != null">
+					<![CDATA[ and record.S_PEN_COMP_OVERPAID  = #{entity.sPenCompOverpaid} ]]>
+				</if>
+				<if test = "entity.sPenPersRatio != null">
+					<![CDATA[ and record.S_PEN_PERS_RATIO  = #{entity.sPenPersRatio} ]]>
+				</if>
+				<if test = "entity.sPenPersAmount != null">
+					<![CDATA[ and record.S_PEN_PERS_AMOUNT  = #{entity.sPenPersAmount} ]]>
+				</if>
+				<if test = "entity.sPenPersRecapAmount != null">
+					<![CDATA[ and record.S_PEN_PERS_RECAP_AMOUNT  = #{entity.sPenPersRecapAmount} ]]>
+				</if>
+				<if test = "entity.sPenPersRecapDiffe != null">
+					<![CDATA[ and record.S_PEN_PERS_RECAP_DIFFE  = #{entity.sPenPersRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sPenPersComple != null">
+					<![CDATA[ and record.S_PEN_PERS_COMPLE  = #{entity.sPenPersComple} ]]>
+				</if>
+				<if test = "entity.sMediBase != null">
+					<![CDATA[ and record.S_MEDI_BASE  = #{entity.sMediBase} ]]>
+				</if>
+				<if test = "entity.sMediCompRatio != null">
+					<![CDATA[ and record.S_MEDI_COMP_RATIO  = #{entity.sMediCompRatio} ]]>
+				</if>
+				<if test = "entity.sMediCompAmount != null">
+					<![CDATA[ and record.S_MEDI_COMP_AMOUNT  = #{entity.sMediCompAmount} ]]>
+				</if>
+				<if test = "entity.sMediCompRecapAmount != null">
+					<![CDATA[ and record.S_MEDI_COMP_RECAP_AMOUNT  = #{entity.sMediCompRecapAmount} ]]>
+				</if>
+				<if test = "entity.sMediCompRecapDiffe != null">
+					<![CDATA[ and record.S_MEDI_COMP_RECAP_DIFFE  = #{entity.sMediCompRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sMediCompOverpaid != null">
+					<![CDATA[ and record.S_MEDI_COMP_OVERPAID  = #{entity.sMediCompOverpaid} ]]>
+				</if>
+				<if test = "entity.sMediPersRatio != null">
+					<![CDATA[ and record.S_MEDI_PERS_RATIO  = #{entity.sMediPersRatio} ]]>
+				</if>
+				<if test = "entity.sMediPersAmount != null">
+					<![CDATA[ and record.S_MEDI_PERS_AMOUNT  = #{entity.sMediPersAmount} ]]>
+				</if>
+				<if test = "entity.sMediPersRecapAmount != null">
+					<![CDATA[ and record.S_MEDI_PERS_RECAP_AMOUNT  = #{entity.sMediPersRecapAmount} ]]>
+				</if>
+				<if test = "entity.sMediPersRecapDiffe != null">
+					<![CDATA[ and record.S_MEDI_PERS_RECAP_DIFFE  = #{entity.sMediPersRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sMediPersComple != null">
+					<![CDATA[ and record.S_MEDI_PERS_COMPLE  = #{entity.sMediPersComple} ]]>
+				</if>
+				<if test = "entity.sUnempBase != null">
+					<![CDATA[ and record.S_UNEMP_BASE  = #{entity.sUnempBase} ]]>
+				</if>
+				<if test = "entity.sUnempCompRatio != null">
+					<![CDATA[ and record.S_UNEMP_COMP_RATIO  = #{entity.sUnempCompRatio} ]]>
+				</if>
+				<if test = "entity.sUnempCompAmount != null">
+					<![CDATA[ and record.S_UNEMP_COMP_AMOUNT  = #{entity.sUnempCompAmount} ]]>
+				</if>
+				<if test = "entity.sUnempCompRecapAmount != null">
+					<![CDATA[ and record.S_UNEMP_COMP_RECAP_AMOUNT  = #{entity.sUnempCompRecapAmount} ]]>
+				</if>
+				<if test = "entity.sUnempCompRecapDiffe != null">
+					<![CDATA[ and record.S_UNEMP_COMP_RECAP_DIFFE  = #{entity.sUnempCompRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sUnempCompOverpaid != null">
+					<![CDATA[ and record.S_UNEMP_COMP_OVERPAID  = #{entity.sUnempCompOverpaid} ]]>
+				</if>
+				<if test = "entity.sUnempPersRatio != null">
+					<![CDATA[ and record.S_UNEMP_PERS_RATIO  = #{entity.sUnempPersRatio} ]]>
+				</if>
+				<if test = "entity.sUnempPersAmount != null">
+					<![CDATA[ and record.S_UNEMP_PERS_AMOUNT  = #{entity.sUnempPersAmount} ]]>
+				</if>
+				<if test = "entity.sUnempPersRecapAmount != null">
+					<![CDATA[ and record.S_UNEMP_PERS_RECAP_AMOUNT  = #{entity.sUnempPersRecapAmount} ]]>
+				</if>
+				<if test = "entity.sUnempPersRecapDiffe != null">
+					<![CDATA[ and record.S_UNEMP_PERS_RECAP_DIFFE  = #{entity.sUnempPersRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sUnempPersComple != null">
+					<![CDATA[ and record.S_UNEMP_PERS_COMPLE  = #{entity.sUnempPersComple} ]]>
+				</if>
+				<if test = "entity.sInjuryBase != null">
+					<![CDATA[ and record.S_INJURY_BASE  = #{entity.sInjuryBase} ]]>
+				</if>
+				<if test = "entity.sInjuryCompRatio != null">
+					<![CDATA[ and record.S_INJURY_COMP_RATIO  = #{entity.sInjuryCompRatio} ]]>
+				</if>
+				<if test = "entity.sInjuryCompAmount != null">
+					<![CDATA[ and record.S_INJURY_COMP_AMOUNT  = #{entity.sInjuryCompAmount} ]]>
+				</if>
+				<if test = "entity.sInjuryCompRecapAmount != null">
+					<![CDATA[ and record.S_INJURY_COMP_RECAP_AMOUNT  = #{entity.sInjuryCompRecapAmount} ]]>
+				</if>
+				<if test = "entity.sInjuryCompRecapDiffe != null">
+					<![CDATA[ and record.S_INJURY_COMP_RECAP_DIFFE  = #{entity.sInjuryCompRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sInjuryCompOverpaid != null">
+					<![CDATA[ and record.S_INJURY_COMP_OVERPAID  = #{entity.sInjuryCompOverpaid} ]]>
+				</if>
+				<if test = "entity.sInjuryPersRatio != null">
+					<![CDATA[ and record.S_INJURY_PERS_RATIO  = #{entity.sInjuryPersRatio} ]]>
+				</if>
+				<if test = "entity.sInjuryPersAmount != null">
+					<![CDATA[ and record.S_INJURY_PERS_AMOUNT  = #{entity.sInjuryPersAmount} ]]>
+				</if>
+				<if test = "entity.sInjuryPersRecapAmount != null">
+					<![CDATA[ and record.S_INJURY_PERS_RECAP_AMOUNT  = #{entity.sInjuryPersRecapAmount} ]]>
+				</if>
+				<if test = "entity.sInjuryPersRecapDiffe != null">
+					<![CDATA[ and record.S_INJURY_PERS_RECAP_DIFFE  = #{entity.sInjuryPersRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sInjuryPersComple != null">
+					<![CDATA[ and record.S_INJURY_PERS_COMPLE  = #{entity.sInjuryPersComple} ]]>
+				</if>
+				<if test = "entity.sBirthBase != null">
+					<![CDATA[ and record.S_BIRTH_BASE  = #{entity.sBirthBase} ]]>
+				</if>
+				<if test = "entity.sBirthCompRatio != null">
+					<![CDATA[ and record.S_BIRTH_COMP_RATIO  = #{entity.sBirthCompRatio} ]]>
+				</if>
+				<if test = "entity.sBirthCompAmount != null">
+					<![CDATA[ and record.S_BIRTH_COMP_AMOUNT  = #{entity.sBirthCompAmount} ]]>
+				</if>
+				<if test = "entity.sBirthCompRecapAmount != null">
+					<![CDATA[ and record.S_BIRTH_COMP_RECAP_AMOUNT  = #{entity.sBirthCompRecapAmount} ]]>
+				</if>
+				<if test = "entity.sBirthCompRecapDiffe != null">
+					<![CDATA[ and record.S_BIRTH_COMP_RECAP_DIFFE  = #{entity.sBirthCompRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sBirthCompOverpaid != null">
+					<![CDATA[ and record.S_BIRTH_COMP_OVERPAID  = #{entity.sBirthCompOverpaid} ]]>
+				</if>
+				<if test = "entity.sBirthPersRatio != null">
+					<![CDATA[ and record.S_BIRTH_PERS_RATIO  = #{entity.sBirthPersRatio} ]]>
+				</if>
+				<if test = "entity.sBirthPersAmount != null">
+					<![CDATA[ and record.S_BIRTH_PERS_AMOUNT  = #{entity.sBirthPersAmount} ]]>
+				</if>
+				<if test = "entity.sBirthPersRecapAmount != null">
+					<![CDATA[ and record.S_BIRTH_PERS_RECAP_AMOUNT  = #{entity.sBirthPersRecapAmount} ]]>
+				</if>
+				<if test = "entity.sBirthPersRecapDiffe != null">
+					<![CDATA[ and record.S_BIRTH_PERS_RECAP_DIFFE  = #{entity.sBirthPersRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sBirthPersComple != null">
+					<![CDATA[ and record.S_BIRTH_PERS_COMPLE  = #{entity.sBirthPersComple} ]]>
+				</if>
+				<if test = "entity.sAnnuityBase != null">
+					<![CDATA[ and record.S_ANNUITY_BASE  = #{entity.sAnnuityBase} ]]>
+				</if>
+				<if test = "entity.sAnnuityCompRatio != null">
+					<![CDATA[ and record.S_ANNUITY_COMP_RATIO  = #{entity.sAnnuityCompRatio} ]]>
+				</if>
+				<if test = "entity.sAnnuityCompAmount != null">
+					<![CDATA[ and record.S_ANNUITY_COMP_AMOUNT  = #{entity.sAnnuityCompAmount} ]]>
+				</if>
+				<if test = "entity.sAnnuityCompRecapAmount != null">
+					<![CDATA[ and record.S_ANNUITY_COMP_RECAP_AMOUNT  = #{entity.sAnnuityCompRecapAmount} ]]>
+				</if>
+				<if test = "entity.sAnnuityCompRecapDiffe != null">
+					<![CDATA[ and record.S_ANNUITY_COMP_RECAP_DIFFE  = #{entity.sAnnuityCompRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sAnnuityCompOverpaid != null">
+					<![CDATA[ and record.S_ANNUITY_COMP_OVERPAID  = #{entity.sAnnuityCompOverpaid} ]]>
+				</if>
+				<if test = "entity.sAnnuityPersRatio != null">
+					<![CDATA[ and record.S_ANNUITY_PERS_RATIO  = #{entity.sAnnuityPersRatio} ]]>
+				</if>
+				<if test = "entity.sAnnuityPersAmount != null">
+					<![CDATA[ and record.S_ANNUITY_PERS_AMOUNT  = #{entity.sAnnuityPersAmount} ]]>
+				</if>
+				<if test = "entity.sAnnuityPersRecapAmount != null">
+					<![CDATA[ and record.S_ANNUITY_PERS_RECAP_AMOUNT  = #{entity.sAnnuityPersRecapAmount} ]]>
+				</if>
+				<if test = "entity.sAnnuityPersRecapDiffe != null">
+					<![CDATA[ and record.S_ANNUITY_PERS_RECAP_DIFFE  = #{entity.sAnnuityPersRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sAnnuityPersComple != null">
+					<![CDATA[ and record.S_ANNUITY_PERS_COMPLE  = #{entity.sAnnuityPersComple} ]]>
+				</if>
+				<if test = "entity.sOvpBase != null">
+					<![CDATA[ and record.S_OVP_BASE  = #{entity.sOvpBase} ]]>
+				</if>
+				<if test = "entity.sOvpCompRatio != null">
+					<![CDATA[ and record.S_OVP_COMP_RATIO  = #{entity.sOvpCompRatio} ]]>
+				</if>
+				<if test = "entity.sOvpCompAmount != null">
+					<![CDATA[ and record.S_OVP_COMP_AMOUNT  = #{entity.sOvpCompAmount} ]]>
+				</if>
+				<if test = "entity.sOvpCompRecapAmount != null">
+					<![CDATA[ and record.S_OVP_COMP_RECAP_AMOUNT  = #{entity.sOvpCompRecapAmount} ]]>
+				</if>
+				<if test = "entity.sOvpCompRecapDiffe != null">
+					<![CDATA[ and record.S_OVP_COMP_RECAP_DIFFE  = #{entity.sOvpCompRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sOvpCompOverpaid != null">
+					<![CDATA[ and record.S_OVP_COMP_OVERPAID  = #{entity.sOvpCompOverpaid} ]]>
+				</if>
+				<if test = "entity.sOvpPersRatio != null">
+					<![CDATA[ and record.S_OVP_PERS_RATIO  = #{entity.sOvpPersRatio} ]]>
+				</if>
+				<if test = "entity.sOvpPersAmount != null">
+					<![CDATA[ and record.S_OVP_PERS_AMOUNT  = #{entity.sOvpPersAmount} ]]>
+				</if>
+				<if test = "entity.sOvpPersRecapAmount != null">
+					<![CDATA[ and record.S_OVP_PERS_RECAP_AMOUNT  = #{entity.sOvpPersRecapAmount} ]]>
+				</if>
+				<if test = "entity.sOvpPersRecapDiffe != null">
+					<![CDATA[ and record.S_OVP_PERS_RECAP_DIFFE  = #{entity.sOvpPersRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sOvpPersComple != null">
+					<![CDATA[ and record.S_OVP_PERS_COMPLE  = #{entity.sOvpPersComple} ]]>
+				</if>
+				<if test = "entity.sSpMediBase != null">
+					<![CDATA[ and record.S_SP_MEDI_BASE  = #{entity.sSpMediBase} ]]>
+				</if>
+				<if test = "entity.sSpMediCompRatio != null">
+					<![CDATA[ and record.S_SP_MEDI_COMP_RATIO  = #{entity.sSpMediCompRatio} ]]>
+				</if>
+				<if test = "entity.sSpMediCompAmount != null">
+					<![CDATA[ and record.S_SP_MEDI_COMP_AMOUNT  = #{entity.sSpMediCompAmount} ]]>
+				</if>
+				<if test = "entity.sSpMediCompRecapAmount != null">
+					<![CDATA[ and record.S_SP_MEDI_COMP_RECAP_AMOUNT  = #{entity.sSpMediCompRecapAmount} ]]>
+				</if>
+				<if test = "entity.sSpMediCompRecapDiffe != null">
+					<![CDATA[ and record.S_SP_MEDI_COMP_RECAP_DIFFE  = #{entity.sSpMediCompRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sSpMediCompOverpaid != null">
+					<![CDATA[ and record.S_SP_MEDI_COMP_OVERPAID  = #{entity.sSpMediCompOverpaid} ]]>
+				</if>
+				<if test = "entity.sSpMediPersRatio != null">
+					<![CDATA[ and record.S_SP_MEDI_PERS_RATIO  = #{entity.sSpMediPersRatio} ]]>
+				</if>
+				<if test = "entity.sSpMediPersAmount != null">
+					<![CDATA[ and record.S_SP_MEDI_PERS_AMOUNT  = #{entity.sSpMediPersAmount} ]]>
+				</if>
+				<if test = "entity.sSpMediPersRecapAmount != null">
+					<![CDATA[ and record.S_SP_MEDI_PERS_RECAP_AMOUNT  = #{entity.sSpMediPersRecapAmount} ]]>
+				</if>
+				<if test = "entity.sSpMediPersRecapDiffe != null">
+					<![CDATA[ and record.S_SP_MEDI_PERS_RECAP_DIFFE  = #{entity.sSpMediPersRecapDiffe} ]]>
+				</if>
+				<if test = "entity.sSpMediPersComple != null">
+					<![CDATA[ and record.S_SP_MEDI_PERS_COMPLE  = #{entity.sSpMediPersComple} ]]>
+				</if>
+				<if test = "entity.remark4month != null and entity.remark4month != ''">
+					<![CDATA[ and record.REMARK4MONTH  = #{entity.remark4month} ]]>
+				</if>
+				<if test = "entity.remark4year != null and entity.remark4year != ''">
+					<![CDATA[ and record.REMARK4YEAR  = #{entity.remark4year} ]]>
+				</if>
+				<if test = "entity.persRecapDiffe4addup != null">
+					<![CDATA[ and record.PERS_RECAP_DIFFE_4ADDUP  = #{entity.persRecapDiffe4addup} ]]>
+				</if>
+				<if test = "entity.persCompleDiffe4addup != null">
+					<![CDATA[ and record.PERS_COMPLE_DIFFE_4ADDUP  = #{entity.persCompleDiffe4addup} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.btimpNo != null and entity.btimpNo != ''">
+					<![CDATA[ and record.BTIMP_NO  = #{entity.btimpNo} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chSocialInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_social_info record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 不分页查询数据集合-带序号-->
+	<select id="queryListWithSerial" resultMap="chSocialInfoMapper" >
+		SELECT
+			( @i := @i + 1 ) SERIAL_NO,
+			<include refid="queryColumns"/>
+	  	FROM
+	  	ch_social_info record,
+	  	( SELECT @i := 0 ) AS i 
+		<include refid="whereFilter" />
+		ORDER BY SOCIAL_YMONTH DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chSocialInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_social_info record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	<!-- 根据主键编号查询数据集合 -->
+	<select id="queryByIds" resultMap="chSocialInfoMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_social_info record
+		WHERE 
+		 record.id in 
+		<foreach collection="ids" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="name != null">NAME,</if>
+			<if test="cardNo != null">CARD_NO,</if>
+			<if test="compName != null">COMP_NAME,</if>
+			<if test="wkModalityCn != null">WK_MODALITY_CN,</if>
+			<if test="workAreaCn != null">WORK_AREA_CN,</if>
+			<if test="positCn != null">POSIT_CN,</if>
+			<if test="titleCn != null">TITLE_CN,</if>
+			<if test="hosBranchCn != null">HOS_BRANCH_CN,</if>
+			<if test="hosDepart1levelCn != null">HOS_DEPART_1LEVEL_CN,</if>
+			<if test="hosDepart2levelCn != null">HOS_DEPART_2LEVEL_CN,</if>
+			<if test="socialYmonth != null">SOCIAL_YMONTH,</if>
+			<if test="changeTime != null">CHANGE_TIME,</if>
+			<if test="isExistSupple != null">IS_EXIST_SUPPLE,</if>
+			<if test="sPenBase != null">S_PEN_BASE,</if>
+			<if test="sPenCompRatio != null">S_PEN_COMP_RATIO,</if>
+			<if test="sPenCompAmount != null">S_PEN_COMP_AMOUNT,</if>
+			<if test="sPenCompRecapAmount != null">S_PEN_COMP_RECAP_AMOUNT,</if>
+			<if test="sPenCompRecapDiffe != null">S_PEN_COMP_RECAP_DIFFE,</if>
+			<if test="sPenCompOverpaid != null">S_PEN_COMP_OVERPAID,</if>
+			<if test="sPenPersRatio != null">S_PEN_PERS_RATIO,</if>
+			<if test="sPenPersAmount != null">S_PEN_PERS_AMOUNT,</if>
+			<if test="sPenPersRecapAmount != null">S_PEN_PERS_RECAP_AMOUNT,</if>
+			<if test="sPenPersRecapDiffe != null">S_PEN_PERS_RECAP_DIFFE,</if>
+			<if test="sPenPersComple != null">S_PEN_PERS_COMPLE,</if>
+			<if test="sMediBase != null">S_MEDI_BASE,</if>
+			<if test="sMediCompRatio != null">S_MEDI_COMP_RATIO,</if>
+			<if test="sMediCompAmount != null">S_MEDI_COMP_AMOUNT,</if>
+			<if test="sMediCompRecapAmount != null">S_MEDI_COMP_RECAP_AMOUNT,</if>
+			<if test="sMediCompRecapDiffe != null">S_MEDI_COMP_RECAP_DIFFE,</if>
+			<if test="sMediCompOverpaid != null">S_MEDI_COMP_OVERPAID,</if>
+			<if test="sMediPersRatio != null">S_MEDI_PERS_RATIO,</if>
+			<if test="sMediPersAmount != null">S_MEDI_PERS_AMOUNT,</if>
+			<if test="sMediPersRecapAmount != null">S_MEDI_PERS_RECAP_AMOUNT,</if>
+			<if test="sMediPersRecapDiffe != null">S_MEDI_PERS_RECAP_DIFFE,</if>
+			<if test="sMediPersComple != null">S_MEDI_PERS_COMPLE,</if>
+			<if test="sUnempBase != null">S_UNEMP_BASE,</if>
+			<if test="sUnempCompRatio != null">S_UNEMP_COMP_RATIO,</if>
+			<if test="sUnempCompAmount != null">S_UNEMP_COMP_AMOUNT,</if>
+			<if test="sUnempCompRecapAmount != null">S_UNEMP_COMP_RECAP_AMOUNT,</if>
+			<if test="sUnempCompRecapDiffe != null">S_UNEMP_COMP_RECAP_DIFFE,</if>
+			<if test="sUnempCompOverpaid != null">S_UNEMP_COMP_OVERPAID,</if>
+			<if test="sUnempPersRatio != null">S_UNEMP_PERS_RATIO,</if>
+			<if test="sUnempPersAmount != null">S_UNEMP_PERS_AMOUNT,</if>
+			<if test="sUnempPersRecapAmount != null">S_UNEMP_PERS_RECAP_AMOUNT,</if>
+			<if test="sUnempPersRecapDiffe != null">S_UNEMP_PERS_RECAP_DIFFE,</if>
+			<if test="sUnempPersComple != null">S_UNEMP_PERS_COMPLE,</if>
+			<if test="sInjuryBase != null">S_INJURY_BASE,</if>
+			<if test="sInjuryCompRatio != null">S_INJURY_COMP_RATIO,</if>
+			<if test="sInjuryCompAmount != null">S_INJURY_COMP_AMOUNT,</if>
+			<if test="sInjuryCompRecapAmount != null">S_INJURY_COMP_RECAP_AMOUNT,</if>
+			<if test="sInjuryCompRecapDiffe != null">S_INJURY_COMP_RECAP_DIFFE,</if>
+			<if test="sInjuryCompOverpaid != null">S_INJURY_COMP_OVERPAID,</if>
+			<if test="sInjuryPersRatio != null">S_INJURY_PERS_RATIO,</if>
+			<if test="sInjuryPersAmount != null">S_INJURY_PERS_AMOUNT,</if>
+			<if test="sInjuryPersRecapAmount != null">S_INJURY_PERS_RECAP_AMOUNT,</if>
+			<if test="sInjuryPersRecapDiffe != null">S_INJURY_PERS_RECAP_DIFFE,</if>
+			<if test="sInjuryPersComple != null">S_INJURY_PERS_COMPLE,</if>
+			<if test="sBirthBase != null">S_BIRTH_BASE,</if>
+			<if test="sBirthCompRatio != null">S_BIRTH_COMP_RATIO,</if>
+			<if test="sBirthCompAmount != null">S_BIRTH_COMP_AMOUNT,</if>
+			<if test="sBirthCompRecapAmount != null">S_BIRTH_COMP_RECAP_AMOUNT,</if>
+			<if test="sBirthCompRecapDiffe != null">S_BIRTH_COMP_RECAP_DIFFE,</if>
+			<if test="sBirthCompOverpaid != null">S_BIRTH_COMP_OVERPAID,</if>
+			<if test="sBirthPersRatio != null">S_BIRTH_PERS_RATIO,</if>
+			<if test="sBirthPersAmount != null">S_BIRTH_PERS_AMOUNT,</if>
+			<if test="sBirthPersRecapAmount != null">S_BIRTH_PERS_RECAP_AMOUNT,</if>
+			<if test="sBirthPersRecapDiffe != null">S_BIRTH_PERS_RECAP_DIFFE,</if>
+			<if test="sBirthPersComple != null">S_BIRTH_PERS_COMPLE,</if>
+			<if test="sAnnuityBase != null">S_ANNUITY_BASE,</if>
+			<if test="sAnnuityCompRatio != null">S_ANNUITY_COMP_RATIO,</if>
+			<if test="sAnnuityCompAmount != null">S_ANNUITY_COMP_AMOUNT,</if>
+			<if test="sAnnuityCompRecapAmount != null">S_ANNUITY_COMP_RECAP_AMOUNT,</if>
+			<if test="sAnnuityCompRecapDiffe != null">S_ANNUITY_COMP_RECAP_DIFFE,</if>
+			<if test="sAnnuityCompOverpaid != null">S_ANNUITY_COMP_OVERPAID,</if>
+			<if test="sAnnuityPersRatio != null">S_ANNUITY_PERS_RATIO,</if>
+			<if test="sAnnuityPersAmount != null">S_ANNUITY_PERS_AMOUNT,</if>
+			<if test="sAnnuityPersRecapAmount != null">S_ANNUITY_PERS_RECAP_AMOUNT,</if>
+			<if test="sAnnuityPersRecapDiffe != null">S_ANNUITY_PERS_RECAP_DIFFE,</if>
+			<if test="sAnnuityPersComple != null">S_ANNUITY_PERS_COMPLE,</if>
+			<if test="sOvpBase != null">S_OVP_BASE,</if>
+			<if test="sOvpCompRatio != null">S_OVP_COMP_RATIO,</if>
+			<if test="sOvpCompAmount != null">S_OVP_COMP_AMOUNT,</if>
+			<if test="sOvpCompRecapAmount != null">S_OVP_COMP_RECAP_AMOUNT,</if>
+			<if test="sOvpCompRecapDiffe != null">S_OVP_COMP_RECAP_DIFFE,</if>
+			<if test="sOvpCompOverpaid != null">S_OVP_COMP_OVERPAID,</if>
+			<if test="sOvpPersRatio != null">S_OVP_PERS_RATIO,</if>
+			<if test="sOvpPersAmount != null">S_OVP_PERS_AMOUNT,</if>
+			<if test="sOvpPersRecapAmount != null">S_OVP_PERS_RECAP_AMOUNT,</if>
+			<if test="sOvpPersRecapDiffe != null">S_OVP_PERS_RECAP_DIFFE,</if>
+			<if test="sOvpPersComple != null">S_OVP_PERS_COMPLE,</if>
+			<if test="sSpMediBase != null">S_SP_MEDI_BASE,</if>
+			<if test="sSpMediCompRatio != null">S_SP_MEDI_COMP_RATIO,</if>
+			<if test="sSpMediCompAmount != null">S_SP_MEDI_COMP_AMOUNT,</if>
+			<if test="sSpMediCompRecapAmount != null">S_SP_MEDI_COMP_RECAP_AMOUNT,</if>
+			<if test="sSpMediCompRecapDiffe != null">S_SP_MEDI_COMP_RECAP_DIFFE,</if>
+			<if test="sSpMediCompOverpaid != null">S_SP_MEDI_COMP_OVERPAID,</if>
+			<if test="sSpMediPersRatio != null">S_SP_MEDI_PERS_RATIO,</if>
+			<if test="sSpMediPersAmount != null">S_SP_MEDI_PERS_AMOUNT,</if>
+			<if test="sSpMediPersRecapAmount != null">S_SP_MEDI_PERS_RECAP_AMOUNT,</if>
+			<if test="sSpMediPersRecapDiffe != null">S_SP_MEDI_PERS_RECAP_DIFFE,</if>
+			<if test="sSpMediPersComple != null">S_SP_MEDI_PERS_COMPLE,</if>
+			<if test="remark4month != null">REMARK4MONTH,</if>
+			<if test="remark4year != null">REMARK4YEAR,</if>
+			<if test="persRecapDiffe4addup != null">PERS_RECAP_DIFFE_4ADDUP,</if>
+			<if test="persCompleDiffe4addup != null">PERS_COMPLE_DIFFE_4ADDUP,</if>
+			STATUS,
+			<if test="btimpNo != null">BTIMP_NO,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="name != null">#{name,jdbcType=VARCHAR},</if>
+			<if test="cardNo != null">#{cardNo,jdbcType=VARCHAR},</if>
+			<if test="compName != null">#{compName,jdbcType=VARCHAR},</if>
+			<if test="wkModalityCn != null">#{wkModalityCn,jdbcType=VARCHAR},</if>
+			<if test="workAreaCn != null">#{workAreaCn,jdbcType=VARCHAR},</if>
+			<if test="positCn != null">#{positCn,jdbcType=VARCHAR},</if>
+			<if test="titleCn != null">#{titleCn,jdbcType=VARCHAR},</if>
+			<if test="hosBranchCn != null">#{hosBranchCn,jdbcType=VARCHAR},</if>
+			<if test="hosDepart1levelCn != null">#{hosDepart1levelCn,jdbcType=VARCHAR},</if>
+			<if test="hosDepart2levelCn != null">#{hosDepart2levelCn,jdbcType=VARCHAR},</if>
+			<if test="socialYmonth != null">#{socialYmonth,jdbcType=VARCHAR},</if>
+			<if test="changeTime != null">#{changeTime,jdbcType=VARCHAR},</if>
+			<if test="isExistSupple != null">#{isExistSupple,jdbcType=INTEGER},</if>
+			<if test="sPenBase != null">#{sPenBase,jdbcType=DECIMAL},</if>
+			<if test="sPenCompRatio != null">#{sPenCompRatio,jdbcType=DECIMAL},</if>
+			<if test="sPenCompAmount != null">#{sPenCompAmount,jdbcType=DECIMAL},</if>
+			<if test="sPenCompRecapAmount != null">#{sPenCompRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sPenCompRecapDiffe != null">#{sPenCompRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sPenCompOverpaid != null">#{sPenCompOverpaid,jdbcType=DECIMAL},</if>
+			<if test="sPenPersRatio != null">#{sPenPersRatio,jdbcType=DECIMAL},</if>
+			<if test="sPenPersAmount != null">#{sPenPersAmount,jdbcType=DECIMAL},</if>
+			<if test="sPenPersRecapAmount != null">#{sPenPersRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sPenPersRecapDiffe != null">#{sPenPersRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sPenPersComple != null">#{sPenPersComple,jdbcType=DECIMAL},</if>
+			<if test="sMediBase != null">#{sMediBase,jdbcType=DECIMAL},</if>
+			<if test="sMediCompRatio != null">#{sMediCompRatio,jdbcType=DECIMAL},</if>
+			<if test="sMediCompAmount != null">#{sMediCompAmount,jdbcType=DECIMAL},</if>
+			<if test="sMediCompRecapAmount != null">#{sMediCompRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sMediCompRecapDiffe != null">#{sMediCompRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sMediCompOverpaid != null">#{sMediCompOverpaid,jdbcType=DECIMAL},</if>
+			<if test="sMediPersRatio != null">#{sMediPersRatio,jdbcType=DECIMAL},</if>
+			<if test="sMediPersAmount != null">#{sMediPersAmount,jdbcType=DECIMAL},</if>
+			<if test="sMediPersRecapAmount != null">#{sMediPersRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sMediPersRecapDiffe != null">#{sMediPersRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sMediPersComple != null">#{sMediPersComple,jdbcType=DECIMAL},</if>
+			<if test="sUnempBase != null">#{sUnempBase,jdbcType=DECIMAL},</if>
+			<if test="sUnempCompRatio != null">#{sUnempCompRatio,jdbcType=DECIMAL},</if>
+			<if test="sUnempCompAmount != null">#{sUnempCompAmount,jdbcType=DECIMAL},</if>
+			<if test="sUnempCompRecapAmount != null">#{sUnempCompRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sUnempCompRecapDiffe != null">#{sUnempCompRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sUnempCompOverpaid != null">#{sUnempCompOverpaid,jdbcType=DECIMAL},</if>
+			<if test="sUnempPersRatio != null">#{sUnempPersRatio,jdbcType=DECIMAL},</if>
+			<if test="sUnempPersAmount != null">#{sUnempPersAmount,jdbcType=DECIMAL},</if>
+			<if test="sUnempPersRecapAmount != null">#{sUnempPersRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sUnempPersRecapDiffe != null">#{sUnempPersRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sUnempPersComple != null">#{sUnempPersComple,jdbcType=DECIMAL},</if>
+			<if test="sInjuryBase != null">#{sInjuryBase,jdbcType=DECIMAL},</if>
+			<if test="sInjuryCompRatio != null">#{sInjuryCompRatio,jdbcType=DECIMAL},</if>
+			<if test="sInjuryCompAmount != null">#{sInjuryCompAmount,jdbcType=DECIMAL},</if>
+			<if test="sInjuryCompRecapAmount != null">#{sInjuryCompRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sInjuryCompRecapDiffe != null">#{sInjuryCompRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sInjuryCompOverpaid != null">#{sInjuryCompOverpaid,jdbcType=DECIMAL},</if>
+			<if test="sInjuryPersRatio != null">#{sInjuryPersRatio,jdbcType=DECIMAL},</if>
+			<if test="sInjuryPersAmount != null">#{sInjuryPersAmount,jdbcType=DECIMAL},</if>
+			<if test="sInjuryPersRecapAmount != null">#{sInjuryPersRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sInjuryPersRecapDiffe != null">#{sInjuryPersRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sInjuryPersComple != null">#{sInjuryPersComple,jdbcType=DECIMAL},</if>
+			<if test="sBirthBase != null">#{sBirthBase,jdbcType=DECIMAL},</if>
+			<if test="sBirthCompRatio != null">#{sBirthCompRatio,jdbcType=DECIMAL},</if>
+			<if test="sBirthCompAmount != null">#{sBirthCompAmount,jdbcType=DECIMAL},</if>
+			<if test="sBirthCompRecapAmount != null">#{sBirthCompRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sBirthCompRecapDiffe != null">#{sBirthCompRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sBirthCompOverpaid != null">#{sBirthCompOverpaid,jdbcType=DECIMAL},</if>
+			<if test="sBirthPersRatio != null">#{sBirthPersRatio,jdbcType=DECIMAL},</if>
+			<if test="sBirthPersAmount != null">#{sBirthPersAmount,jdbcType=DECIMAL},</if>
+			<if test="sBirthPersRecapAmount != null">#{sBirthPersRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sBirthPersRecapDiffe != null">#{sBirthPersRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sBirthPersComple != null">#{sBirthPersComple,jdbcType=DECIMAL},</if>
+			<if test="sAnnuityBase != null">#{sAnnuityBase,jdbcType=DECIMAL},</if>
+			<if test="sAnnuityCompRatio != null">#{sAnnuityCompRatio,jdbcType=DECIMAL},</if>
+			<if test="sAnnuityCompAmount != null">#{sAnnuityCompAmount,jdbcType=DECIMAL},</if>
+			<if test="sAnnuityCompRecapAmount != null">#{sAnnuityCompRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sAnnuityCompRecapDiffe != null">#{sAnnuityCompRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sAnnuityCompOverpaid != null">#{sAnnuityCompOverpaid,jdbcType=DECIMAL},</if>
+			<if test="sAnnuityPersRatio != null">#{sAnnuityPersRatio,jdbcType=DECIMAL},</if>
+			<if test="sAnnuityPersAmount != null">#{sAnnuityPersAmount,jdbcType=DECIMAL},</if>
+			<if test="sAnnuityPersRecapAmount != null">#{sAnnuityPersRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sAnnuityPersRecapDiffe != null">#{sAnnuityPersRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sAnnuityPersComple != null">#{sAnnuityPersComple,jdbcType=DECIMAL},</if>
+			<if test="sOvpBase != null">#{sOvpBase,jdbcType=DECIMAL},</if>
+			<if test="sOvpCompRatio != null">#{sOvpCompRatio,jdbcType=DECIMAL},</if>
+			<if test="sOvpCompAmount != null">#{sOvpCompAmount,jdbcType=DECIMAL},</if>
+			<if test="sOvpCompRecapAmount != null">#{sOvpCompRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sOvpCompRecapDiffe != null">#{sOvpCompRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sOvpCompOverpaid != null">#{sOvpCompOverpaid,jdbcType=DECIMAL},</if>
+			<if test="sOvpPersRatio != null">#{sOvpPersRatio,jdbcType=DECIMAL},</if>
+			<if test="sOvpPersAmount != null">#{sOvpPersAmount,jdbcType=DECIMAL},</if>
+			<if test="sOvpPersRecapAmount != null">#{sOvpPersRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sOvpPersRecapDiffe != null">#{sOvpPersRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sOvpPersComple != null">#{sOvpPersComple,jdbcType=DECIMAL},</if>
+			<if test="sSpMediBase != null">#{sSpMediBase,jdbcType=DECIMAL},</if>
+			<if test="sSpMediCompRatio != null">#{sSpMediCompRatio,jdbcType=DECIMAL},</if>
+			<if test="sSpMediCompAmount != null">#{sSpMediCompAmount,jdbcType=DECIMAL},</if>
+			<if test="sSpMediCompRecapAmount != null">#{sSpMediCompRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sSpMediCompRecapDiffe != null">#{sSpMediCompRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sSpMediCompOverpaid != null">#{sSpMediCompOverpaid,jdbcType=DECIMAL},</if>
+			<if test="sSpMediPersRatio != null">#{sSpMediPersRatio,jdbcType=DECIMAL},</if>
+			<if test="sSpMediPersAmount != null">#{sSpMediPersAmount,jdbcType=DECIMAL},</if>
+			<if test="sSpMediPersRecapAmount != null">#{sSpMediPersRecapAmount,jdbcType=DECIMAL},</if>
+			<if test="sSpMediPersRecapDiffe != null">#{sSpMediPersRecapDiffe,jdbcType=DECIMAL},</if>
+			<if test="sSpMediPersComple != null">#{sSpMediPersComple,jdbcType=DECIMAL},</if>
+			<if test="remark4month != null">#{remark4month,jdbcType=VARCHAR},</if>
+			<if test="remark4year != null">#{remark4year,jdbcType=VARCHAR},</if>
+			<if test="persRecapDiffe4addup != null">#{persRecapDiffe4addup,jdbcType=DECIMAL},</if>
+			<if test="persCompleDiffe4addup != null">#{persCompleDiffe4addup,jdbcType=DECIMAL},</if>
+			0,
+			<if test="btimpNo != null">#{btimpNo,jdbcType=VARCHAR},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now()
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.social.model.ChSocialInfoModel">
+		INSERT INTO ch_social_info(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_social_info
+        (
+			NAME,
+			CARD_NO,
+			COMP_NAME,
+			WK_MODALITY_CN,
+			WORK_AREA_CN,
+			POSIT_CN,
+			TITLE_CN,
+			HOS_BRANCH_CN,
+			HOS_DEPART_1LEVEL_CN,
+			HOS_DEPART_2LEVEL_CN,
+			SOCIAL_YMONTH,
+			CHANGE_TIME,
+			IS_EXIST_SUPPLE,
+			S_PEN_BASE,
+			S_PEN_COMP_RATIO,
+			S_PEN_COMP_AMOUNT,
+			S_PEN_COMP_RECAP_AMOUNT,
+			S_PEN_COMP_RECAP_DIFFE,
+			S_PEN_COMP_OVERPAID,
+			S_PEN_PERS_RATIO,
+			S_PEN_PERS_AMOUNT,
+			S_PEN_PERS_RECAP_AMOUNT,
+			S_PEN_PERS_RECAP_DIFFE,
+			S_PEN_PERS_COMPLE,
+			S_MEDI_BASE,
+			S_MEDI_COMP_RATIO,
+			S_MEDI_COMP_AMOUNT,
+			S_MEDI_COMP_RECAP_AMOUNT,
+			S_MEDI_COMP_RECAP_DIFFE,
+			S_MEDI_COMP_OVERPAID,
+			S_MEDI_PERS_RATIO,
+			S_MEDI_PERS_AMOUNT,
+			S_MEDI_PERS_RECAP_AMOUNT,
+			S_MEDI_PERS_RECAP_DIFFE,
+			S_MEDI_PERS_COMPLE,
+			S_UNEMP_BASE,
+			S_UNEMP_COMP_RATIO,
+			S_UNEMP_COMP_AMOUNT,
+			S_UNEMP_COMP_RECAP_AMOUNT,
+			S_UNEMP_COMP_RECAP_DIFFE,
+			S_UNEMP_COMP_OVERPAID,
+			S_UNEMP_PERS_RATIO,
+			S_UNEMP_PERS_AMOUNT,
+			S_UNEMP_PERS_RECAP_AMOUNT,
+			S_UNEMP_PERS_RECAP_DIFFE,
+			S_UNEMP_PERS_COMPLE,
+			S_INJURY_BASE,
+			S_INJURY_COMP_RATIO,
+			S_INJURY_COMP_AMOUNT,
+			S_INJURY_COMP_RECAP_AMOUNT,
+			S_INJURY_COMP_RECAP_DIFFE,
+			S_INJURY_COMP_OVERPAID,
+			S_INJURY_PERS_RATIO,
+			S_INJURY_PERS_AMOUNT,
+			S_INJURY_PERS_RECAP_AMOUNT,
+			S_INJURY_PERS_RECAP_DIFFE,
+			S_INJURY_PERS_COMPLE,
+			S_BIRTH_BASE,
+			S_BIRTH_COMP_RATIO,
+			S_BIRTH_COMP_AMOUNT,
+			S_BIRTH_COMP_RECAP_AMOUNT,
+			S_BIRTH_COMP_RECAP_DIFFE,
+			S_BIRTH_COMP_OVERPAID,
+			S_BIRTH_PERS_RATIO,
+			S_BIRTH_PERS_AMOUNT,
+			S_BIRTH_PERS_RECAP_AMOUNT,
+			S_BIRTH_PERS_RECAP_DIFFE,
+			S_BIRTH_PERS_COMPLE,
+			S_ANNUITY_BASE,
+			S_ANNUITY_COMP_RATIO,
+			S_ANNUITY_COMP_AMOUNT,
+			S_ANNUITY_COMP_RECAP_AMOUNT,
+			S_ANNUITY_COMP_RECAP_DIFFE,
+			S_ANNUITY_COMP_OVERPAID,
+			S_ANNUITY_PERS_RATIO,
+			S_ANNUITY_PERS_AMOUNT,
+			S_ANNUITY_PERS_RECAP_AMOUNT,
+			S_ANNUITY_PERS_RECAP_DIFFE,
+			S_ANNUITY_PERS_COMPLE,
+			S_OVP_BASE,
+			S_OVP_COMP_RATIO,
+			S_OVP_COMP_AMOUNT,
+			S_OVP_COMP_RECAP_AMOUNT,
+			S_OVP_COMP_RECAP_DIFFE,
+			S_OVP_COMP_OVERPAID,
+			S_OVP_PERS_RATIO,
+			S_OVP_PERS_AMOUNT,
+			S_OVP_PERS_RECAP_AMOUNT,
+			S_OVP_PERS_RECAP_DIFFE,
+			S_OVP_PERS_COMPLE,
+			S_SP_MEDI_BASE,
+			S_SP_MEDI_COMP_RATIO,
+			S_SP_MEDI_COMP_AMOUNT,
+			S_SP_MEDI_COMP_RECAP_AMOUNT,
+			S_SP_MEDI_COMP_RECAP_DIFFE,
+			S_SP_MEDI_COMP_OVERPAID,
+			S_SP_MEDI_PERS_RATIO,
+			S_SP_MEDI_PERS_AMOUNT,
+			S_SP_MEDI_PERS_RECAP_AMOUNT,
+			S_SP_MEDI_PERS_RECAP_DIFFE,
+			S_SP_MEDI_PERS_COMPLE,
+			REMARK4MONTH,
+			REMARK4YEAR,
+			PERS_RECAP_DIFFE_4ADDUP,
+			PERS_COMPLE_DIFFE_4ADDUP,
+			STATUS,
+			BTIMP_NO,
+			REMARK,
+			CREATE_TIME,
+			UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+			#{item.name,jdbcType=VARCHAR},
+			#{item.cardNo,jdbcType=VARCHAR},
+			#{item.compName,jdbcType=VARCHAR},
+			#{item.wkModalityCn,jdbcType=VARCHAR},
+			#{item.workAreaCn,jdbcType=VARCHAR},
+			#{item.positCn,jdbcType=VARCHAR},
+			#{item.titleCn,jdbcType=VARCHAR},
+			#{item.hosBranchCn,jdbcType=VARCHAR},
+			#{item.hosDepart1levelCn,jdbcType=VARCHAR},
+			#{item.hosDepart2levelCn,jdbcType=VARCHAR},
+			#{item.socialYmonth,jdbcType=VARCHAR},
+			#{item.changeTime,jdbcType=VARCHAR},
+			#{item.isExistSupple,jdbcType=INTEGER},
+			#{item.sPenBase,jdbcType=DECIMAL},
+			#{item.sPenCompRatio,jdbcType=DECIMAL},
+			#{item.sPenCompAmount,jdbcType=DECIMAL},
+			#{item.sPenCompRecapAmount,jdbcType=DECIMAL},
+			#{item.sPenCompRecapDiffe,jdbcType=DECIMAL},
+			#{item.sPenCompOverpaid,jdbcType=DECIMAL},
+			#{item.sPenPersRatio,jdbcType=DECIMAL},
+			#{item.sPenPersAmount,jdbcType=DECIMAL},
+			#{item.sPenPersRecapAmount,jdbcType=DECIMAL},
+			#{item.sPenPersRecapDiffe,jdbcType=DECIMAL},
+			#{item.sPenPersComple,jdbcType=DECIMAL},
+			#{item.sMediBase,jdbcType=DECIMAL},
+			#{item.sMediCompRatio,jdbcType=DECIMAL},
+			#{item.sMediCompAmount,jdbcType=DECIMAL},
+			#{item.sMediCompRecapAmount,jdbcType=DECIMAL},
+			#{item.sMediCompRecapDiffe,jdbcType=DECIMAL},
+			#{item.sMediCompOverpaid,jdbcType=DECIMAL},
+			#{item.sMediPersRatio,jdbcType=DECIMAL},
+			#{item.sMediPersAmount,jdbcType=DECIMAL},
+			#{item.sMediPersRecapAmount,jdbcType=DECIMAL},
+			#{item.sMediPersRecapDiffe,jdbcType=DECIMAL},
+			#{item.sMediPersComple,jdbcType=DECIMAL},
+			#{item.sUnempBase,jdbcType=DECIMAL},
+			#{item.sUnempCompRatio,jdbcType=DECIMAL},
+			#{item.sUnempCompAmount,jdbcType=DECIMAL},
+			#{item.sUnempCompRecapAmount,jdbcType=DECIMAL},
+			#{item.sUnempCompRecapDiffe,jdbcType=DECIMAL},
+			#{item.sUnempCompOverpaid,jdbcType=DECIMAL},
+			#{item.sUnempPersRatio,jdbcType=DECIMAL},
+			#{item.sUnempPersAmount,jdbcType=DECIMAL},
+			#{item.sUnempPersRecapAmount,jdbcType=DECIMAL},
+			#{item.sUnempPersRecapDiffe,jdbcType=DECIMAL},
+			#{item.sUnempPersComple,jdbcType=DECIMAL},
+			#{item.sInjuryBase,jdbcType=DECIMAL},
+			#{item.sInjuryCompRatio,jdbcType=DECIMAL},
+			#{item.sInjuryCompAmount,jdbcType=DECIMAL},
+			#{item.sInjuryCompRecapAmount,jdbcType=DECIMAL},
+			#{item.sInjuryCompRecapDiffe,jdbcType=DECIMAL},
+			#{item.sInjuryCompOverpaid,jdbcType=DECIMAL},
+			#{item.sInjuryPersRatio,jdbcType=DECIMAL},
+			#{item.sInjuryPersAmount,jdbcType=DECIMAL},
+			#{item.sInjuryPersRecapAmount,jdbcType=DECIMAL},
+			#{item.sInjuryPersRecapDiffe,jdbcType=DECIMAL},
+			#{item.sInjuryPersComple,jdbcType=DECIMAL},
+			#{item.sBirthBase,jdbcType=DECIMAL},
+			#{item.sBirthCompRatio,jdbcType=DECIMAL},
+			#{item.sBirthCompAmount,jdbcType=DECIMAL},
+			#{item.sBirthCompRecapAmount,jdbcType=DECIMAL},
+			#{item.sBirthCompRecapDiffe,jdbcType=DECIMAL},
+			#{item.sBirthCompOverpaid,jdbcType=DECIMAL},
+			#{item.sBirthPersRatio,jdbcType=DECIMAL},
+			#{item.sBirthPersAmount,jdbcType=DECIMAL},
+			#{item.sBirthPersRecapAmount,jdbcType=DECIMAL},
+			#{item.sBirthPersRecapDiffe,jdbcType=DECIMAL},
+			#{item.sBirthPersComple,jdbcType=DECIMAL},
+			#{item.sAnnuityBase,jdbcType=DECIMAL},
+			#{item.sAnnuityCompRatio,jdbcType=DECIMAL},
+			#{item.sAnnuityCompAmount,jdbcType=DECIMAL},
+			#{item.sAnnuityCompRecapAmount,jdbcType=DECIMAL},
+			#{item.sAnnuityCompRecapDiffe,jdbcType=DECIMAL},
+			#{item.sAnnuityCompOverpaid,jdbcType=DECIMAL},
+			#{item.sAnnuityPersRatio,jdbcType=DECIMAL},
+			#{item.sAnnuityPersAmount,jdbcType=DECIMAL},
+			#{item.sAnnuityPersRecapAmount,jdbcType=DECIMAL},
+			#{item.sAnnuityPersRecapDiffe,jdbcType=DECIMAL},
+			#{item.sAnnuityPersComple,jdbcType=DECIMAL},
+			#{item.sOvpBase,jdbcType=DECIMAL},
+			#{item.sOvpCompRatio,jdbcType=DECIMAL},
+			#{item.sOvpCompAmount,jdbcType=DECIMAL},
+			#{item.sOvpCompRecapAmount,jdbcType=DECIMAL},
+			#{item.sOvpCompRecapDiffe,jdbcType=DECIMAL},
+			#{item.sOvpCompOverpaid,jdbcType=DECIMAL},
+			#{item.sOvpPersRatio,jdbcType=DECIMAL},
+			#{item.sOvpPersAmount,jdbcType=DECIMAL},
+			#{item.sOvpPersRecapAmount,jdbcType=DECIMAL},
+			#{item.sOvpPersRecapDiffe,jdbcType=DECIMAL},
+			#{item.sOvpPersComple,jdbcType=DECIMAL},
+			#{item.sSpMediBase,jdbcType=DECIMAL},
+			#{item.sSpMediCompRatio,jdbcType=DECIMAL},
+			#{item.sSpMediCompAmount,jdbcType=DECIMAL},
+			#{item.sSpMediCompRecapAmount,jdbcType=DECIMAL},
+			#{item.sSpMediCompRecapDiffe,jdbcType=DECIMAL},
+			#{item.sSpMediCompOverpaid,jdbcType=DECIMAL},
+			#{item.sSpMediPersRatio,jdbcType=DECIMAL},
+			#{item.sSpMediPersAmount,jdbcType=DECIMAL},
+			#{item.sSpMediPersRecapAmount,jdbcType=DECIMAL},
+			#{item.sSpMediPersRecapDiffe,jdbcType=DECIMAL},
+			#{item.sSpMediPersComple,jdbcType=DECIMAL},
+			#{item.remark4month,jdbcType=VARCHAR},
+			#{item.remark4year,jdbcType=VARCHAR},
+			#{item.persRecapDiffe4addup,jdbcType=DECIMAL},
+			#{item.persCompleDiffe4addup,jdbcType=DECIMAL},
+			0,
+			#{item.btimpNo,jdbcType=VARCHAR},
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.social.model.ChSocialInfoModel">
+		UPDATE ch_social_info record 
+		<set>
+			<if test = "name != null ">
+				record.NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test = "cardNo != null ">
+				record.CARD_NO = #{cardNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "compName != null ">
+				record.COMP_NAME = #{compName,jdbcType=VARCHAR},
+			</if>
+			<if test = "wkModalityCn != null ">
+				record.WK_MODALITY_CN = #{wkModalityCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "workAreaCn != null ">
+				record.WORK_AREA_CN = #{workAreaCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "positCn != null ">
+				record.POSIT_CN = #{positCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "titleCn != null ">
+				record.TITLE_CN = #{titleCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "hosBranchCn != null ">
+				record.HOS_BRANCH_CN = #{hosBranchCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "hosDepart1levelCn != null ">
+				record.HOS_DEPART_1LEVEL_CN = #{hosDepart1levelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "hosDepart2levelCn != null ">
+				record.HOS_DEPART_2LEVEL_CN = #{hosDepart2levelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "socialYmonth != null ">
+				record.SOCIAL_YMONTH = #{socialYmonth,jdbcType=VARCHAR},
+			</if>
+			<if test = "changeTime != null ">
+				record.CHANGE_TIME = #{changeTime,jdbcType=VARCHAR},
+			</if>
+			<if test = "isExistSupple != null ">
+				record.IS_EXIST_SUPPLE = #{isExistSupple,jdbcType=INTEGER},
+			</if>
+			<if test = "sPenBase != null ">
+				record.S_PEN_BASE = #{sPenBase,jdbcType=DECIMAL},
+			</if>
+			<if test = "sPenCompRatio != null ">
+				record.S_PEN_COMP_RATIO = #{sPenCompRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sPenCompAmount != null ">
+				record.S_PEN_COMP_AMOUNT = #{sPenCompAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sPenCompRecapAmount != null ">
+				record.S_PEN_COMP_RECAP_AMOUNT = #{sPenCompRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sPenCompRecapDiffe != null ">
+				record.S_PEN_COMP_RECAP_DIFFE = #{sPenCompRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sPenCompOverpaid != null ">
+				record.S_PEN_COMP_OVERPAID = #{sPenCompOverpaid,jdbcType=DECIMAL},
+			</if>
+			<if test = "sPenPersRatio != null ">
+				record.S_PEN_PERS_RATIO = #{sPenPersRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sPenPersAmount != null ">
+				record.S_PEN_PERS_AMOUNT = #{sPenPersAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sPenPersRecapAmount != null ">
+				record.S_PEN_PERS_RECAP_AMOUNT = #{sPenPersRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sPenPersRecapDiffe != null ">
+				record.S_PEN_PERS_RECAP_DIFFE = #{sPenPersRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sPenPersComple != null ">
+				record.S_PEN_PERS_COMPLE = #{sPenPersComple,jdbcType=DECIMAL},
+			</if>
+			<if test = "sMediBase != null ">
+				record.S_MEDI_BASE = #{sMediBase,jdbcType=DECIMAL},
+			</if>
+			<if test = "sMediCompRatio != null ">
+				record.S_MEDI_COMP_RATIO = #{sMediCompRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sMediCompAmount != null ">
+				record.S_MEDI_COMP_AMOUNT = #{sMediCompAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sMediCompRecapAmount != null ">
+				record.S_MEDI_COMP_RECAP_AMOUNT = #{sMediCompRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sMediCompRecapDiffe != null ">
+				record.S_MEDI_COMP_RECAP_DIFFE = #{sMediCompRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sMediCompOverpaid != null ">
+				record.S_MEDI_COMP_OVERPAID = #{sMediCompOverpaid,jdbcType=DECIMAL},
+			</if>
+			<if test = "sMediPersRatio != null ">
+				record.S_MEDI_PERS_RATIO = #{sMediPersRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sMediPersAmount != null ">
+				record.S_MEDI_PERS_AMOUNT = #{sMediPersAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sMediPersRecapAmount != null ">
+				record.S_MEDI_PERS_RECAP_AMOUNT = #{sMediPersRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sMediPersRecapDiffe != null ">
+				record.S_MEDI_PERS_RECAP_DIFFE = #{sMediPersRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sMediPersComple != null ">
+				record.S_MEDI_PERS_COMPLE = #{sMediPersComple,jdbcType=DECIMAL},
+			</if>
+			<if test = "sUnempBase != null ">
+				record.S_UNEMP_BASE = #{sUnempBase,jdbcType=DECIMAL},
+			</if>
+			<if test = "sUnempCompRatio != null ">
+				record.S_UNEMP_COMP_RATIO = #{sUnempCompRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sUnempCompAmount != null ">
+				record.S_UNEMP_COMP_AMOUNT = #{sUnempCompAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sUnempCompRecapAmount != null ">
+				record.S_UNEMP_COMP_RECAP_AMOUNT = #{sUnempCompRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sUnempCompRecapDiffe != null ">
+				record.S_UNEMP_COMP_RECAP_DIFFE = #{sUnempCompRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sUnempCompOverpaid != null ">
+				record.S_UNEMP_COMP_OVERPAID = #{sUnempCompOverpaid,jdbcType=DECIMAL},
+			</if>
+			<if test = "sUnempPersRatio != null ">
+				record.S_UNEMP_PERS_RATIO = #{sUnempPersRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sUnempPersAmount != null ">
+				record.S_UNEMP_PERS_AMOUNT = #{sUnempPersAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sUnempPersRecapAmount != null ">
+				record.S_UNEMP_PERS_RECAP_AMOUNT = #{sUnempPersRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sUnempPersRecapDiffe != null ">
+				record.S_UNEMP_PERS_RECAP_DIFFE = #{sUnempPersRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sUnempPersComple != null ">
+				record.S_UNEMP_PERS_COMPLE = #{sUnempPersComple,jdbcType=DECIMAL},
+			</if>
+			<if test = "sInjuryBase != null ">
+				record.S_INJURY_BASE = #{sInjuryBase,jdbcType=DECIMAL},
+			</if>
+			<if test = "sInjuryCompRatio != null ">
+				record.S_INJURY_COMP_RATIO = #{sInjuryCompRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sInjuryCompAmount != null ">
+				record.S_INJURY_COMP_AMOUNT = #{sInjuryCompAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sInjuryCompRecapAmount != null ">
+				record.S_INJURY_COMP_RECAP_AMOUNT = #{sInjuryCompRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sInjuryCompRecapDiffe != null ">
+				record.S_INJURY_COMP_RECAP_DIFFE = #{sInjuryCompRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sInjuryCompOverpaid != null ">
+				record.S_INJURY_COMP_OVERPAID = #{sInjuryCompOverpaid,jdbcType=DECIMAL},
+			</if>
+			<if test = "sInjuryPersRatio != null ">
+				record.S_INJURY_PERS_RATIO = #{sInjuryPersRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sInjuryPersAmount != null ">
+				record.S_INJURY_PERS_AMOUNT = #{sInjuryPersAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sInjuryPersRecapAmount != null ">
+				record.S_INJURY_PERS_RECAP_AMOUNT = #{sInjuryPersRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sInjuryPersRecapDiffe != null ">
+				record.S_INJURY_PERS_RECAP_DIFFE = #{sInjuryPersRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sInjuryPersComple != null ">
+				record.S_INJURY_PERS_COMPLE = #{sInjuryPersComple,jdbcType=DECIMAL},
+			</if>
+			<if test = "sBirthBase != null ">
+				record.S_BIRTH_BASE = #{sBirthBase,jdbcType=DECIMAL},
+			</if>
+			<if test = "sBirthCompRatio != null ">
+				record.S_BIRTH_COMP_RATIO = #{sBirthCompRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sBirthCompAmount != null ">
+				record.S_BIRTH_COMP_AMOUNT = #{sBirthCompAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sBirthCompRecapAmount != null ">
+				record.S_BIRTH_COMP_RECAP_AMOUNT = #{sBirthCompRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sBirthCompRecapDiffe != null ">
+				record.S_BIRTH_COMP_RECAP_DIFFE = #{sBirthCompRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sBirthCompOverpaid != null ">
+				record.S_BIRTH_COMP_OVERPAID = #{sBirthCompOverpaid,jdbcType=DECIMAL},
+			</if>
+			<if test = "sBirthPersRatio != null ">
+				record.S_BIRTH_PERS_RATIO = #{sBirthPersRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sBirthPersAmount != null ">
+				record.S_BIRTH_PERS_AMOUNT = #{sBirthPersAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sBirthPersRecapAmount != null ">
+				record.S_BIRTH_PERS_RECAP_AMOUNT = #{sBirthPersRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sBirthPersRecapDiffe != null ">
+				record.S_BIRTH_PERS_RECAP_DIFFE = #{sBirthPersRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sBirthPersComple != null ">
+				record.S_BIRTH_PERS_COMPLE = #{sBirthPersComple,jdbcType=DECIMAL},
+			</if>
+			<if test = "sAnnuityBase != null ">
+				record.S_ANNUITY_BASE = #{sAnnuityBase,jdbcType=DECIMAL},
+			</if>
+			<if test = "sAnnuityCompRatio != null ">
+				record.S_ANNUITY_COMP_RATIO = #{sAnnuityCompRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sAnnuityCompAmount != null ">
+				record.S_ANNUITY_COMP_AMOUNT = #{sAnnuityCompAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sAnnuityCompRecapAmount != null ">
+				record.S_ANNUITY_COMP_RECAP_AMOUNT = #{sAnnuityCompRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sAnnuityCompRecapDiffe != null ">
+				record.S_ANNUITY_COMP_RECAP_DIFFE = #{sAnnuityCompRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sAnnuityCompOverpaid != null ">
+				record.S_ANNUITY_COMP_OVERPAID = #{sAnnuityCompOverpaid,jdbcType=DECIMAL},
+			</if>
+			<if test = "sAnnuityPersRatio != null ">
+				record.S_ANNUITY_PERS_RATIO = #{sAnnuityPersRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sAnnuityPersAmount != null ">
+				record.S_ANNUITY_PERS_AMOUNT = #{sAnnuityPersAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sAnnuityPersRecapAmount != null ">
+				record.S_ANNUITY_PERS_RECAP_AMOUNT = #{sAnnuityPersRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sAnnuityPersRecapDiffe != null ">
+				record.S_ANNUITY_PERS_RECAP_DIFFE = #{sAnnuityPersRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sAnnuityPersComple != null ">
+				record.S_ANNUITY_PERS_COMPLE = #{sAnnuityPersComple,jdbcType=DECIMAL},
+			</if>
+			<if test = "sOvpBase != null ">
+				record.S_OVP_BASE = #{sOvpBase,jdbcType=DECIMAL},
+			</if>
+			<if test = "sOvpCompRatio != null ">
+				record.S_OVP_COMP_RATIO = #{sOvpCompRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sOvpCompAmount != null ">
+				record.S_OVP_COMP_AMOUNT = #{sOvpCompAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sOvpCompRecapAmount != null ">
+				record.S_OVP_COMP_RECAP_AMOUNT = #{sOvpCompRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sOvpCompRecapDiffe != null ">
+				record.S_OVP_COMP_RECAP_DIFFE = #{sOvpCompRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sOvpCompOverpaid != null ">
+				record.S_OVP_COMP_OVERPAID = #{sOvpCompOverpaid,jdbcType=DECIMAL},
+			</if>
+			<if test = "sOvpPersRatio != null ">
+				record.S_OVP_PERS_RATIO = #{sOvpPersRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sOvpPersAmount != null ">
+				record.S_OVP_PERS_AMOUNT = #{sOvpPersAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sOvpPersRecapAmount != null ">
+				record.S_OVP_PERS_RECAP_AMOUNT = #{sOvpPersRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sOvpPersRecapDiffe != null ">
+				record.S_OVP_PERS_RECAP_DIFFE = #{sOvpPersRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sOvpPersComple != null ">
+				record.S_OVP_PERS_COMPLE = #{sOvpPersComple,jdbcType=DECIMAL},
+			</if>
+			<if test = "sSpMediBase != null ">
+				record.S_SP_MEDI_BASE = #{sSpMediBase,jdbcType=DECIMAL},
+			</if>
+			<if test = "sSpMediCompRatio != null ">
+				record.S_SP_MEDI_COMP_RATIO = #{sSpMediCompRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sSpMediCompAmount != null ">
+				record.S_SP_MEDI_COMP_AMOUNT = #{sSpMediCompAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sSpMediCompRecapAmount != null ">
+				record.S_SP_MEDI_COMP_RECAP_AMOUNT = #{sSpMediCompRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sSpMediCompRecapDiffe != null ">
+				record.S_SP_MEDI_COMP_RECAP_DIFFE = #{sSpMediCompRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sSpMediCompOverpaid != null ">
+				record.S_SP_MEDI_COMP_OVERPAID = #{sSpMediCompOverpaid,jdbcType=DECIMAL},
+			</if>
+			<if test = "sSpMediPersRatio != null ">
+				record.S_SP_MEDI_PERS_RATIO = #{sSpMediPersRatio,jdbcType=DECIMAL},
+			</if>
+			<if test = "sSpMediPersAmount != null ">
+				record.S_SP_MEDI_PERS_AMOUNT = #{sSpMediPersAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sSpMediPersRecapAmount != null ">
+				record.S_SP_MEDI_PERS_RECAP_AMOUNT = #{sSpMediPersRecapAmount,jdbcType=DECIMAL},
+			</if>
+			<if test = "sSpMediPersRecapDiffe != null ">
+				record.S_SP_MEDI_PERS_RECAP_DIFFE = #{sSpMediPersRecapDiffe,jdbcType=DECIMAL},
+			</if>
+			<if test = "sSpMediPersComple != null ">
+				record.S_SP_MEDI_PERS_COMPLE = #{sSpMediPersComple,jdbcType=DECIMAL},
+			</if>
+			<if test = "remark4month != null ">
+				record.REMARK4MONTH = #{remark4month,jdbcType=VARCHAR},
+			</if>
+			<if test = "remark4year != null ">
+				record.REMARK4YEAR = #{remark4year,jdbcType=VARCHAR},
+			</if>
+			<if test = "persRecapDiffe4addup != null ">
+				record.PERS_RECAP_DIFFE_4ADDUP = #{persRecapDiffe4addup,jdbcType=DECIMAL},
+			</if>
+			<if test = "persCompleDiffe4addup != null ">
+				record.PERS_COMPLE_DIFFE_4ADDUP = #{persCompleDiffe4addup,jdbcType=DECIMAL},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "btimpNo != null ">
+				record.BTIMP_NO = #{btimpNo,jdbcType=VARCHAR},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_social_info 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_social_info 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_social_info  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_social_info  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	
+	<!-- 根据字段名获取所有状态正常的去重列表 -->
+	<select id="querySelectFields" parameterType="java.lang.String" resultType="java.lang.String">
+		<!-- select IF(count(1)>0,GROUP_CONCAT(t.fvals),null) as fields 
+		from 
+		(
+		SELECT 
+			DISTINCT ${column} as fvals
+		FROM
+			ch_social_info
+			where status=0
+		) t 
+		where t.fvals is not null and t.fvals != ''
+		order by t.fvals -->
+		SELECT 
+			DISTINCT ${column}
+		FROM
+			ch_social_info
+		where status=0
+		and ${column} != '#N/A' and ${column} is not null
+	</select>
+	
+	<!-- 根据身份证号列表和社保月份查找已存在的数据 -->
+	<select id="queryExisted" resultType="java.lang.String">
+	    select card_no from ch_social_info
+        where card_no in
+	    <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+        and SOCIAL_YMONTH = #{targetMonth} and status=0
+	</select>
+	
+	<!-- 查询补缴单 -->
+	<select id="query4Supple" resultType="java.util.Map">
+		select a.*,b.REMARK4MONTH as remark_4month
+		from 
+		(
+			select 
+				IFNULL(ID,'total') as id,
+				sum(
+					IFNULL(S_PEN_PERS_RECAP_DIFFE,0)
+				) as p_pen,
+				sum(
+					IFNULL(S_MEDI_PERS_RECAP_DIFFE,0)
+				) as p_medi,
+				sum(
+					IFNULL(S_UNEMP_PERS_RECAP_DIFFE,0)
+				) as p_unemp,
+				sum(
+					IFNULL(S_INJURY_PERS_RECAP_DIFFE,0)
+				) as p_injury,
+				sum(
+					IFNULL(S_BIRTH_PERS_RECAP_DIFFE,0)
+				) as p_birth,
+				sum(
+					IFNULL(S_ANNUITY_PERS_RECAP_DIFFE,0)
+				) as p_annuity,
+				sum(
+					IFNULL(S_OVP_PERS_RECAP_DIFFE,0)
+				) as p_ovp,
+				sum(
+					IFNULL(S_SP_MEDI_PERS_RECAP_DIFFE,0)
+				) as p_spmedi,
+				0.00 as p_serious,
+				@a:=
+				sum(
+					IFNULL(S_PEN_PERS_RECAP_DIFFE,0)+
+					IFNULL(S_MEDI_PERS_RECAP_DIFFE,0)+
+					IFNULL(S_UNEMP_PERS_RECAP_DIFFE,0)+
+					IFNULL(S_INJURY_PERS_RECAP_DIFFE,0)+
+					IFNULL(S_BIRTH_PERS_RECAP_DIFFE,0)+
+					IFNULL(S_ANNUITY_PERS_RECAP_DIFFE,0)+
+					IFNULL(S_OVP_PERS_RECAP_DIFFE,0)+
+					IFNULL(S_SP_MEDI_PERS_RECAP_DIFFE,0)
+					) as suma,
+				sum(
+					IFNULL(S_PEN_COMP_RECAP_DIFFE,0)
+				) as c_pen,
+				sum(
+					IFNULL(S_MEDI_COMP_RECAP_DIFFE,0)
+				) as c_medi,
+				sum(
+					IFNULL(S_UNEMP_COMP_RECAP_DIFFE,0)
+				) as c_unemp,
+				sum(
+					IFNULL(S_INJURY_COMP_RECAP_DIFFE,0)
+				) as c_injury,
+				sum(
+					IFNULL(S_BIRTH_COMP_RECAP_DIFFE,0)
+				) as c_birth,
+				sum(
+					IFNULL(S_ANNUITY_COMP_RECAP_DIFFE,0)
+				) as c_annuity,
+				sum(
+					IFNULL(S_OVP_COMP_RECAP_DIFFE,0)
+				) as c_ovp,
+				sum(
+					IFNULL(S_SP_MEDI_COMP_RECAP_DIFFE,0)
+				) as c_spmedi,
+				0.00 as c_serious,
+				@b:=
+				sum(
+					IFNULL(S_PEN_COMP_RECAP_DIFFE,0)+
+					IFNULL(S_MEDI_COMP_RECAP_DIFFE,0)+
+					IFNULL(S_UNEMP_COMP_RECAP_DIFFE,0)+
+					IFNULL(S_INJURY_COMP_RECAP_DIFFE,0)+
+					IFNULL(S_BIRTH_COMP_RECAP_DIFFE,0)+
+					IFNULL(S_ANNUITY_COMP_RECAP_DIFFE,0)+
+					IFNULL(S_OVP_COMP_RECAP_DIFFE,0)+
+					IFNULL(S_SP_MEDI_COMP_RECAP_DIFFE,0)
+					) as sumb,
+				(@a+@b) as total
+			from
+			ch_social_info
+			where IS_EXIST_SUPPLE=1 and status=0
+			<if test = "entity.name != null and entity.name != ''">
+				<![CDATA[ and NAME like '%${entity.name}%' ]]>
+			</if>
+			<if test = "entity.cardNo != null and entity.cardNo != ''">
+				<![CDATA[ and CARD_NO  = #{entity.cardNo} ]]>
+			</if>
+			group by ID with rollup
+		) a
+		left join ch_social_info b on a.id=b.id
+	</select>
+	
+	<!-- 根据导入编号逻辑删除-->
+	<update id="delBatchByBtImpNo4Logic" parameterType="java.lang.String">
+		UPDATE ch_social_info 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE BTIMP_NO = #{btimpNo}
+	</update>
+</mapper>

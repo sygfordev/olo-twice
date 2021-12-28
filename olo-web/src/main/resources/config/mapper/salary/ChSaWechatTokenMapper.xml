@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.salary.mapper.ChSaWechatTokenMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chSaWechatTokenMapper" type="com.hdfs.olo.olo_web.salary.model.ChSaWechatTokenModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="token" column="TOKEN" jdbcType="VARCHAR"/>
+		<result property="type" column="TYPE" jdbcType="INTEGER"/>
+		<result property="cardNo" column="CARD_NO" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chSaWechatTokenMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_wechat_token record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_sa_wechat_token record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 TOKEN, 
+				 TYPE, 
+				 CARD_NO, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.token != null and entity.token != ''">
+					<![CDATA[ and record.TOKEN  = #{entity.token} ]]>
+				</if>
+				<if test = "entity.type != null">
+					<![CDATA[ and record.TYPE  = #{entity.type} ]]>
+				</if>
+				<if test = "entity.cardNo != null and entity.cardNo != ''">
+					<![CDATA[ and record.CARD_NO  = #{entity.cardNo} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chSaWechatTokenMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_wechat_token record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chSaWechatTokenMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_wechat_token record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="token != null">TOKEN,</if>
+			<if test="type != null">TYPE,</if>
+			<if test="cardNo != null">CARD_NO,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="token != null">#{token,jdbcType=VARCHAR},</if>
+			<if test="type != null">#{type,jdbcType=INTEGER},</if>
+			<if test="cardNo != null">#{cardNo,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.salary.model.ChSaWechatTokenModel">
+		INSERT INTO ch_sa_wechat_token(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_sa_wechat_token
+        (
+			TOKEN,
+			TYPE,
+			CARD_NO,
+			CREATE_TIME,
+			UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+			#{item.token,jdbcType=VARCHAR},
+			#{item.type,jdbcType=INTEGER},
+			#{item.cardNo,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.salary.model.ChSaWechatTokenModel">
+		UPDATE ch_sa_wechat_token record 
+		<set>
+			<if test = "token != null ">
+				record.TOKEN = #{token,jdbcType=VARCHAR},
+			</if>
+			<if test = "type != null ">
+				record.TYPE = #{type,jdbcType=INTEGER},
+			</if>
+			<if test = "cardNo != null ">
+				record.CARD_NO = #{cardNo,jdbcType=VARCHAR},
+			</if>
+			record.UPDATE_TIME = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_sa_wechat_token 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_sa_wechat_token  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+	<!-- 删除(批量-物理) -->
+	<delete id="delByIdcard" parameterType="java.lang.String">
+		DELETE FROM ch_sa_wechat_token  
+		WHERE card_no = #{cardNo}
+	</delete>
+	<!-- ******************************以下为扩展方法**************************** -->
+	<!-- 清除超出时间的访问token -->
+	<delete id="delByTime">
+		DELETE FROM ch_sa_wechat_token  
+		WHERE 
+		<if test="unit eq 'H'.toString()">
+			CREATE_TIME &lt;= DATE_SUB(NOW(),INTERVAL #{num} HOUR)
+		</if>
+		<if test="unit eq 'M'.toString()">
+			CREATE_TIME &lt;= DATE_SUB(NOW(),INTERVAL #{num} MINUTE)
+		</if>
+		<if test="unit eq 'S'.toString()">
+			CREATE_TIME &lt;= DATE_SUB(NOW(),INTERVAL #{num} SECOND)
+		</if>
+	</delete>
+</mapper>

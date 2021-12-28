@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.hdfs</groupId>
+		<artifactId>olo</artifactId>
+		<version>${olo.version}</version>
+	</parent>
+	<artifactId>olo-web</artifactId>
+	<name>olo-web</name>
+	<packaging>war</packaging>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<shiro.version>1.4.0</shiro.version>
+	</properties>
+	<dependencies>
+		<!-- shiro start -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		
+		<!-- jstl -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		
+		<!-- <dependency>
+		  <groupId>org.wltea.expression</groupId>
+		  <artifactId>IKExpression</artifactId>
+		  <version>2.1.2</version>
+		</dependency> -->
+		
+		<!-- org.apache.tools.zip zip压缩-->
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant</artifactId>
+			<version>1.10.5</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.11.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.jumpmind.symmetric/symmetric-csv -->
+		<dependency>
+		    <groupId>org.jumpmind.symmetric</groupId>
+		    <artifactId>symmetric-csv</artifactId>
+		    <version>3.5.10</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+		<!-- <dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>3.14</version>
+		</dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>4.0.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml-schemas</artifactId>
+		    <version>4.0.0</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>cn.hutool</groupId>
+		    <artifactId>hutool-all</artifactId>
+		    <version>5.0.7</version>
+		</dependency>
+				
+		
+				
+		
+
+	</dependencies>
+	
+	<build>
+	    <resources>
+		  <resource>
+		    <directory>src/main/resources</directory>
+		    <includes>
+		      <include>**/*.properties</include>
+		      <include>**/*.xml</include>
+		      <include>**/*.tld</include>
+		    </includes>
+		    <filtering>false</filtering>
+		  </resource>
+		  <resource>
+		    <directory>src/main/java</directory>
+		    <includes>
+		      <include>**/*.properties</include>
+		      <include>**/*.xml</include>
+		      <include>**/*.tld</include>
+		    </includes>
+		    <filtering>false</filtering>
+		  </resource>
+		</resources>
+		<plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+	</build>
+</project>

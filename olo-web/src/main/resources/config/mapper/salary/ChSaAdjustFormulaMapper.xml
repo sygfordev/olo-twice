@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdfs.olo.olo_web.salary.mapper.ChSaAdjustFormulaMapper">
+	<!-- 返回值映射map -->
+	<resultMap id="chSaAdjustFormulaMapper" type="com.hdfs.olo.olo_web.salary.model.ChSaAdjustFormulaModel">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="target" column="TARGET" jdbcType="VARCHAR"/>
+		<result property="targetLevelCn" column="TARGET_LEVEL_CN" jdbcType="VARCHAR"/>
+		<result property="formula2down" column="FORMULA_2DOWN" jdbcType="DECIMAL"/>
+		<result property="formula3to4" column="FORMULA_3TO4" jdbcType="DECIMAL"/>
+		<result property="formula5to6" column="FORMULA_5TO6" jdbcType="DECIMAL"/>
+		<result property="formula7to8" column="FORMULA_7TO8" jdbcType="DECIMAL"/>
+		<result property="formula9to10" column="FORMULA_9TO10" jdbcType="DECIMAL"/>
+		<result property="formula11to12" column="FORMULA_11TO12" jdbcType="DECIMAL"/>
+		<result property="formula13up" column="FORMULA_13UP" jdbcType="DECIMAL"/>
+		<result property="gratdations" column="GRATDATIONS" jdbcType="DECIMAL"/>
+		<result property="formulaType" column="FORMULA_TYPE" jdbcType="VARCHAR"/>
+		<result property="uniqueKey" column="UNIQUE_KEY" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="INTEGER"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 分页查询数据集合-->
+	<select id="queryPage" resultMap="chSaAdjustFormulaMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_adjust_formula record
+		<include refid="whereFilter" />
+		<if test="page!=null">
+			<if test="page.orderBy != null">
+				order by #{page.orderBy}
+			</if>
+			limit #{page.pageOffset} , #{page.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCount" resultType="long">
+		<include refid="query4count"/>
+		<include refid="whereFilter"/>
+	</select>
+	
+	<!--拼装SQL:查询数量公共sql -->
+	<sql id="query4count">
+		SELECT count(1) FROM ch_sa_adjust_formula record
+	</sql>
+	
+	<!--拼装SQL:查询字段公共sql -->
+	<sql id="queryColumns">
+	    <if test="queryFields != null ">
+	 	    <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		    </trim>
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 ID, 
+				 TARGET, 
+				 TARGET_LEVEL_CN, 
+				 FORMULA_2DOWN, 
+				 FORMULA_3TO4, 
+				 FORMULA_5TO6, 
+				 FORMULA_7TO8, 
+				 FORMULA_9TO10, 
+				 FORMULA_11TO12, 
+				 FORMULA_13UP, 
+				 GRATDATIONS, 
+				 FORMULA_TYPE, 
+				 UNIQUE_KEY,
+				 STATUS, 
+				 REMARK, 
+				 CREATE_TIME, 
+				 UPDATE_TIME 
+			]]>
+	  	</if>
+	</sql>
+	
+	<!--拼装SQL:过滤条件 -->
+	<sql id="whereFilter">
+		<where> 
+			<if test="entity!=null">
+				<if test = "entity.id != null">
+					<![CDATA[ and record.ID  = #{entity.id} ]]>
+				</if>
+				<if test = "entity.target != null and entity.target != ''">
+					<![CDATA[ and record.TARGET  = #{entity.target} ]]>
+				</if>
+				<if test = "entity.targetLevelCn != null and entity.targetLevelCn != ''">
+					<![CDATA[ and record.TARGET_LEVEL_CN  = #{entity.targetLevelCn} ]]>
+				</if>
+				<if test = "entity.formula2down != null">
+					<![CDATA[ and record.FORMULA_2DOWN  = #{entity.formula2down} ]]>
+				</if>
+				<if test = "entity.formula3to4 != null">
+					<![CDATA[ and record.FORMULA_3TO4  = #{entity.formula3to4} ]]>
+				</if>
+				<if test = "entity.formula5to6 != null">
+					<![CDATA[ and record.FORMULA_5TO6  = #{entity.formula5to6} ]]>
+				</if>
+				<if test = "entity.formula7to8 != null">
+					<![CDATA[ and record.FORMULA_7TO8  = #{entity.formula7to8} ]]>
+				</if>
+				<if test = "entity.formula9to10 != null">
+					<![CDATA[ and record.FORMULA_9TO10  = #{entity.formula9to10} ]]>
+				</if>
+				<if test = "entity.formula11to12 != null">
+					<![CDATA[ and record.FORMULA_11TO12  = #{entity.formula11to12} ]]>
+				</if>
+				<if test = "entity.formula13up != null">
+					<![CDATA[ and record.FORMULA_13UP  = #{entity.formula13up} ]]>
+				</if>
+				<if test = "entity.gratdations != null">
+					<![CDATA[ and record.GRATDATIONS  = #{entity.gratdations} ]]>
+				</if>
+				<if test = "entity.formulaType != null and entity.formulaType != ''">
+					<![CDATA[ and record.FORMULA_TYPE  = #{entity.formulaType} ]]>
+				</if>
+				<if test = "entity.uniqueKey != null and entity.uniqueKey != ''">
+					<![CDATA[ and record.UNIQUE_KEY  = #{entity.uniqueKey} ]]>
+				</if>
+				<if test = "entity.status != null">
+					<![CDATA[ and record.STATUS  = #{entity.status} ]]>
+				</if>
+				<if test = "entity.remark != null and entity.remark != ''">
+					<![CDATA[ and record.REMARK  = #{entity.remark} ]]>
+				</if>
+				<if test = "entity.createTime != null">
+					<![CDATA[ and record.CREATE_TIME  = #{entity.createTime} ]]>
+				</if>
+				<if test = "entity.updateTime != null">
+					<![CDATA[ and record.UPDATE_TIME  = #{entity.updateTime} ]]>
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryList" resultMap="chSaAdjustFormulaMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_adjust_formula record
+		<include refid="whereFilter" />
+		ORDER BY UPDATE_TIME DESC
+	</select>
+	
+	<!-- 查询单个实体 -->
+	<select id="queryById" resultMap="chSaAdjustFormulaMapper" >
+		SELECT 
+		<include refid="queryColumns"/>
+		FROM ch_sa_adjust_formula record
+		WHERE 
+		 record.id = #{id}
+	</select>
+	
+	<!--拼装SQL:选择性使用表中列 -->
+	<sql id="colKeys4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">ID,</if>
+			<if test="target != null">TARGET,</if>
+			<if test="targetLevelCn != null">TARGET_LEVEL_CN,</if>
+			<if test="formula2down != null">FORMULA_2DOWN,</if>
+			<if test="formula3to4 != null">FORMULA_3TO4,</if>
+			<if test="formula5to6 != null">FORMULA_5TO6,</if>
+			<if test="formula7to8 != null">FORMULA_7TO8,</if>
+			<if test="formula9to10 != null">FORMULA_9TO10,</if>
+			<if test="formula11to12 != null">FORMULA_11TO12,</if>
+			<if test="formula13up != null">FORMULA_13UP,</if>
+			<if test="gratdations != null">GRATDATIONS,</if>
+			<if test="formulaType != null">FORMULA_TYPE,</if>
+			<if test="uniqueKey != null">UNIQUE_KEY,</if>
+			<if test="status != null">STATUS,</if>
+			<if test="remark != null">REMARK,</if>
+			CREATE_TIME,
+			UPDATE_TIME,
+		</trim>
+	</sql>
+	<!--拼装SQL:选择性使用列对应值 -->
+	<sql id="colVals4Selective">
+		<trim suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=BIGINT},</if>
+			<if test="target != null">#{target,jdbcType=VARCHAR},</if>
+			<if test="targetLevelCn != null">#{targetLevelCn,jdbcType=VARCHAR},</if>
+			<if test="formula2down != null">#{formula2down,jdbcType=DECIMAL},</if>
+			<if test="formula3to4 != null">#{formula3to4,jdbcType=DECIMAL},</if>
+			<if test="formula5to6 != null">#{formula5to6,jdbcType=DECIMAL},</if>
+			<if test="formula7to8 != null">#{formula7to8,jdbcType=DECIMAL},</if>
+			<if test="formula9to10 != null">#{formula9to10,jdbcType=DECIMAL},</if>
+			<if test="formula11to12 != null">#{formula11to12,jdbcType=DECIMAL},</if>
+			<if test="formula13up != null">#{formula13up,jdbcType=DECIMAL},</if>
+			<if test="gratdations != null">#{gratdations,jdbcType=DECIMAL},</if>
+			<if test="formulaType != null">#{formulaType,jdbcType=VARCHAR},</if>
+			<if test="uniqueKey != null">#{uniqueKey,jdbcType=VARCHAR},</if>
+			0,
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			now(),
+			now(),
+		</trim>		
+	</sql>
+	
+	<!-- 新增(单条) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insert" parameterType="com.hdfs.olo.olo_web.salary.model.ChSaAdjustFormulaModel">
+		INSERT INTO ch_sa_adjust_formula(
+			<include refid="colKeys4Selective"/>
+		)VALUES(
+			<include refid="colVals4Selective"/>
+		)
+	</insert>
+	
+	<!-- 新增(批量) -->
+	<!-- useGeneratedKeys="true" keyProperty="fields" keyColumn="columns" -->
+	<insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO ch_sa_adjust_formula
+        (
+			TARGET,
+			TARGET_LEVEL_CN,
+			FORMULA_2DOWN,
+			FORMULA_3TO4,
+			FORMULA_5TO6,
+			FORMULA_7TO8,
+			FORMULA_9TO10,
+			FORMULA_11TO12,
+			FORMULA_13UP,
+			GRATDATIONS,
+			FORMULA_TYPE,
+			UNIQUE_KEY,
+			STATUS,
+			REMARK,
+			CREATE_TIME,
+			UPDATE_TIME
+        ) 
+        VALUES
+        <foreach collection="list" separator="," item="item">
+        (
+			#{item.target,jdbcType=VARCHAR},
+			#{item.targetLevelCn,jdbcType=VARCHAR},
+			#{item.formula2down,jdbcType=DECIMAL},
+			#{item.formula3to4,jdbcType=DECIMAL},
+			#{item.formula5to6,jdbcType=DECIMAL},
+			#{item.formula7to8,jdbcType=DECIMAL},
+			#{item.formula9to10,jdbcType=DECIMAL},
+			#{item.formula11to12,jdbcType=DECIMAL},
+			#{item.formula13up,jdbcType=DECIMAL},
+			#{item.gratdations,jdbcType=DECIMAL},
+			#{item.formulaType,jdbcType=VARCHAR},
+			#{item.uniqueKey,jdbcType=VARCHAR},
+			0,
+			#{item.remark,jdbcType=VARCHAR},
+			now(),
+			now()
+        )
+        </foreach>
+	</insert>
+	
+	<!-- 更新(单条) -->
+	<update id="update" parameterType="com.hdfs.olo.olo_web.salary.model.ChSaAdjustFormulaModel">
+		UPDATE ch_sa_adjust_formula record 
+		<set>
+			<if test = "target != null ">
+				record.TARGET = #{target,jdbcType=VARCHAR},
+			</if>
+			<if test = "targetLevelCn != null ">
+				record.TARGET_LEVEL_CN = #{targetLevelCn,jdbcType=VARCHAR},
+			</if>
+			<if test = "formula2down != null ">
+				record.FORMULA_2DOWN = #{formula2down,jdbcType=DECIMAL},
+			</if>
+			<if test = "formula3to4 != null ">
+				record.FORMULA_3TO4 = #{formula3to4,jdbcType=DECIMAL},
+			</if>
+			<if test = "formula5to6 != null ">
+				record.FORMULA_5TO6 = #{formula5to6,jdbcType=DECIMAL},
+			</if>
+			<if test = "formula7to8 != null ">
+				record.FORMULA_7TO8 = #{formula7to8,jdbcType=DECIMAL},
+			</if>
+			<if test = "formula9to10 != null ">
+				record.FORMULA_9TO10 = #{formula9to10,jdbcType=DECIMAL},
+			</if>
+			<if test = "formula11to12 != null ">
+				record.FORMULA_11TO12 = #{formula11to12,jdbcType=DECIMAL},
+			</if>
+			<if test = "formula13up != null ">
+				record.FORMULA_13UP = #{formula13up,jdbcType=DECIMAL},
+			</if>
+			<if test = "gratdations != null ">
+				record.GRATDATIONS = #{gratdations,jdbcType=DECIMAL},
+			</if>
+			<if test = "formulaType != null ">
+				record.FORMULA_TYPE = #{formulaType,jdbcType=VARCHAR},
+			</if>
+			<if test = "uniqueKey != null">
+				record.UNIQUE_KEY = #{uniqueKey,jdbcType=VARCHAR},
+			</if>
+			<if test = "status != null ">
+				record.STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test = "remark != null ">
+				record.REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test = "createTime != null ">
+				record.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test = "updateTime != null ">
+				record.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(单条-物理) -->
+	<delete id="delById">
+		DELETE FROM ch_sa_adjust_formula 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delById4Logic">
+		UPDATE ch_sa_adjust_formula 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除(批量-物理) -->
+	<delete id="delBatchByIds" parameterType="java.util.List">
+		DELETE FROM ch_sa_adjust_formula  
+		WHERE id IN
+		<foreach collection="list" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除(批量-逻辑) -->
+	<update id="delBatchByIds4Logic" parameterType="java.util.List">
+		UPDATE ch_sa_adjust_formula  
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE id IN
+			<foreach collection="list" open="(" separator="," close=")" item="item">
+				#{item}
+			</foreach>
+	</update>
+	
+	<!-- ******************************以下为扩展方法**************************** -->
+	
+	<!-- 删除(单条-逻辑) -->
+	<update id="delByFormulaType4Logic">
+		UPDATE ch_sa_adjust_formula 
+		SET status = '1',
+			UPDATE_TIME = now()
+		WHERE FORMULA_TYPE = #{type}
+	</update>
+	
+	<!-- 根据公式类型列表查询使用中的公式 -->
+	<select id="queryListByTypes" parameterType="java.util.List" resultMap="chSaAdjustFormulaMapper">
+		select * 
+		from ch_sa_adjust_formula
+		where 
+		FORMULA_TYPE in 
+		<foreach collection="types" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+		and status=0
+		order by FORMULA_TYPE
+	</select>
+	
+	<!-- 通过调资记录主键查找本次调资使用到的薪级类别 -->
+	<select id="queryAdjustTypeAndUniqueKey" parameterType="java.lang.Long" resultType="java.util.Map">
+			SELECT
+				formula_type,
+				unique_key 
+			FROM
+				ch_sa_adjust_formula 
+			WHERE
+				id in (
+					SELECT
+						distinct ads.FORMULA_ID 
+					FROM
+						ch_sa_adjust_record r
+						LEFT JOIN ch_sa_adjust_salary ads ON ads.RECORD_ID = r.id 
+					WHERE
+						r.id = #{recordId} and ads.FORMULA_ID is not null
+				) 
+			group by FORMULA_TYPE,unique_key
+	</select>
+	
+	<!-- 通过调资记录主键查找本次调资所对应的薪级类别（计算公式） -->
+	<select id="queryByAdjustTypeAndUniqueKey" resultMap="chSaAdjustFormulaMapper">
+		SELECT
+			a.* 
+		FROM
+			ch_sa_adjust_formula a
+		WHERE
+			a.FORMULA_TYPE = #{adjustType}
+			and a.UNIQUE_KEY = #{uniqueKey}
+		order by target,TARGET_LEVEL_CN
+	</select>
+</mapper>
