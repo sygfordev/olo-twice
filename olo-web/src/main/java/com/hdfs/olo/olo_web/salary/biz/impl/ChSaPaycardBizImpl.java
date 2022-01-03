@@ -5,13 +5,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hdfs.olo.olo_web.plugins.annotaion.DataSource;
-import com.hdfs.olo.olo_web.plugins.common.page.Page;
 import com.hdfs.olo.olo_web.plugins.common.utils.StringHelper;
 import com.hdfs.olo.olo_web.salary.biz.IChSaPaycardBiz;
 import com.hdfs.olo.olo_web.salary.mapper.ChSaPaycardMapper;
@@ -33,96 +31,6 @@ public class ChSaPaycardBizImpl implements IChSaPaycardBiz {
 
 	/**
 	 * <p>
-	 * Discription:[薪资-工资卡数据分页查询]
-	 * </p>
-	 * Created on 2021年05月14日
-	 * 
-	 * @param page 薪资-工资卡数据分页条件
-	 * @return 分页数据
-	 * 
-	 * @author:huadf
-	 */
-	@Override
-	@SuppressWarnings("rawtypes")
-	public void queryPage(Page page) throws Exception {
-
-		queryPage(page, (ChSaPaycardExtendModel) page.getModel(), page.getQueryFields());
-	}
-
-	/**
-	 * <p>
-	 * Discription:[薪资-工资卡数据分页查询]
-	 * </p>
-	 * Created on 2021年05月14日
-	 * 
-	 * @param page             薪资-工资卡数据分页条件
-	 * @param chSaPaycardModel 薪资-工资卡数据查询条件
-	 * @param queryFields      薪资-工资卡数据查询字段
-	 * @return 分页数据
-	 * 
-	 * @author:huadf
-	 */
-	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void queryPage(Page page, ChSaPaycardExtendModel model, String queryFields) throws Exception {
-
-		List<ChSaPaycardModel> list = null;
-		// 判断参数是否为空
-		if (Objects.isNull(page)) {
-			return;
-		}
-		List<String> fields = null;
-		if (!Objects.isNull(queryFields)) {
-			fields = Arrays.asList(queryFields.split(","));
-		}
-		// 查询总条数和记录
-		Long count = this.chSaPaycardMapper.queryCount((ChSaPaycardExtendModel) page.getModel());
-		if (count > 0)
-			list = this.chSaPaycardMapper.queryPage(page, model, fields);
-		// 封装奖励数据
-		page.setRecordTotal(count);
-		page.setDatas(null == list ? new ArrayList<ChSaPaycardModel>() : list);
-	}
-
-	/**
-	 * <p>
-	 * Discription:[薪资-工资卡数据不分页查询]
-	 * </p>
-	 * Created on 2021年05月14日
-	 * 
-	 * @param chSaPaycardModel 薪资-工资卡数据查询条件
-	 * @param queryFields      薪资-工资卡数据查询字段
-	 * @return List<ChSaPaycardModel>列表数据
-	 * 
-	 * @author:huadf
-	 */
-	@Override
-	public List<ChSaPaycardModel> queryList(ChSaPaycardModel model, String queryFields) throws Exception {
-		List<ChSaPaycardModel> list = null;
-
-		List<String> fields = null;
-		if (!Objects.isNull(queryFields)) {
-			fields = Arrays.asList(queryFields.split(","));
-		}
-		list = this.chSaPaycardMapper.queryList(model, fields);
-		return list;
-	}
-
-	@Override
-	public List<ChSaPaycardModel> queryListWithSerial(ChSaPaycardExtendModel model, String queryFields)
-			throws Exception {
-		List<ChSaPaycardModel> list = null;
-
-		List<String> fields = null;
-		if (!Objects.isNull(queryFields)) {
-			fields = Arrays.asList(queryFields.split(","));
-		}
-		list = this.chSaPaycardMapper.queryListWithSerial(model, fields);
-		return list;
-	}
-
-	/**
-	 * <p>
 	 * Discription:[薪资-工资卡数据不分页查询]
 	 * </p>
 	 * Created on 2021年05月14日
@@ -133,13 +41,25 @@ public class ChSaPaycardBizImpl implements IChSaPaycardBiz {
 	 * @author:huadf
 	 */
 	@Override
-	public List<ChSaPaycardModel> queryList(ChSaPaycardModel model) throws Exception {
-		return queryList(model, null);
+	public List<Map<String, Object>> queryList(ChSaPaycardModel model) throws Exception {
+
+		List<Map<String, Object>> list = chSaPaycardMapper.queryList(model);
+		ArrayList<Map<String, Object>> newlist = new ArrayList<>();
+		for (Map<String, Object> map : list) {
+			String month = map.get("NET_TARGET_YEARMONTH").toString();
+			String WAGE_POSIT_TOTAL = map.get("WAGE_POSIT_TOTAL").toString();
+			Map<String, Object> cardMap = new HashMap<>();
+			cardMap.put("item", "岗位工资合计");
+			if (month.contains("01")) {
+				cardMap.put("Jan", map.get("01"));
+			}
+		}
+		return chSaPaycardMapper.queryList(model);
 	}
 
 	@Override
 	public List<ChSaPaycardModel> queryListWithSerial(ChSaPaycardExtendModel model) throws Exception {
-		return queryListWithSerial(model, null);
+		return chSaPaycardMapper.queryListWithSerial(model);
 	}
 
 	/**
@@ -247,7 +167,7 @@ public class ChSaPaycardBizImpl implements IChSaPaycardBiz {
 		String realKey = null;
 		for (String key : itemMap.keySet()) {
 			String matchKey = "";
-			for (String match : matchHeads) {
+			for (String match : itemList) {
 				if (!key.startsWith(match))
 					continue;
 				matchKey = match;

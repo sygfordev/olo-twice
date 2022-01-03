@@ -21,7 +21,6 @@ import com.hdfs.olo.olo_web.central.controller.BaseController;
 import com.hdfs.olo.olo_web.plugins.common.constant.CommonConstant;
 import com.hdfs.olo.olo_web.plugins.common.message.Page4LayStatus;
 import com.hdfs.olo.olo_web.plugins.common.message.Result4Page;
-import com.hdfs.olo.olo_web.plugins.common.page.Page;
 import com.hdfs.olo.olo_web.plugins.common.page.Page.Builder;
 import com.hdfs.olo.olo_web.plugins.common.utils.ComboxItem;
 import com.hdfs.olo.olo_web.plugins.common.utils.StringHelper;
@@ -114,23 +113,32 @@ public class ChSaPaycardController extends BaseController {
 	@ResponseBody
 	public Result4Page<ChSaPaycardExtendModel> page(HttpServletRequest request, ModelMap modelMap) throws Exception {
 		Result4Page<ChSaPaycardExtendModel> retBody = new Result4Page<ChSaPaycardExtendModel>();
-		// 查询参数
-		Page.Builder<ChSaPaycardExtendModel> builder = new Page.Builder<ChSaPaycardExtendModel>();
-		setSearchParameters(request, builder);
-		Page<ChSaPaycardExtendModel> page = builder.build();
+		// 请求参数置入
+		String name = request.getParameter(PARA_name);
+		// 扩展属性
+		String startMonth = request.getParameter("startMonth");
+		String endMonth = request.getParameter("endMonth");
+		ChSaPaycardExtendModel model = new ChSaPaycardExtendModel();
+		model.setName(null != name && !"".equals(name.trim()) ? name.trim() : null);
+		// 设置扩展属性
+		if (StringHelper.isNullOrEmpty(startMonth) && StringHelper.isNullOrEmpty(endMonth)) {
+			startMonth = chSaPaycardBiz.queryLastMonth();
+			endMonth = startMonth;
+		}
+		model.setStartMonth(StringHelper.isNullOrEmpty(startMonth) ? null : startMonth);
+		model.setEndMonth(StringHelper.isNullOrEmpty(endMonth) ? null : endMonth);
 		try {
-			// 分页
-			page.setOrderBy("NET_TARGET_YEARMONTH desc");
-			if (StringUtils.isEmpty(page.getModel().getName())) {
+			if (StringUtils.isEmpty(name)) {
 				retBody.setCode(Page4LayStatus.FAILED);
 				retBody.setMsg("name为空，获取失败！");
 				return retBody;
 			}
-			chSaPaycardBiz.queryPage(page);
+			List<Map<String, Object>> list = chSaPaycardBiz.queryList(model);
 			retBody.setCode(Page4LayStatus.SUCCESS);
 			retBody.setMsg("获取成功！");
-			retBody.setData(page.getDatas());
-			retBody.setCount(page.getRecordTotal());
+			retBody.setData(list);
+			Long count = (long) 33;
+			retBody.setCount(count);
 		} catch (Exception e) {
 			retBody.setCode(Page4LayStatus.FAILED);
 			retBody.setMsg("获取失败！");

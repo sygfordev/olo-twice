@@ -33,14 +33,6 @@
 	
 	<!--拼装SQL:查询字段公共sql -->
 	<sql id="queryColumns">
-	    <if test="queryFields != null ">
-	 	    <trim prefix="" suffix="" suffixOverrides=",">
-		        <foreach collection="queryFields" item="fi" index="index">
-		          ${fi},
-		        </foreach>
-		    </trim>
-	  	</if>
-	    <if test="queryFields == null ">
 	  		<![CDATA[
 				 NET_TARGET_YEARMONTH,
 				 WAGE_POSIT_TOTAL,
@@ -66,7 +58,6 @@
 				 CUT_TOTAL,
 				 NET_SALARY 
 			]]>
-	  	</if>
 	</sql>
 	
 	<!--拼装SQL:过滤条件 -->
@@ -90,6 +81,7 @@
 		<include refid="queryColumns"/>
 		FROM ch_sa_payslip record
 		<include refid="whereFilter" />
+		GROUP BY  NET_TARGET_YEARMONTH 
 		ORDER BY NET_TARGET_YEARMONTH DESC
 	</select>
 	
@@ -104,29 +96,6 @@
 		<include refid="whereFilter" />
 		ORDER BY NET_TARGET_YEARMONTH DESC
 	</select>
-
-	
-	<select id="queryExisted" resultType="java.lang.String">
-	    select card_no from ch_sa_payslip
-        where card_no in
-	    <foreach collection="list" open="(" separator="," close=")" item="item">
-            #{item}
-        </foreach>
-        and NET_TARGET_YEARMONTH = #{targetMonth} and status=0
-	</select>
-	
-	<!--拼装SQL:选择性使用表中列 -->
-	<sql id="colKeys4Selective">
-		<trim suffixOverrides=",">
-			<if test="name != null">NAME</if>
-		</trim>
-	</sql>
-	<!--拼装SQL:选择性使用列对应值 -->
-	<sql id="colVals4Selective">
-		<trim suffixOverrides=",">
-			<if test="name != null">#{name,jdbcType=VARCHAR}</if>
-		</trim>		
-	</sql>
 	
 	<!-- ******************************以下为扩展方法**************************** -->
 	

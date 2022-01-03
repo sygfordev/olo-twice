@@ -1,11 +1,11 @@
 package com.hdfs.olo.olo_web.salary.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
 import com.hdfs.olo.olo_web.plugins.annotaion.MyBatisRepository;
-import com.hdfs.olo.olo_web.plugins.common.page.Page;
 import com.hdfs.olo.olo_web.salary.model.ChSaPaycardExtendModel;
 import com.hdfs.olo.olo_web.salary.model.ChSaPaycardModel;
 
@@ -22,16 +22,9 @@ import com.hdfs.olo.olo_web.salary.model.ChSaPaycardModel;
 public interface ChSaPaycardMapper {
 
 	/**
-	 * 分页查询固定参数
-	 */
-	List<ChSaPaycardModel> queryPage(@Param("page") Page<?> page, @Param("entity") ChSaPaycardModel entity,
-			@Param("queryFields") List<?> queryFields);
-
-	/**
 	 * 查询固定参数
 	 */
-	List<ChSaPaycardModel> queryList(@Param("entity") ChSaPaycardModel entity,
-			@Param("queryFields") List<?> queryFields);
+	List<Map<String, Object>> queryList(@Param("entity") ChSaPaycardModel entity);
 
 	/**
 	 * 根据起始年月和结束年月查询奖励项目
@@ -45,8 +38,7 @@ public interface ChSaPaycardMapper {
 	/**
 	 * 查询固定参数
 	 */
-	List<ChSaPaycardModel> queryListWithSerial(@Param("entity") ChSaPaycardExtendModel entity,
-			@Param("queryFields") List<?> queryFields);
+	List<ChSaPaycardModel> queryListWithSerial(@Param("entity") ChSaPaycardExtendModel entity);
 
 	/**
 	 * 查询总数量

@@ -1,8 +1,8 @@
 package com.hdfs.olo.olo_web.salary.biz;
 
 import java.util.List;
+import java.util.Map;
 
-import com.hdfs.olo.olo_web.plugins.common.page.Page;
 import com.hdfs.olo.olo_web.salary.model.ChSaPaycardExtendModel;
 import com.hdfs.olo.olo_web.salary.model.ChSaPaycardModel;
 
@@ -16,51 +16,6 @@ public interface IChSaPaycardBiz {
 
 	/**
 	 * <p>
-	 * Discription:[薪资-工资单数据分页查询]
-	 * </p>
-	 * Created on 2021年05月14日
-	 * 
-	 * @param page 薪资-工资单数据分页条件
-	 * @return 分页数据
-	 * 
-	 * @author:huadf
-	 */
-	public void queryPage(Page<?> page) throws Exception;
-
-	/**
-	 * <p>
-	 * Discription:[薪资-工资单数据分页查询]
-	 * </p>
-	 * Created on 2021年05月14日
-	 * 
-	 * @param page        薪资-工资单数据分页条件
-	 * @param model       薪资-工资单数据查询条件
-	 * @param queryFields 薪资-工资单数据查询字段集合
-	 * @return 分页数据
-	 * 
-	 * @author:huadf
-	 */
-	public void queryPage(Page<?> page, ChSaPaycardExtendModel model, String queryFields) throws Exception;
-
-	/**
-	 * <p>
-	 * Discription:[薪资-工资单数据不分页查询]
-	 * </p>
-	 * Created on 2021年05月14日
-	 * 
-	 * @param model       薪资-工资单数据查询条件
-	 * @param queryFields 薪资-工资单数据查询字段集合
-	 * @return List<ChSaPayslipModel>列表数据
-	 * 
-	 * @author:huadf
-	 */
-	public List<ChSaPaycardModel> queryList(ChSaPaycardModel model, String queryFields) throws Exception;
-
-	public List<ChSaPaycardModel> queryListWithSerial(ChSaPaycardExtendModel model, String queryFields)
-			throws Exception;
-
-	/**
-	 * <p>
 	 * Discription:[薪资-工资单数据不分页查询]
 	 * </p>
 	 * Created on 2021年05月14日
@@ -70,7 +25,7 @@ public interface IChSaPaycardBiz {
 	 * 
 	 * @author:huadf
 	 */
-	public List<ChSaPaycardModel> queryList(ChSaPaycardModel model) throws Exception;
+	public List<Map<String, Object>> queryList(ChSaPaycardModel model) throws Exception;
 
 	public List<ChSaPaycardModel> queryListWithSerial(ChSaPaycardExtendModel model) throws Exception;
 
