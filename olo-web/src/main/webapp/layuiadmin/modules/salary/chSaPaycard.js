@@ -27,35 +27,44 @@ layui.extend({
 				$("#endMonth").val(re.endMonth);
 			}
 		})
-    });
-	//薪资-工资单-表格渲染
+    });	
+	
+	
+	//工资卡表-表格渲染
 	table.render({
 		elem: '#LAY-chSaPaycard-manage',
 		url: 'index/do.jhtm',
-		/*parseData: function(res){
-		    return {
-		    	"code": "200"==res.retCode?0:1,
-		    	"msg": res.retMsg,
-		    	"count": res.count,
-		    	"data": res.list
-		    };
-		},*/
 		where: {
 			startMonth: $("#startMonth").val(),
-			endMonth: $("#endMonth").val()
+			endMonth: $("#endMonth").val(),
+			name:"宋赛艳"
 	    },
-	    cols: heads,
-	    toolbar: '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
-  	    defaultToolbar: ['filter','exports', 'print'],
-  	    cellMinWidth:'100',
+	    cols: 
+	    [
+	  	  [
+			  {field: 'item', title: '项目',fixed: 'left',width:'12%'},
+			  {field: 'Jan', title: '一月' ,width:'8%'},
+			  {field: 'Feb', title: '二月' ,width:'8%'},
+			  {field: 'Mar', title: '三月' ,width:'8%'},
+			  {field: 'Apr', title: '四月' ,width:'8%'},
+			  {field: 'May', title: '五月' ,width:'8%'},
+			  {field: 'Jun', title: '六月' ,width:'8%'},
+			  {field: 'Jul', title: '七月' ,width:'8%'},
+			  {field: 'Aug', title: '八月' ,width:'8%'},
+			  {field: 'Sep', title: '九月' ,width:'8%'},
+			  {field: 'Oct', title: '十月' ,width:'8%'},
+			  {field: 'Nov', title: '十一月' ,width:'8%'},
+			  {field: 'Dec', title: '十二月' ,width:'8%'},
+		      {field: 'monthly', title: '月均',width:'8%'},
+			  {field: 'statisticalInterval', title: '统计区间' ,width:'8%'},
+			  {field: 'high', title: '高位数' ,width:'8%'},
+			  {field: 'median', title: '中位数' ,width:'8%'},
+			  {field: 'low', title: '低位数' ,width:'8%'}
+		  ]
+	    ],
 	    page: true,
-	    limits: [10,15,20,30,50],
+	    limits: [10,15,20,30,50,100],
 	    limit: 10,
-	    done:function (res,curr,count){
-		    $('th').css({'font-size':'14','font-weight':'bold','color':'green','border-color':'#aaa'});
-	    	//$('layui-table[lay-even] tr:nth-child(even)').css({ 'background-color': '#c3cedd'});
-	  		//$('th').css({ 'background-color':'#009688', 'color': 'white', 'font-weight': '500', 'font-size': '15px', 'line-height':'10px' });
-	    },
 	    text: {
 	        none: '暂无相关数据'
 	    }
@@ -83,7 +92,6 @@ layui.extend({
 	    		  layer.alert('请选择时间段');
 	    		  return;
 	    	  }
-	    	  //console.log("url:"+invokeUrl);
 	    	  window.location.href=invokeUrl;
 	    	  break;
 	      //自定义头工具栏右侧图标 - 提示
@@ -119,40 +127,6 @@ layui.extend({
   });
   //---------表头按钮区域----------
   var active = {
-	  batchdel: function(){
-	  	var checkStatus = table.checkStatus('LAY-chSaPaycard-manage'),
-		checkData = checkStatus.data; //得到选中的数据
-		if(checkData.length === 0){
-	  		return layer.msg('请选择数据');
-		}
-		var ids = new Array();
-		for(var i=0;i<checkData.length;i++)
-		{
-			ids.push(checkData[i].id);
-		}
-		layer.confirm('确定删除吗？', function(index) {
-	    	//执行 Ajax 后重载
-	        $.ajax({
-		        url:'batchDel.jhtm',
-		        method:'post',
-		        data:{"ids":ids},
-		        dataType:'json',
-		        success:function(data){
-					var code = data.statusCode;
-					var msg = data.message;
-					layer.msg(msg, {offset: '150px',icon: "200"==code?1:2,time: 2000});
-					if("200" == code)
-					{
-						table.reload('LAY-chSaPaycard-manage'); //数据刷新
-	          			layer.close(index); //关闭弹层
-					}
-		        },
-		        error:function (data) {
-					layer.msg("删除失败！", {offset: '150px',icon: 2,time: 2000});
-		        }
-		    });
-		});
-	  },
 	  revoke: function(){
 	  	layer.open({
 			type: 2,

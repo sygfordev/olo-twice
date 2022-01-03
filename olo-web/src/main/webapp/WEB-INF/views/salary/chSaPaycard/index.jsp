@@ -155,20 +155,6 @@
 		</div>
 		<div class="layui-form-item">
 		  <div class="layui-inline">
-	        <!-- <label class="layui-form-label">工资月份</label>
-	        <div class="layui-input-block">
-	          <input type="text" id="netTargetYearmonth" name="netTargetYearmonth" placeholder="请选择工资月份" autocomplete="off" class="layui-input time">
-	        </div> -->
-	          <!-- <label class="layui-form-label">月份范围</label>
-		      <div class="layui-inline" id="test6">
-		        <div class="layui-input-inline">
-		          <input type="text" autocomplete="off" id="startMonth" name="startMonth" class="layui-input" placeholder="开始月份">
-		        </div>
-		        <div class="layui-form-mid">-</div>
-		        <div class="layui-input-inline">
-		          <input type="text" autocomplete="off" id="endMonth" name="endMonth" class="layui-input" placeholder="结束月份">
-		        </div>
-		      </div> -->
 		      <label class="layui-form-label">起始年月</label>
 		      <div class="layui-input-inline">
 		        <input class="layui-input" type="text" name="startMonth" id="startMonth" readonly="" autocomplete="off" placeholder="开始月份">
@@ -211,18 +197,6 @@
           {{#  } }}
         </script>
       	
-        <!-- 操作模块 -->
-        <script type="text/html" id="table-chSaPaycard-manager-operator">
-          <shiro:hasPermission name="chSaPaycard:edit">
-			<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-		  </shiro:hasPermission>
-		  <shiro:hasPermission name="chSaPaycard:delete">
-			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
-		  </shiro:hasPermission>
-		  <shiro:hasPermission name="chSaPaycard:details">
-			<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="details"><i class="layui-icon layui-icon-read"></i>详情</a>
-		  </shiro:hasPermission>
-        </script>
       </div>
     </div>
   </div>
