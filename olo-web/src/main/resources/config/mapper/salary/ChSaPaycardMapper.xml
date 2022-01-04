@@ -43,6 +43,31 @@
 				 WAGE_ERROR_CORRENT,
 				 SUPP_4TEL,
 				 SUPP_4OTH,
+				 (select REWARD_AMOUNT  FROM
+					ch_sa_payslip_reward b 
+					where record.CARD_NO=b.CARD_NO and b.status = 0
+					AND TARGET_YEARMONTH = NET_TARGET_YEARMONTH 
+					AND REWARD_ITEM='经核办绩效') VERIFY_REWARD, 
+				 (select REWARD_AMOUNT  FROM
+					ch_sa_payslip_reward b 
+					where record.CARD_NO=b.CARD_NO  and b.status = 0
+					AND TARGET_YEARMONTH = NET_TARGET_YEARMONTH 
+					AND REWARD_ITEM='经合办绩效1') VERIFY_REWARD1,
+				 (select REWARD_AMOUNT  FROM
+					ch_sa_payslip_reward b 
+					where record.CARD_NO=b.CARD_NO  and b.status = 0
+					AND TARGET_YEARMONTH = NET_TARGET_YEARMONTH 
+					AND REWARD_ITEM='经合办绩效2') VERIFY_REWARD2,
+				 (select REWARD_AMOUNT  FROM
+					ch_sa_payslip_reward b 
+					where record.CARD_NO=b.CARD_NO  and b.status = 0
+					AND TARGET_YEARMONTH = NET_TARGET_YEARMONTH 
+					AND REWARD_ITEM='经合办绩效3') VERIFY_REWARD3,
+				 (select REWARD_AMOUNT  FROM
+					ch_sa_payslip_reward b 
+					where record.CARD_NO=b.CARD_NO  and b.status = 0
+					AND TARGET_YEARMONTH = NET_TARGET_YEARMONTH 
+					AND REWARD_ITEM='经合办绩效4') VERIFY_REWARD4,
 				 WAGE_TOTAL,
 				 WAGE_JX_TOTAL,
 				 WAGE_PAYABLE_TOTAL,
@@ -55,6 +80,7 @@
 				 BX_TOTAL,
 				 CUT_HYGIENE,
 				 CUT_ARREARS,
+				 TAX_INCOME_PERSONAL,
 				 CUT_TOTAL,
 				 NET_SALARY 
 			]]>
@@ -66,6 +92,9 @@
 			<if test="entity!=null">
 				<if test = "entity.name != null and entity.name != ''">
 					<![CDATA[ and record.NAME  = #{entity.name} ]]>
+				</if>
+				<if test = "entity.cardNo != null and entity.cardNo != ''">
+					<![CDATA[ and record.CARD_NO  = #{entity.cardNo} ]]>
 				</if>
 				<if test = "entity.startMonth != null and entity.endMonth != null">
 					<![CDATA[ AND NET_TARGET_YEARMONTH BETWEEN #{entity.startMonth} AND #{entity.endMonth} ]]>

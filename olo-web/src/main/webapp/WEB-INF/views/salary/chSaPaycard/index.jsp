@@ -23,27 +23,9 @@
 </head>
 <body>
   <div class="layui-fluid">
+   	
   	<!-- 隐藏属性 -->
    	<input id="basePath" name="basePath" type="hidden" value="<%=basePath%>">
-   	<input id="branchList" name="branchList" type="hidden" value='${branchList}'>
-   	<input id="depart1List" name="depart1List" type="hidden" value='${depart1List}'>
-   	<input id="depart2List" name="depart2List" type="hidden" value='${depart2List}'>
-   	<input id="modalityList" name="modalityList" type="hidden" value='${modalityList}'>
-   	
-   	<input id="positList" name="positList" type="hidden" value='${positList}'>
-   	<input id="titleList" name="titleList" type="hidden" value='${titleList}'>
-   	<input id="departClassList" name="departClassList" type="hidden" value='${departClassList}'>
-   	<input id="departClassPopList" name="departClassPopList" type="hidden" value='${departClassPopList}'>
-   	<input id="stationList" name="stationList" type="hidden" value='${stationList}'>
-   	<input id="stationTypeList" name="stationTypeList" type="hidden" value='${stationTypeList}'>
-   	<input id="stationStatusList" name="stationStatusList" type="hidden" value='${stationStatusList}'>
-   	<input id="stationSeqList" name="stationSeqList" type="hidden" value='${stationSeqList}'>
-   	<input id="titleClassList" name="titleClassList" type="hidden" value='${titleClassList}'>
-   	<input id="skillsLevelList" name="skillsLevelList" type="hidden" value='${skillsLevelList}'>
-   	<input id="eduLev4NowList" name="eduLev4NowList" type="hidden" value='${eduLev4NowList}'>
-   	<input id="saSumProjectList" name="saSumProjectList" type="hidden" value='${saSumProjectList}'>
-   	<input id="rptWkDepClassList" name="rptWkDepClassList" type="hidden" value='${rptWkDepClassList}'>
-   	
     <div class="layui-card">
       <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="payIndex">
         <div class="layui-form-item">
@@ -59,101 +41,7 @@
 	          <input type="text" name="cardNo" placeholder="请输入身份证号" autocomplete="off" class="layui-input">
 	        </div>
           </div>
-		</div>
-		<div class="layui-collapse" lay-filter="test">
-		<div class="layui-form-item layui-colla-item">
-		  <h2 class="layui-colla-title" style="text-align:right;padding-right:30px;">更多</h2>
-		  <div class="layui-colla-content">
-		  <div class="layui-inline">
-	        <label class="layui-form-label">职务</label>
-	        <div class="layui-input-block" id="positCns"></div>
-          </div>
-		  <div class="layui-inline">
-	        <label class="layui-form-label">职称</label>
-	        <div class="layui-input-block" id="titleCns"></div>
-          </div>
-          <div class="layui-inline">
-	        <label class="layui-form-label">职称序列</label>
-	        <div class="layui-input-block" id="titleClassCns"></div>
-          </div>
-		  <div class="layui-inline">
-	        <label class="layui-form-label">支部</label>
-	        <div class="layui-input-block" id="hosBranchCns"></div>
-          </div>
-		  <div class="layui-inline">
-	        <label class="layui-form-label">一级科室</label>
-	        <div class="layui-input-block" id="hosDepart1levelCns"></div>
-	        <%-- <div class="layui-input-block">
-	          <input id="hosDepart1levelCn" name="hosDepart1levelCn" class="layui-input" style="position:absolute;z-index:2;width:85%;"  value="" onkeyup="search('hosDepart1levelCn','depart1')" >
-	          <select id="depart1" name="depart1" lay-filter="depart1" class="layui-select" autocomplete="off" lay-search>
-                  <option value=""></option>
-                  <c:forEach var="item" items="${depart1List}" varStatus="status">
-                    <option value="${item.key}">${item.value}</option>
-                  </c:forEach>
-              </select>
-	        </div> --%>
-          </div>
-		  <div class="layui-inline">
-	        <label class="layui-form-label">二级科室</label>
-	        <div class="layui-input-block" id="hosDepart2levelCns"></div>
-          </div>
-		  <div class="layui-inline">
-	        <label class="layui-form-label">人员类别</label>
-	        <div class="layui-input-block" id="wkModalityCns"></div>
-	        <%-- <div class="layui-input-block">
-	          <input id="wkModalityCn" name="wkModalityCn" class="layui-input" style="position:absolute;z-index:2;width:85%;"  value="" onkeyup="search('wkModalityCn','peronType')" >
-	          <select id ="peronType" name="peronType" lay-filter="peronType" class="layui-select" autocomplete="off" lay-search>
-              	<option value=""></option>
-              	<c:forEach var="item" items="${modalityList}" varStatus="status">
-              		<option value="${item.key}">${item.value}</option>
-              	</c:forEach>
-              </select>
-	        </div> --%>
-          </div>
-          <div class="layui-inline">
-	        <label class="layui-form-label">部门类别</label>
-	        <div class="layui-input-block" id="departClassCns"></div>
-          </div>
-          <div class="layui-inline">
-	        <label class="layui-form-label">部门类别属性</label>
-	        <div class="layui-input-block" id="departClassPops"></div>
-          </div>
-		  <div class="layui-inline">
-	        <label class="layui-form-label">岗位</label>
-	        <div class="layui-input-block" id="stationCns"></div>
-          </div>
-          <div class="layui-inline">
-	        <label class="layui-form-label">岗位类型</label>
-	        <div class="layui-input-block" id="stationTypeCns"></div>
-          </div>
-          <div class="layui-inline">
-	        <label class="layui-form-label">岗位状态</label>
-	        <div class="layui-input-block" id="stationStatusCns"></div>
-          </div>
-		  <div class="layui-inline">
-	        <label class="layui-form-label">岗位序列</label>
-	        <div class="layui-input-block" id="stationSeqCns"></div>
-          </div>
-          <div class="layui-inline">
-	        <label class="layui-form-label">现学历</label>
-	        <div class="layui-input-block" id="eduLev4nowCns"></div>
-          </div>
-          <div class="layui-inline">
-	        <label class="layui-form-label">技能等级级别</label>
-	        <div class="layui-input-block" id="skillsLevelCns"></div>
-          </div>
-          <div class="layui-inline">
-	        <label class="layui-form-label">工资汇总表项目</label>
-	        <div class="layui-input-block" id="saSumProjects"></div>
-          </div>
-          <div class="layui-inline">
-	        <label class="layui-form-label">报工系统部门分类</label>
-	        <div class="layui-input-block" id="rptWkDepClasss"></div>
-          </div>
-		</div>
-		</div>
-		</div>
-		<div class="layui-form-item">
+          
 		  <div class="layui-inline">
 		      <label class="layui-form-label">起始年月</label>
 		      <div class="layui-input-inline">
@@ -169,7 +57,13 @@
             <button class="layui-btn layuiadmin-btn-admin" lay-submit lay-filter="LAY-chSaPaycard-search" data-type="search">
               <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
             </button>
+            
+            <button class="layui-btn layuiadmin-btn-admin" lay-submit lay-filter="LAY-chSaPaycard-export" data-type="export">
+              <i class="layui-icon layui-icon-export layuiadmin-button-btn"></i>
+            </button>
           </div>
+		</div>
+		<div class="layui-form-item">
         </div>
       </div>
       

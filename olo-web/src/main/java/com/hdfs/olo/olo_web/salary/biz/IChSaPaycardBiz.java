@@ -3,6 +3,9 @@ package com.hdfs.olo.olo_web.salary.biz;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.hdfs.olo.olo_web.salary.model.ChSaPaycardExtendModel;
 import com.hdfs.olo.olo_web.salary.model.ChSaPaycardModel;
 
@@ -55,5 +58,14 @@ public interface IChSaPaycardBiz {
 	 * @return
 	 */
 	String queryLastMonth();
+
+	/**
+	 * 
+	 * 导出Excel
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	void exportExcel(HttpServletRequest request, HttpServletResponse response, ChSaPaycardModel model) throws Exception;
 
 }
